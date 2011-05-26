@@ -64,7 +64,17 @@ $(function() {
 	* Save a question
 	*/
 	$("button.saveq").live("click", function() {
-		console.log(grabQuestionData($(this).parent()));
+		var data = grabQuestionData($(this).parent());
+		console.log(data);
+		
+		$.ajax("questions.jsp", {
+			type: "POST",
+			dataType: "json",
+			data: data,
+			success: function(resp) {
+				//response for creating a question.
+			}
+		});
 	});
 	
 	/**
@@ -76,6 +86,32 @@ $(function() {
 		data.demographic = question.find("input.demographicbox")[0].checked;
 		data.responseType = question.find("select.qformat").val();
 		data.question = question.find("input.qname").val();
+		data.compareTo = question.find("select.compare").val();
+		
+		data.responses = grabResponseData(question);
+		
+		return data;
+	}
+	
+	/**
+	* Return an array of objects of Responses for
+	* a specific question.
+	*/
+	function grabResponseData(question) {
+		var data = [];
+		
+		question.find("div.response").each(function() {
+			var resp = {},
+				self = $(this);
+			
+			resp.response = self.find("input.resptext").val();
+			resp.keypad = self.find("select.keypad").val();
+			resp.weight = self.find("input.weight").val();
+			resp.correct = self.find("input.correct")[0].checked;
+			
+			data.push(resp);
+		});
+		
 		return data;
 	}
 });
