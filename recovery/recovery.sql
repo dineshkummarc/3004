@@ -6,7 +6,8 @@ CREATE TABLE Questions(
 	questID NUMBER(6) PRIMARY KEY,
 	demographic CHAR(1) NOT NULL,
 	responseType CHAR(1) NOT NULL,
-	question VARCHAR2(255) NOT NULL
+	question VARCHAR2(255) NOT NULL,
+	created TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Responses(
@@ -29,6 +30,7 @@ CREATE TABLE Ranking(
 
 CREATE TABLE Answers(
 	answerID NUMBER(6) PRIMARY KEY,
+	created TIMESTAMP NOT NULL,
 	questID NUMBER(6) NOT NULL
 );
 
