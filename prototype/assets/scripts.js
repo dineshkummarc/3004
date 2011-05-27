@@ -16,13 +16,14 @@ $(function() {
 	});
 	
 	var question = $("div.question").clone(),
+		container = $("#container"),
 		questionCount = 1;
 	
 	/**
 	* Add a new question
 	*/
 	$("#newq").click(function() {
-		question.clone().appendTo(document.body);
+		question.clone().appendTo(container);
 		questionCount++;
 	});
 	
@@ -64,53 +65,62 @@ $(function() {
 	* Save a question
 	*/
 	$("button.saveq").live("click", function() {
-		var data = grabQuestionData($(this).parent());
+		data = grabData();
 		console.log(data);
 		
-		$.ajax("questions.jsp", {
+		$.ajax("data.jsp", {
 			type: "POST",
-			dataType: "json",
+			dataType: "html",
 			data: data,
 			success: function(resp) {
 				//response for creating a question.
+				console.log(resp);
+			},
+			
+			error: function(e,f,g) {
+				console.log("ERROR", e,f,g);
 			}
 		});
 	});
+	
+	function grabData() {
+		var data = {};
+		data.name = $("#pname").val() || "NULL";
+		data.questions = [];
+		
+		//grab an array of questions
+		$("div.question").each(function() {
+			data.questions.push(grabQuestionData($(this)));
+		});
+		
+		data.questionsCount = data.questions.length;
+		
+		return data;
+	}
 	
 	/**
 	* Method to find out all the information to
 	* insert into the database from a question DIV.
 	*/
 	function grabQuestionData(question) {
-		var data = {};
+		var data = {}, i = 0;
 		data.demographic = question.find("input.demographicbox")[0].checked;
-		data.responseType = question.find("select.qformat").val();
-		data.question = question.find("input.qname").val();
-		data.compareTo = question.find("select.compare").val();
-		
-		data.responses = grabResponseData(question);
-		
-		return data;
-	}
-	
-	/**
-	* Return an array of objects of Responses for
-	* a specific question.
-	*/
-	function grabResponseData(question) {
-		var data = [];
+		data.responseType = question.find("select.qformat").val() || "NULL";
+		data.question = question.find("input.qname").val() || "NULL";
+		data.compareTo = question.find("select.compare").val() || "NULL";
+		data.responses = [];
 		
 		question.find("div.response").each(function() {
-			var resp = {},
-				self = $(this);
+			var self = $(this), obj = {};
+			obj.response = self.find("input.resptext").val() || "NULL";
+			obj.keypad = self.find("select.keypad").val() || "NULL";
+			obj.weight = self.find("input.weight").val() || "NULL";
+			obj.correct = self.find("input.correct")[0].checked;
 			
-			resp.response = self.find("input.resptext").val();
-			resp.keypad = self.find("select.keypad").val();
-			resp.weight = self.find("input.weight").val();
-			resp.correct = self.find("input.correct")[0].checked;
-			
-			data.push(resp);
+			data.responses.push(obj);
 		});
+		
+		data.responsesCount = data.responses.length;
 		
 		return data;
 	}
