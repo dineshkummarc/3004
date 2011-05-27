@@ -15,13 +15,34 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
+<<<<<<< HEAD
+    private int compareTo;
+
+    public questions(int questID, int pollID, String demographic, String responseType, String questionText, int compareTo) {
+=======
 
     public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
+>>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
         this.questID = questID;
         this.pollID= pollID;
         this.demographic = demographic;
         this.responseType = responseType;
         this.questionText = questionText;
+<<<<<<< HEAD
+        this.compareTo = compareTo;
+    }
+
+    public questions(int questID) {
+        this(questID, -1, "N", "N", "", -1);
+    }
+
+    public questions(int pollID, String demographic, String responseType, String questionText, int compareTo) {
+        this(-1, pollID, demographic, responseType, questionText, compareTo);
+    }
+
+    public questions() {
+        this(-1, -1, "N", "N", "", -1);
+=======
     }
 
     public questions(int questID) {
@@ -34,6 +55,7 @@ public class questions {
 
     public questions() {
         this(-1, -1, "N", "N", "");
+>>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
     }
     
     /**
@@ -81,7 +103,7 @@ public class questions {
     }
     
     /**
-     * Attempts to locate all responseIDs for responses to this question in 
+     * Attempts to locate all answerIDs for answers to this question in
      * the database. 
      * Will not check for success.
      * 
@@ -90,14 +112,14 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public ResultSet getResponses() {
+    public ResultSet getAnswers() {
         try {
             if (getQuestID() == -1) {
                 return null;
             }
             
             getOracleConnection();
-            String query= "SELECT responseID FROM Responses WHERE questID=" 
+            String query= "SELECT answerID FROM Answers WHERE questID="
                     + getQuestID();  
             ResultSet resultSet = runQuery(query);
             closeOracleConnection();
@@ -136,6 +158,13 @@ public class questions {
                     + getQuestionText() + "', pollID=" + getPollID()
                     + ")";  
             runQuery(query);
+
+            if (getCompareTo() != -1) {
+                query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
+                        + getQuestID() + ", " + getCompareTo() + ")";
+                runQuery(query);
+            }
+
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -170,6 +199,28 @@ public class questions {
                     + "', responseType='" + getResponseType() + "', question='" 
                     + getQuestionText() + "', pollID=" + getPollID() + ", WHERE questID=" + getQuestID();  
             runQuery(query);
+
+            /* Check ranking existance in database */
+            query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
+            int exists = runQuery(query).getInt(1);
+
+            if (getCompareTo() != -1) {
+                if (exists == 1) {
+                    /* Edit */
+                    query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
+                            + ", WHERE questID=" + getQuestID();
+                } else {
+                    /* Add */
+                    query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
+                            + getQuestID() + ", " + getCompareTo() + ")";
+                    runQuery(query);
+                }
+            } else if (exists == 1) {
+                /* Remove */
+                query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
+                runQuery(query);
+            }
+
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -202,13 +253,21 @@ public class questions {
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
+<<<<<<< HEAD
+                temp.setQuestID(resultSet.getInt("answersID"));
+=======
                 temp.setQuestID(resultSet.getInt("responsesID"));
+>>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
                 temp.deleteAnswer();
             }
-            
+
+            query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
+            runQuery(query);
+
             /* Delete question */
             query= "DELETE FROM Questions WHERE questID=" + getQuestID();
             runQuery(query);
+
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -241,9 +300,27 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
+<<<<<<< HEAD
+
+                query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
+                int exists = runQuery(query).getInt(1);
+                if (exists == 1) {
+                    query = "SELECT * FROM Comparitives WHERE questID=" + getQuestID();
+                    resultSet = runQuery(query);
+                    resultSet.next();
+                    setCompareTo(resultSet.getInt("compareTo"));
+                } else {
+                    setCompareTo(-1);
+                }
                 closeOracleConnection();
                 return 0;
             }
+            closeOracleConnection();
+=======
+                closeOracleConnection();
+                return 0;
+            }
+>>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -333,5 +410,19 @@ public class questions {
      */
     public String getQuestionText() {
         return questionText;
+    }
+
+    /**
+     * @return the compareTo
+     */
+    public int getCompareTo() {
+        return compareTo;
+    }
+
+    /**
+     * @param compareTo the compareTo to set
+     */
+    public void setCompareTo(int compareTo) {
+        this.compareTo = compareTo;
     }
 }

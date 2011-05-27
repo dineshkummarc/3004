@@ -255,6 +255,10 @@ public class answers {
                 closeOracleConnection();
                 return 0;
             }
+<<<<<<< HEAD
+            closeOracleConnection();
+=======
+>>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
