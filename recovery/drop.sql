@@ -2,15 +2,15 @@ DROP TABLE Questions;
 
 DROP TABLE Comparitives;
 
-DROP TABLE Responses;
+DROP TABLE Answers;
 
 DROP TABLE Ranking;
 
-DROP TABLE Answers;
+DROP TABLE Responses;
 
-DROP TABLE KeyAnswers;
+DROP TABLE KeyResponses;
 
-DROP TABLE ShortAnswers;
+DROP TABLE ShortResponses;
 
 DROP TABLE Polls;
 

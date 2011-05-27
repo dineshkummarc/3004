@@ -7,13 +7,14 @@ CREATE TABLE Questions(
 	demographic CHAR(1) NOT NULL,
 	responseType CHAR(1) NOT NULL,
 	question VARCHAR2(255) NOT NULL,
+        pollID NUMBER(6) PRIMARY KEY,
 	created TIMESTAMP NOT NULL
 );
 
-CREATE TABLE Responses(
-	reponseID NUMBER(6) PRIMARY KEY,
+CREATE TABLE Answers(
+	answerID NUMBER(6) PRIMARY KEY,
 	keypad CHAR(1),
-	response VARCHAR2(255) NOT NULL,
+	answer VARCHAR2(255) NOT NULL,
 	questID NUMBER(6) NOT NULL,
 	correct CHAR(1) NOT NULL
 );
@@ -23,24 +24,24 @@ CREATE TABLE Comparitives(
 	compareTo NUMBER(6) NOT NULL
 );
 
-CREATE TABLE Ranking(
-	reponseID NUMBER(6) PRIMARY KEY,
+CREATE TABLE Rankings(
+	answerID NUMBER(6) PRIMARY KEY,
 	weight NUMBER(6)
 );
 
-CREATE TABLE Answers(
+CREATE TABLE Responses(
 	answerID NUMBER(6) PRIMARY KEY,
 	created TIMESTAMP NOT NULL,
 	questID NUMBER(6) NOT NULL
 );
 
-CREATE TABLE KeyAnswers(
-	answerID NUMBER(6) PRIMARY KEY,
+CREATE TABLE KeyResponses(
+	responseID NUMBER(6) PRIMARY KEY,
 	keypad CHAR(1) NOT NULL
 );
 
-CREATE TABLE ShortAnswers(
-	answerID NUMBER(6) PRIMARY KEY,
+CREATE TABLE ShortResponses(
+	responseID NUMBER(6) PRIMARY KEY,
 	response VARCHAR2(255) NOT NULL
 );
 
