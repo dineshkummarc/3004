@@ -2,12 +2,31 @@
 -- Louis Stowasser 25/5/11
 -- CSSE3004 Group F
 
+
+-- Sequences
+CREATE SEQUENCE qseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE aseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE pseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE useq
+START WITH 1
+INCREMENT BY 1;
+
+-- Tables
 CREATE TABLE Questions(
 	questID NUMBER(6) PRIMARY KEY,
 	demographic CHAR(1) NOT NULL,
 	responseType CHAR(1) NOT NULL,
 	question VARCHAR2(255) NOT NULL,
-        pollID NUMBER(6) PRIMARY KEY,
+    pollID NUMBER(6) NOT NULL,
 	created TIMESTAMP NOT NULL
 );
 
@@ -56,13 +75,14 @@ CREATE TABLE Users(
 	userName VARCHAR2(255) NOT NULL,
 	password VARCHAR2(255) NOT NULL,
 	email VARCHAR2(255) NOT NULL,
-	location VARCHAR2(255) NOT NULL
+	location VARCHAR2(255) NOT NULL,
+	userLevel CHAR(1) NOT NULL
 );
 
 CREATE TABLE Assigned(
 	userID NUMBER(6),
 	pollID NUMBER(6),
 	role VARCHAR(255) NOT NULL,
-	CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin', 'System Admin')),
+	CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
 	CONSTRAINT pk_Assigned PRIMARY KEY (userID, pollID)
 );

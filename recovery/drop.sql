@@ -1,10 +1,18 @@
+DROP SEQUENCE qseq;
+
+DROP SEQUENCE aseq;
+
+DROP SEQUENCE pseq;
+
+DROP SEQUENCE useq;
+
 DROP TABLE Questions;
 
 DROP TABLE Comparitives;
 
 DROP TABLE Answers;
 
-DROP TABLE Ranking;
+DROP TABLE Rankings;
 
 DROP TABLE Responses;
 
