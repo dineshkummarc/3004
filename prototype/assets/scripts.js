@@ -39,7 +39,7 @@ $(function() {
 			return;
 		}
 		
-		response.clone().appendTo(parent);
+		response.clone().appendTo(parent).find("button.saveq, button.saver").hide();
 	});
 	
 	/**
@@ -62,8 +62,47 @@ $(function() {
 	});
 	
 	/**
-	* Save a question
+	* Display a save button whenever a field has changed
 	*/
+	$("input, select").live("change", function() {
+		$(this).parent().children("button.saveq, button.saver").show();
+	});
+	
+	/**
+	* Save Responses
+	*/ 
+	$("button.saver").live("click", function() {
+		var parent = $(this).parent(),
+			data = {};
+		
+		data.id = parent.find("input.aid").val();
+		data.text = parent.find("input.resptext").val();
+		data.keypad = parent.find("select.keypad").val();
+		data.correct = parent.find("input.correct")[0].checked;
+		data.weight = parent.find("input.weight").val() || "NULL";
+		
+		console.log(data);
+	});
+	
+	/**
+	* Save Questions
+	*/
+	$("button.saveq").live("click", function() {
+		var parent = $(this).parent(),
+			data = {};
+		
+		data.id = parent.find("input.qid").val();
+		data.text = parent.find("input.qname").val();
+		data.qformat = parent.find("select.qformat").val();
+		data.compareTo = parent.find("select.compare").val();
+		data.demographic = parent.find("input.demographicbox")[0].checked;
+		
+		console.log(data);
+	});
+	
+	/**
+	* Save a question
+	
 	$("button.saveq").live("click", function() {
 		data = grabData();
 		console.log(data);
@@ -81,7 +120,77 @@ $(function() {
 				console.log("ERROR", e,f,g);
 			}
 		});
-	});
+	});*/
+	
+	/**
+	* Parse data returned from selecting a Poll
+	*
+	* @example
+	* [{id: 1, text: "Question", type: "M", compareTo: 2, demographic: true, ranking:true, responses: [{id: 2, text: "Repsonse A", keypad: "NULL", correct: true, weight: 50}]}]
+	*/
+	parseData = function parseData(data) {
+		var q = 0, l = data.length, r, k, quest, resp, qelem;
+		
+		//loop over questions
+		for(;q < l; ++q) {
+			quest = data[q];
+			qelem = createQuestion(quest);
+			
+			//loop over responses
+			k = quest.responses.length
+			for(r = 0; r < k; ++r) {
+				resp = quest.responses[r];
+				createResponse(qelem, resp);
+			}
+			
+			qelem.find("div.response:first").remove();
+		}
+		
+		container.children("div.question:first").remove();
+	}
+	
+	function createQuestion(data) {
+		var qelem = question.clone().appendTo(container);
+		
+		qelem.find("input.qid").val(data.id);
+		qelem.find("input.qname").val(data.text);
+		qelem.find("select.qformat").val(data.type);
+		
+		if(data.compareTo != "NULL") {
+			qelem.find("input.comparitivebox").attr("checked", "checked");
+			qelem.find(".comparitive").show();
+		}
+		
+		if(data.ranking) {
+			qelem.find("input.rankingbox").attr("checked", "checked");
+			qelem.find(".ranking").show();
+		}
+		
+		if(data.demographic) {
+			qelem.find("input.demographicbox").attr("checked", "checked");
+		}
+		
+		questionCount++;
+		return qelem;
+	}
+	
+	function createResponse(quest, data) {
+		var response = quest.find("div.response:first"),
+			relem = response.clone().appendTo(quest.find("div.responses"));
+		
+		relem.find("button.saveq, button.saver").hide();
+		relem.find("input.aid").val(data.id);
+		relem.find("input.resptext").val(data.text);
+		relem.find("select.keypad").val(data.keypad);
+		
+		if(data.correct) {
+			relem.find("input.correct").attr("checked", "checked");
+		}
+		
+		if(data.weight && data.weight != "NULL") {
+			relem.find("input.weight").val(data.weight);
+		}
+	}
 	
 	function grabData() {
 		var data = {};
