@@ -15,47 +15,44 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-<<<<<<< HEAD
-    private int compareTo;
+    private Timestamp created;
+    private String font;
+    private String correctIndicator;
+    private int chartType;
+    private String images;
+    private int creator;
 
-    public questions(int questID, int pollID, String demographic, String responseType, String questionText, int compareTo) {
-=======
-
-    public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
+    public questions(int questID, int pollID, String demographic, 
+            String responseType, String questionText, Timestamp created, 
+            String font, String correctIndicator, int chartType, String images, 
+            int creator) {
         this.questID = questID;
         this.pollID= pollID;
         this.demographic = demographic;
         this.responseType = responseType;
         this.questionText = questionText;
-<<<<<<< HEAD
-        this.compareTo = compareTo;
+        this.created = created;
+        this.font = font;
+        this.correctIndicator = correctIndicator;
+        this.chartType = chartType;
+        this.images = images;
+        this.creator = creator;
     }
 
     public questions(int questID) {
-        this(questID, -1, "N", "N", "", -1);
+        this(questID, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
 
-    public questions(int pollID, String demographic, String responseType, String questionText, int compareTo) {
-        this(-1, pollID, demographic, responseType, questionText, compareTo);
-    }
-
-    public questions() {
-        this(-1, -1, "N", "N", "", -1);
-=======
-    }
-
-    public questions(int questID) {
-        this(questID, -1, "N", "N", "");
-    }
-
-    public questions(int pollID, String demographic, String responseType, String questionText) {
-        this(-1, pollID, demographic, responseType, questionText);
+    public questions(int pollID, String demographic, String responseType, 
+            String questionText, Timestamp created, String font, 
+            String correctIndicator, int chartType, String images, 
+            int creator) {
+        this(-1, pollID, demographic, responseType, questionText, created, font, 
+                correctIndicator, chartType, images, creator);
     }
 
     public questions() {
-        this(-1, -1, "N", "N", "");
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
+        this(-1, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
     
     /**
@@ -146,24 +143,23 @@ public class questions {
             if (getPollID() == -1) {
                 return -1;
             } else if (getQuestID() == -1) {
-                return -1;
+                String query = "SELECT qseq.nextval FROM dual";
+                ResultSet resultSet = runQuery(query);
+                setQuestID(resultSet.getInt(1));
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
             
             getOracleConnection();
             String query= "INSERT INTO Questions(questID, demographic, "
-                    + "responseType, question) VALUES (" + getQuestID() + ", '" 
-                    + getDemographic() + "', '" + getResponseType() + "', '" 
-                    + getQuestionText() + "', pollID=" + getPollID()
-                    + ")";  
+                    + "responseType, question, pollID, created, font, "
+                    + "correctIndicator, chartType, images, creator) VALUES (" 
+                    + getQuestID() + ", '" + getDemographic() + "', '" 
+                    + getResponseType() + "', '" + getQuestionText() + "', " 
+                    + getPollID() + ", " + getCreated() + ", '" + getFont() 
+                    + "', '" + getCorrectIndicator() + "', " + getChartType() 
+                    + ", '" + getImages() + "', " + getCreator() + ")";  
             runQuery(query);
-
-            if (getCompareTo() != -1) {
-                query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
-                        + getQuestID() + ", " + getCompareTo() + ")";
-                runQuery(query);
-            }
 
             closeOracleConnection();
             return 0;
@@ -193,33 +189,20 @@ public class questions {
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
-            
+
             getOracleConnection();
             String query= "UPDATE Questions SET demographic='" + getDemographic() 
-                    + "', responseType='" + getResponseType() + "', question='" 
-                    + getQuestionText() + "', pollID=" + getPollID() + ", WHERE questID=" + getQuestID();  
+                    + "', responseType='" + getResponseType() 
+                    + "', question='" + getQuestionText() 
+                    + "', pollID=" + getPollID()
+                    + ", created=" + getCreated()
+                    + ", font='" + getFont()
+                    + "', correctIndicator='" + getCorrectIndicator()
+                    + "', chartType=" + getChartType()
+                    + ", images='" + getImages()
+                    + "', creator=" + getCreator()
+                    + ", WHERE questID=" + getQuestID();  
             runQuery(query);
-
-            /* Check ranking existance in database */
-            query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
-            int exists = runQuery(query).getInt(1);
-
-            if (getCompareTo() != -1) {
-                if (exists == 1) {
-                    /* Edit */
-                    query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
-                            + ", WHERE questID=" + getQuestID();
-                } else {
-                    /* Add */
-                    query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
-                            + getQuestID() + ", " + getCompareTo() + ")";
-                    runQuery(query);
-                }
-            } else if (exists == 1) {
-                /* Remove */
-                query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
-                runQuery(query);
-            }
 
             closeOracleConnection();
             return 0;
@@ -246,23 +229,29 @@ public class questions {
             } 
             getOracleConnection();
             
-            /* Delete responses under question */
+            /* Delete answers under question */
             String query= "SELECT answerID FROM Answers WHERE questID=" + getQuestID();
             ResultSet resultSet = runQuery(query);
             
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
-<<<<<<< HEAD
-                temp.setQuestID(resultSet.getInt("answersID"));
-=======
-                temp.setQuestID(resultSet.getInt("responsesID"));
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
+                temp.setAnswerID(resultSet.getInt("answersID"));
                 temp.deleteAnswer();
             }
-
-            query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
-            runQuery(query);
+            
+            /* Delete comparitives under question */
+            query= "SELECT * FROM Comparitives WHERE questID=" + getQuestID() 
+                    + " OR compareTo=" + getQuestID();
+            resultSet = runQuery(query);
+            
+            /* Calls each comparitive to delete itself and its children */
+            while (resultSet.next()) {
+                comparitives temp = new comparitives();
+                temp.setQuestID(resultSet.getInt("questID"));
+                temp.setCompareTo(resultSet.getInt("compareTo"));
+                temp.deleteComparitive();
+            }
 
             /* Delete question */
             query= "DELETE FROM Questions WHERE questID=" + getQuestID();
@@ -300,27 +289,16 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
-<<<<<<< HEAD
-
-                query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
-                int exists = runQuery(query).getInt(1);
-                if (exists == 1) {
-                    query = "SELECT * FROM Comparitives WHERE questID=" + getQuestID();
-                    resultSet = runQuery(query);
-                    resultSet.next();
-                    setCompareTo(resultSet.getInt("compareTo"));
-                } else {
-                    setCompareTo(-1);
-                }
+                setCreated(resultSet.getTimestamp("created"));
+                setFont(resultSet.getString("font"));
+                setCorrectIndicator(resultSet.getString("correctIndicator"));
+                setChartType(resultSet.getInt("chartType"));
+                setImages(resultSet.getString("images"));
+                setCreator(resultSet.getInt("creator"));
                 closeOracleConnection();
                 return 0;
             }
             closeOracleConnection();
-=======
-                closeOracleConnection();
-                return 0;
-            }
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -336,24 +314,10 @@ public class questions {
     }
 
     /**
-     * @param questID the questID to set, use -1 to automatically set next
-     * available ID.
+     * @param questID the questID to set
      */
     public void setQuestID(int questID) {
-        if (questID != -1) {
-            this.questID = questID;
-        } else {
-            try {
-                getOracleConnection();
-                String query= "SELECT MAX(questID) FROM Questions";  
-                ResultSet resultset = runQuery(query);
-                resultset.next();
-                this.questID = resultset.getInt(1) + 1;
-                closeOracleConnection();
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
+        this.questID = questID;
     }
 
     /**
@@ -413,16 +377,86 @@ public class questions {
     }
 
     /**
-     * @return the compareTo
+     * @return the created
      */
-    public int getCompareTo() {
-        return compareTo;
+    public Timestamp getCreated() {
+        return created;
     }
 
     /**
-     * @param compareTo the compareTo to set
+     * @param created the created to set
      */
-    public void setCompareTo(int compareTo) {
-        this.compareTo = compareTo;
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    /**
+     * @return the font
+     */
+    public String getFont() {
+        return font;
+    }
+
+    /**
+     * @param font the font to set
+     */
+    public void setFont(String font) {
+        this.font = font;
+    }
+
+    /**
+     * @return the correctIndicator
+     */
+    public String getCorrectIndicator() {
+        return correctIndicator;
+    }
+
+    /**
+     * @param correctIndicator the correctIndicator to set
+     */
+    public void setCorrectIndicator(String correctIndicator) {
+        this.correctIndicator = correctIndicator;
+    }
+
+    /**
+     * @return the chartType
+     */
+    public int getChartType() {
+        return chartType;
+    }
+
+    /**
+     * @param chartType the chartType to set
+     */
+    public void setChartType(int chartType) {
+        this.chartType = chartType;
+    }
+
+    /**
+     * @return the images
+     */
+    public String getImages() {
+        return images;
+    }
+
+    /**
+     * @param images the images to set
+     */
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    /**
+     * @return the creator
+     */
+    public int getCreator() {
+        return creator;
+    }
+
+    /**
+     * @param creator the creator to set
+     */
+    public void setCreator(int creator) {
+        this.creator = creator;
     }
 }

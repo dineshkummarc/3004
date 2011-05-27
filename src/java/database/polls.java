@@ -13,23 +13,25 @@ public class polls {
     private int pollID;
     private String pollName;
     private String location;
+    private String description;
 
-    public polls(int pollID, String pollName, String location) {
+    public polls(int pollID, String pollName, String location, String description) {
         this.pollID = pollID;
         this.pollName = pollName;
         this.location = location;
+        this.description = description;
     }
 
     public polls(int pollID) {
-        this(pollID, "", "");
+        this(pollID, "", "", "");
     }
 
-    public polls(String pollName, String location) {
-        this(-1, pollName, location);
+    public polls(String pollName, String location, String description) {
+        this(-1, pollName, location, description);
     }
 
     public polls() {
-        this(-1, "", "");
+        this(-1, "", "", "");
     }
     
     /**
@@ -117,7 +119,9 @@ public class polls {
     public int addPoll() {
         try {
             if (getPollID() == -1) {
-                return -1;
+                String query = "SELECT pseq.nextval FROM dual";
+                ResultSet resultSet = runQuery(query);
+                setPollID(resultSet.getInt(1));
             } else if (getPollName().equals("")) {
                 return -1;
             } else if (getLocation().equals("")) {
@@ -125,9 +129,9 @@ public class polls {
             }
             
             getOracleConnection();
-            String query= "INSERT INTO Polls(pollID, pollName, location) VALUES"
-                    + "(" + getPollID() + ", '" + getPollName() + "', '" + getLocation() 
-                    + "')";  
+            String query= "INSERT INTO Polls(pollID, pollName, location, description) VALUES"
+                    + "(" + getPollID() + ", '" + getPollName() + "', '" 
+                    + getLocation() + "', '" + getDescription() + "')";  
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -160,8 +164,8 @@ public class polls {
             
             getOracleConnection();
             String query= "UPDATE Polls SET pollName='" + getPollName() 
-                    + "', location='" + getLocation() + "', WHERE pollID=" 
-                    + getPollID();  
+                    + "', location='" + getLocation() + "', description='" 
+                    + getDescription() + "', WHERE pollID=" + getPollID();  
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -232,13 +236,11 @@ public class polls {
                 setPollID(resultSet.getInt("pollID"));
                 setPollName(resultSet.getString("pollName"));
                 setLocation(resultSet.getString("location"));
+                setDescription(resultSet.getString("description"));
                 closeOracleConnection();
                 return 0;
             }
-<<<<<<< HEAD
             closeOracleConnection();
-=======
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -247,24 +249,10 @@ public class polls {
     }
 
     /**
-     * @param pollID the pollID to set, use -1 to automatically set next
-     * available ID.
+     * @param pollID the pollID to set
      */
     public void setPollID(int pollID) {
-        if (pollID != -1) {
-            this.pollID = pollID;
-        } else {
-            try {
-                getOracleConnection();
-                String query= "SELECT MAX(pollID) FROM Polls";  
-                ResultSet resultset = runQuery(query);
-                resultset.next();
-                this.pollID = resultset.getInt(1) + 1;
-                closeOracleConnection();
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
+        this.pollID = pollID;
     }
 
     /**
@@ -300,6 +288,20 @@ public class polls {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
