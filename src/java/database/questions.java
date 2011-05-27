@@ -15,13 +15,25 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-    
+
+    public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
+        this.questID = questID;
+        this.pollID= pollID;
+        this.demographic = demographic;
+        this.responseType = responseType;
+        this.questionText = questionText;
+    }
+
+    public questions(int questID) {
+        this(questID, -1, "N", "N", "");
+    }
+
+    public questions(int pollID, String demographic, String responseType, String questionText) {
+        this(-1, pollID, demographic, responseType, questionText);
+    }
+
     public questions() {
-        pollID = -1;
-        questID = -1;
-        demographic = "N";
-        responseType = "N";
-        questionText = "";
+        this(-1, -1, "N", "N", "");
     }
     
     /**
@@ -33,7 +45,7 @@ public class questions {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "s4203040", "064460");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "username", "password");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -184,14 +196,14 @@ public class questions {
             getOracleConnection();
             
             /* Delete responses under question */
-            String query= "SELECT responsesID FROM Responses WHERE questID=" + getQuestID();
+            String query= "SELECT answerID FROM Answers WHERE questID=" + getQuestID();
             ResultSet resultSet = runQuery(query);
             
-            /* Calls each response to delete itself and its children */
+            /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
-                responses temp = new responses();
+                answers temp = new answers();
                 temp.setQuestID(resultSet.getInt("responsesID"));
-                temp.deleteResponse();
+                temp.deleteAnswer();
             }
             
             /* Delete question */
@@ -212,7 +224,7 @@ public class questions {
      * Pre-condition: The questID must be set to an existing question
      * 
      * @return  0    for attempt made
-     *          -1   for unset question ID.
+     *          -1   for unset or invalid question ID.
      *          -2   for undefined error.
      */
     public int getQuestion() {
@@ -221,16 +233,18 @@ public class questions {
                 return -1;
             } 
             getOracleConnection();
-            String query= "SELECT FROM Questions WHERE questID=" + getQuestID();
-            ResultSet resultset = runQuery(query);
-            resultset.next();
-            setPollID(resultset.getInt("pollID"));
-            setQuestID(resultset.getInt("questID"));
-            setDemographic(resultset.getString("demographic"));
-            setResponseType(resultset.getString("responseType"));
-            setQuestionText(resultset.getString("questionText"));
-            closeOracleConnection();
-            return 0;
+            String query= "SELECT * FROM Questions WHERE questID=" + getQuestID();
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                setPollID(resultSet.getInt("pollID"));
+                setQuestID(resultSet.getInt("questID"));
+                setDemographic(resultSet.getString("demographic"));
+                setResponseType(resultSet.getString("responseType"));
+                setQuestionText(resultSet.getString("questionText"));
+                closeOracleConnection();
+                return 0;
+            }
+            return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;
