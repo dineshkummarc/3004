@@ -13,11 +13,23 @@ public class polls {
     private int pollID;
     private String pollName;
     private String location;
-    
+
+    public polls(int pollID, String pollName, String location) {
+        this.pollID = pollID;
+        this.pollName = pollName;
+        this.location = location;
+    }
+
+    public polls(int pollID) {
+        this(pollID, "", "");
+    }
+
+    public polls(String pollName, String location) {
+        this(-1, pollName, location);
+    }
+
     public polls() {
-        pollID = -1;
-        pollName = "";
-        location = "";
+        this(-1, "", "");
     }
     
     /**
@@ -29,7 +41,7 @@ public class polls {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "s4203040", "064460");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "username", "password");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -205,7 +217,7 @@ public class polls {
      * Pre-condition: The pollID must be set to an existing poll
      * 
      * @return  0    for attempt made
-     *          -1   for unset poll ID.
+     *          -1   for unset or invalid poll ID.
      *          -2   for undefined error.
      */
     public int getPoll() {
@@ -214,14 +226,17 @@ public class polls {
                 return -1;
             } 
             getOracleConnection();
-            String query= "SELECT FROM Polls WHERE pollID=" + getPollID();
-            ResultSet resultset = runQuery(query);
-            resultset.next();
-            setPollID(resultset.getInt("pollID"));
-            setPollName(resultset.getString("pollName"));
-            setLocation(resultset.getString("location"));
+            String query= "SELECT * FROM Polls WHERE pollID=" + getPollID();
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                setPollID(resultSet.getInt("pollID"));
+                setPollName(resultSet.getString("pollName"));
+                setLocation(resultSet.getString("location"));
+                closeOracleConnection();
+                return 0;
+            }
             closeOracleConnection();
-            return 0;
+            return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;
