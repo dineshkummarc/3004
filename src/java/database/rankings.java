@@ -190,8 +190,7 @@ public class rankings {
     }
 
     /**
-     * @param answerID the answerID to set, use -1 to automatically set next
-     * available ID.
+     * @param answerID the answerID to set
      */
     public void setAnswerID(int answerID) {
         this.answerID = answerID;

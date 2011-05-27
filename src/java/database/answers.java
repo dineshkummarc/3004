@@ -94,7 +94,9 @@ public class answers {
     public int addAnswer() {
         try {
             if (getAnswerID() == -1) {
-                return -1;
+                String query = "SELECT aseq.nextval FROM dual";
+                ResultSet resultSet = runQuery(query);
+                setAnswerID(resultSet.getInt(1));
             } else if (getQuestID() == -1) {
                 return -1;
             } else if (getAnswerText().equals("")) {
@@ -227,24 +229,10 @@ public class answers {
     }
 
     /**
-     * @param answerID the answerID to set, use -1 to automatically set next
-     * available ID.
+     * @param answerID the answerID to set
      */
     public void setAnswerID(int answerID) {
-        if (answerID != -1) {
-            this.answerID = answerID;
-        } else {
-            try {
-                getOracleConnection();
-                String query= "SELECT MAX(answerID) FROM Answers";
-                ResultSet resultset = runQuery(query);
-                resultset.next();
-                this.setAnswerID(resultset.getInt(1) + 1);
-                closeOracleConnection();
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
+        this.answerID = answerID;
     }
 
     /**

@@ -192,8 +192,7 @@ public class comparitives {
     }
 
     /**
-     * @param questID the questID to set, use -1 to automatically set next
-     * available ID.
+     * @param questID the questID to set
      */
     public void setQuestID(int questID) {
         this.questID = questID;

@@ -15,25 +15,44 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
+    private Timestamp created;
+    private String font;
+    private String correctIndicator;
+    private int chartType;
+    private String images;
+    private int creator;
 
-    public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
+    public questions(int questID, int pollID, String demographic, 
+            String responseType, String questionText, Timestamp created, 
+            String font, String correctIndicator, int chartType, String images, 
+            int creator) {
         this.questID = questID;
         this.pollID= pollID;
         this.demographic = demographic;
         this.responseType = responseType;
         this.questionText = questionText;
+        this.created = created;
+        this.font = font;
+        this.correctIndicator = correctIndicator;
+        this.chartType = chartType;
+        this.images = images;
+        this.creator = creator;
     }
 
     public questions(int questID) {
-        this(questID, -1, "N", "N", "");
+        this(questID, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
 
-    public questions(int pollID, String demographic, String responseType, String questionText) {
-        this(-1, pollID, demographic, responseType, questionText);
+    public questions(int pollID, String demographic, String responseType, 
+            String questionText, Timestamp created, String font, 
+            String correctIndicator, int chartType, String images, 
+            int creator) {
+        this(-1, pollID, demographic, responseType, questionText, created, font, 
+                correctIndicator, chartType, images, creator);
     }
 
     public questions() {
-        this(-1, -1, "N", "N", "");
+        this(-1, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
     
     /**
@@ -124,17 +143,22 @@ public class questions {
             if (getPollID() == -1) {
                 return -1;
             } else if (getQuestID() == -1) {
-                return -1;
+                String query = "SELECT qseq.nextval FROM dual";
+                ResultSet resultSet = runQuery(query);
+                setQuestID(resultSet.getInt(1));
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
             
             getOracleConnection();
             String query= "INSERT INTO Questions(questID, demographic, "
-                    + "responseType, question) VALUES (" + getQuestID() + ", '" 
-                    + getDemographic() + "', '" + getResponseType() + "', '" 
-                    + getQuestionText() + "', pollID=" + getPollID()
-                    + ")";  
+                    + "responseType, question, pollID, created, font, "
+                    + "correctIndicator, chartType, images, creator) VALUES (" 
+                    + getQuestID() + ", '" + getDemographic() + "', '" 
+                    + getResponseType() + "', '" + getQuestionText() + "', " 
+                    + getPollID() + ", " + getCreated() + ", '" + getFont() 
+                    + "', '" + getCorrectIndicator() + "', " + getChartType() 
+                    + ", '" + getImages() + "', " + getCreator() + ")";  
             runQuery(query);
 
             closeOracleConnection();
@@ -165,11 +189,19 @@ public class questions {
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
-            
+
             getOracleConnection();
             String query= "UPDATE Questions SET demographic='" + getDemographic() 
-                    + "', responseType='" + getResponseType() + "', question='" 
-                    + getQuestionText() + "', pollID=" + getPollID() + ", WHERE questID=" + getQuestID();  
+                    + "', responseType='" + getResponseType() 
+                    + "', question='" + getQuestionText() 
+                    + "', pollID=" + getPollID()
+                    + ", created=" + getCreated()
+                    + ", font='" + getFont()
+                    + "', correctIndicator='" + getCorrectIndicator()
+                    + "', chartType=" + getChartType()
+                    + ", images='" + getImages()
+                    + "', creator=" + getCreator()
+                    + ", WHERE questID=" + getQuestID();  
             runQuery(query);
 
             closeOracleConnection();
@@ -257,6 +289,12 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
+                setCreated(resultSet.getTimestamp("created"));
+                setFont(resultSet.getString("font"));
+                setCorrectIndicator(resultSet.getString("correctIndicator"));
+                setChartType(resultSet.getInt("chartType"));
+                setImages(resultSet.getString("images"));
+                setCreator(resultSet.getInt("creator"));
                 closeOracleConnection();
                 return 0;
             }
@@ -276,24 +314,10 @@ public class questions {
     }
 
     /**
-     * @param questID the questID to set, use -1 to automatically set next
-     * available ID.
+     * @param questID the questID to set
      */
     public void setQuestID(int questID) {
-        if (questID != -1) {
-            this.questID = questID;
-        } else {
-            try {
-                getOracleConnection();
-                String query= "SELECT MAX(questID) FROM Questions";  
-                ResultSet resultset = runQuery(query);
-                resultset.next();
-                this.questID = resultset.getInt(1) + 1;
-                closeOracleConnection();
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
+        this.questID = questID;
     }
 
     /**
@@ -350,5 +374,89 @@ public class questions {
      */
     public String getQuestionText() {
         return questionText;
+    }
+
+    /**
+     * @return the created
+     */
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    /**
+     * @param created the created to set
+     */
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    /**
+     * @return the font
+     */
+    public String getFont() {
+        return font;
+    }
+
+    /**
+     * @param font the font to set
+     */
+    public void setFont(String font) {
+        this.font = font;
+    }
+
+    /**
+     * @return the correctIndicator
+     */
+    public String getCorrectIndicator() {
+        return correctIndicator;
+    }
+
+    /**
+     * @param correctIndicator the correctIndicator to set
+     */
+    public void setCorrectIndicator(String correctIndicator) {
+        this.correctIndicator = correctIndicator;
+    }
+
+    /**
+     * @return the chartType
+     */
+    public int getChartType() {
+        return chartType;
+    }
+
+    /**
+     * @param chartType the chartType to set
+     */
+    public void setChartType(int chartType) {
+        this.chartType = chartType;
+    }
+
+    /**
+     * @return the images
+     */
+    public String getImages() {
+        return images;
+    }
+
+    /**
+     * @param images the images to set
+     */
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    /**
+     * @return the creator
+     */
+    public int getCreator() {
+        return creator;
+    }
+
+    /**
+     * @param creator the creator to set
+     */
+    public void setCreator(int creator) {
+        this.creator = creator;
     }
 }

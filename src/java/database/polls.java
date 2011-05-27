@@ -119,7 +119,9 @@ public class polls {
     public int addPoll() {
         try {
             if (getPollID() == -1) {
-                return -1;
+                String query = "SELECT pseq.nextval FROM dual";
+                ResultSet resultSet = runQuery(query);
+                setPollID(resultSet.getInt(1));
             } else if (getPollName().equals("")) {
                 return -1;
             } else if (getLocation().equals("")) {
@@ -247,24 +249,10 @@ public class polls {
     }
 
     /**
-     * @param pollID the pollID to set, use -1 to automatically set next
-     * available ID.
+     * @param pollID the pollID to set
      */
     public void setPollID(int pollID) {
-        if (pollID != -1) {
-            this.pollID = pollID;
-        } else {
-            try {
-                getOracleConnection();
-                String query= "SELECT MAX(pollID) FROM Polls";  
-                ResultSet resultset = runQuery(query);
-                resultset.next();
-                this.pollID = resultset.getInt(1) + 1;
-                closeOracleConnection();
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
+        this.pollID = pollID;
     }
 
     /**
