@@ -33,13 +33,16 @@ $(function() {
 	$("button.newr").live("click", function() {
 		var parent = $(this).next(),
 			response = $(this).next().children(":first-child"),
-			type = $(this).parent().parent().parent().children("select.qformat");
+			type = $(this).parent().parent().parent().children("select.qformat"),
+			r;
 			
 		if(type.val() == "M" && $(this).next().children("div.response").size() >= 10) {
 			return;
 		}
 		
-		response.clone().appendTo(parent).find("button.saveq, button.saver").hide();
+		r = response.clone().appendTo(parent);
+		r.find("button.saveq, button.saver").hide();
+		r.find("input.aid").val("-1");
 	});
 	
 	/**
@@ -73,6 +76,7 @@ $(function() {
 	*/ 
 	$("button.saver").live("click", function() {
 		var parent = $(this).parent(),
+			self = $(this),
 			data = {};
 		
 		data.id = parent.find("input.aid").val();
@@ -82,6 +86,13 @@ $(function() {
 		data.weight = parent.find("input.weight").val() || "NULL";
 		
 		console.log(data);
+		//send the request to the server
+		request("response.jsp?action=update", data, function(resp) {
+			self.hide();
+			if(resp.newid) {
+				parent.find("input.aid").val(resp.newid);
+			}
+		});
 	});
 	
 	/**
@@ -89,7 +100,8 @@ $(function() {
 	*/
 	$("button.saveq").live("click", function() {
 		var parent = $(this).parent(),
-			data = {};
+			data = {},
+			self = $(this);
 		
 		data.id = parent.find("input.qid").val();
 		data.text = parent.find("input.qname").val();
@@ -98,29 +110,28 @@ $(function() {
 		data.demographic = parent.find("input.demographicbox")[0].checked;
 		
 		console.log(data);
+		
+		//send the request to the server
+		request("questions.jsp?action=update", data, function(resp) {
+			self.hide();
+			if(resp.newid) {
+				parent.find("input.qid").val(resp.newid);
+			}
+		});
 	});
 	
-	/**
-	* Save a question
-	
-	$("button.saveq").live("click", function() {
-		data = grabData();
-		console.log(data);
-		
-		$.ajax("data.jsp", {
+	function request(url, data, success) {
+		$.ajax(url, {
 			type: "POST",
 			dataType: "html",
 			data: data,
-			success: function(resp) {
-				//response for creating a question.
-				console.log(resp);
-			},
+			success: success,
 			
 			error: function(e,f,g) {
 				console.log("ERROR", e,f,g);
 			}
 		});
-	});*/
+	}
 	
 	/**
 	* Parse data returned from selecting a Poll
