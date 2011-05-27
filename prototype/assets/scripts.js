@@ -23,7 +23,19 @@ $(function() {
 	* Add a new question
 	*/
 	$("#newq").click(function() {
-		question.clone().appendTo(container);
+		var q = question.clone().appendTo(container);
+		
+		if($("#template").val() != "") {
+			var options = $("#template").val().split(","),
+				i = 0, l = options.length;
+				
+			for(;i < l; ++i) {
+				createResponse(q, {id: -1, text: options[i]});
+			}
+			
+			q.find("div.response:first").remove();
+		}
+		
 		questionCount++;
 	});
 	
