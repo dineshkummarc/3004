@@ -1,0 +1,63 @@
+#API
+
+##QUESTIONS
+
+questions.jsp?action=update&id=[id]&text=[question]&qformat=[qformat]&compareTo=[compareTo]&demographic=[demographic]
+
+if [id] == -1:
+	insert and return new id
+	{status: "ok", newid: 34}
+
+[qformat] == "M" or "S"
+
+[compareTo] will be "NULL" or non-existant if not needed
+
+[demographic] == "true" or "false"
+
+
+##RESPONSES
+
+responses.jsp?action=update&id=[id]&text=[responseText]&keypad=[keypad]&correct=[correct]&weight=[weight]
+
+if [id] == -1:
+	insert and return new id
+	{status: "ok", newid: 34}
+
+[keypad] will be "NULL" or non-existant if not needed
+
+[correct] == "true" or "false"
+
+[weight] will be "NULL" or non-existant if not needed
+
+
+##POLLS
+
+polls.jsp?action=grab&id=[id]
+
+should return a JSON object of all the data in the following format:
+
+[
+	{
+		id: 1, 
+		text: "Question", 
+		type: "M", 
+		compareTo: 2, 
+		demographic: true, 
+		ranking: true, 
+		responses: [
+			{
+				id: 2, 
+				text: "Repsonse A", 
+				keypad: "NULL", 
+				correct: true, 
+				weight: 50
+			}
+		]
+	}
+]
+
+##ERRORS
+
+Any errors should be returned with a status of "error" and another field with "message".
+
+{status: "error", message: "Error Message"}

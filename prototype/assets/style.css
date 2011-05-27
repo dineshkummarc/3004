@@ -32,3 +32,4 @@ h2 { font-size:18px }
 }
 
 #results { margin-top:10px }
+button.saveq, button.saver { display:none; float:right }

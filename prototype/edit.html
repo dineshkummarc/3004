@@ -8,16 +8,14 @@
 <body>
 <div id="container">
 
-<h1>Add a Poll</h1>
+<h1>Edit Poll Questions</h1>
 
-<p><label>Name <input type="text" name="pname" id="pname" /></label></p>
-
-<h2>Questions</h2>
 <button id="newq"><img src="assets/images/add.png" /> New Question</button>
 <!-- List of Questions, should be saved in the DB as soon as New Question is clicked -->
 <div class="question">
 	<button class="remq"><img src="assets/images/cross.png" /></button>
-	<input type="text" name="qname" class="qname" />
+	<input type="hidden" class="qid" value="-1" />
+	<input type="text" class="qname" />
 
 	<select class="qformat">
 		<option value="M">Multiple Choice</option>
@@ -30,9 +28,9 @@
 	
 	<button class="saveq"><img src="assets/images/disk.png" /> Save</button>
 
-	<div class="responses">
+	<div>
 
-	<blockquote id="template">
+	<blockquote>
 		<div class="comparitive">
 			<h3>Comparitive</h3>
 
@@ -53,6 +51,7 @@
 		<div class="responses">
 			<div class="response">
 				<button class="remr"><img src="assets/images/cross.png" /></button>
+				<input type="hidden" class="aid" value="-1" />
 				<input type="text" class="resptext" />
 				<select class="keypad">
 					<option value="NULL">---</option>
@@ -70,7 +69,7 @@
 				<label><input type="checkbox" class="correct" /> correct</label>
 				<label class="ranking"><input type="text" size="2" class="weight" /> weight</label>
 				
-				<button class="saveq"><img src="assets/images/disk.png" /> Save</button>
+				<button class="saver"><img src="assets/images/disk.png" /> Save</button>
 			</div>
 		</div>
 	</blockquote>
