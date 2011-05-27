@@ -13,23 +13,25 @@ public class polls {
     private int pollID;
     private String pollName;
     private String location;
+    private String description;
 
-    public polls(int pollID, String pollName, String location) {
+    public polls(int pollID, String pollName, String location, String description) {
         this.pollID = pollID;
         this.pollName = pollName;
         this.location = location;
+        this.description = description;
     }
 
     public polls(int pollID) {
-        this(pollID, "", "");
+        this(pollID, "", "", "");
     }
 
-    public polls(String pollName, String location) {
-        this(-1, pollName, location);
+    public polls(String pollName, String location, String description) {
+        this(-1, pollName, location, description);
     }
 
     public polls() {
-        this(-1, "", "");
+        this(-1, "", "", "");
     }
     
     /**
@@ -125,9 +127,9 @@ public class polls {
             }
             
             getOracleConnection();
-            String query= "INSERT INTO Polls(pollID, pollName, location) VALUES"
-                    + "(" + getPollID() + ", '" + getPollName() + "', '" + getLocation() 
-                    + "')";  
+            String query= "INSERT INTO Polls(pollID, pollName, location, description) VALUES"
+                    + "(" + getPollID() + ", '" + getPollName() + "', '" 
+                    + getLocation() + "', '" + getDescription() + "')";  
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -160,8 +162,8 @@ public class polls {
             
             getOracleConnection();
             String query= "UPDATE Polls SET pollName='" + getPollName() 
-                    + "', location='" + getLocation() + "', WHERE pollID=" 
-                    + getPollID();  
+                    + "', location='" + getLocation() + "', description='" 
+                    + getDescription() + "', WHERE pollID=" + getPollID();  
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -232,13 +234,11 @@ public class polls {
                 setPollID(resultSet.getInt("pollID"));
                 setPollName(resultSet.getString("pollName"));
                 setLocation(resultSet.getString("location"));
+                setDescription(resultSet.getString("description"));
                 closeOracleConnection();
                 return 0;
             }
-<<<<<<< HEAD
             closeOracleConnection();
-=======
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -300,6 +300,20 @@ public class polls {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

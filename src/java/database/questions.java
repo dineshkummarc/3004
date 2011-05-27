@@ -15,20 +15,14 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-<<<<<<< HEAD
     private int compareTo;
 
     public questions(int questID, int pollID, String demographic, String responseType, String questionText, int compareTo) {
-=======
-
-    public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
         this.questID = questID;
         this.pollID= pollID;
         this.demographic = demographic;
         this.responseType = responseType;
         this.questionText = questionText;
-<<<<<<< HEAD
         this.compareTo = compareTo;
     }
 
@@ -42,20 +36,6 @@ public class questions {
 
     public questions() {
         this(-1, -1, "N", "N", "", -1);
-=======
-    }
-
-    public questions(int questID) {
-        this(questID, -1, "N", "N", "");
-    }
-
-    public questions(int pollID, String demographic, String responseType, String questionText) {
-        this(-1, pollID, demographic, responseType, questionText);
-    }
-
-    public questions() {
-        this(-1, -1, "N", "N", "");
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
     }
     
     /**
@@ -253,11 +233,7 @@ public class questions {
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
-<<<<<<< HEAD
                 temp.setQuestID(resultSet.getInt("answersID"));
-=======
-                temp.setQuestID(resultSet.getInt("responsesID"));
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
                 temp.deleteAnswer();
             }
 
@@ -300,7 +276,6 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
-<<<<<<< HEAD
 
                 query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
                 int exists = runQuery(query).getInt(1);
@@ -316,11 +291,6 @@ public class questions {
                 return 0;
             }
             closeOracleConnection();
-=======
-                closeOracleConnection();
-                return 0;
-            }
->>>>>>> 5ea62b687bcfdbbb994e1f16797d4fd079cf723a
             return -1;
         } catch (Exception e) {
             System.out.println(e.toString());
