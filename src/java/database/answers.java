@@ -15,27 +15,25 @@ public class answers {
     private String keypad;
     private String answerText;
     private String correct;
-    private int weight;
 
-    public answers(int answerID, int questID, String keypad, String answerText, String correct, int weight) {
+    public answers(int answerID, int questID, String keypad, String answerText, String correct) {
         this.answerID = answerID;
         this.questID = questID;
         this.keypad = keypad;
         this.answerText = answerText;
         this.correct = correct;
-        this.weight = weight;
     }
 
     public answers(int answerID) {
-        this(answerID, -1, "", "", "N", -1);
+        this(answerID, -1, "", "", "N");
     }
 
-    public answers(int questID, String keypad, String answerText, String correct, int weight) {
-        this(-1, questID, keypad, answerText, correct, weight);
+    public answers(int questID, String keypad, String answerText, String correct) {
+        this(-1, questID, keypad, answerText, correct);
     }
 
     public answers() {
-        this(-1, -1, "", "", "N", -1);
+        this(-1, -1, "", "", "N");
     }
 
     /**
@@ -113,12 +111,7 @@ public class answers {
                     + getKeypad() + "', '" + getAnswer() + "', "
                     + getQuestID() + ", '" + getCorrect() + "')";
             runQuery(query);
-
-            if (getWeight() != -1) {
-                query = "INSERT INTO Rankings(answerID, weight) VALUES ("
-                        + getAnswerID() + ", " + getWeight() + ")";
-                runQuery(query);
-            }
+            
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -159,26 +152,6 @@ public class answers {
                     + getCorrect() + "', WHERE answerID=" + getAnswerID();
             runQuery(query);
 
-            /* Check ranking existance in database */
-            query = "SELECT COUNT(*) FROM Rankings WHERE answerID=" + getAnswerID();
-            int exists = runQuery(query).getInt(1);
-
-            if (getWeight() != -1) {
-                if (exists == 1) {
-                    /* Edit */
-                    query = "UPDATE Rankings SET weight=" + getWeight()
-                            + ", WHERE answerID=" + getAnswerID();
-                } else {
-                    /* Add */
-                    query = "INSERT INTO Rankings(answerID, weight) VALUES ("
-                            + getAnswerID() + ", " + getWeight() + ")";
-                    runQuery(query);
-                }
-            } else if (exists == 1) {
-                /* Remove */
-                query = "DELETE FROM Rankings WHERE answerID=" + getAnswerID();
-                runQuery(query);
-            }
 
             closeOracleConnection();
             return 0;
@@ -242,16 +215,6 @@ public class answers {
                 setAnswerText(resultSet.getString("answer"));
                 setCorrect(resultSet.getString("correct"));
 
-                query = "SELECT COUNT(*) FROM Rankings WHERE answerID=" + getAnswerID();
-                int exists = runQuery(query).getInt(1);
-                if (exists == 1) {
-                    query = "SELECT * FROM Rankings WHERE answerID=" + getAnswerID();
-                    resultSet = runQuery(query);
-                    resultSet.next();
-                    setWeight(resultSet.getInt("weight"));
-                } else {
-                    setWeight(-1);
-                }
                 closeOracleConnection();
                 return 0;
             }
@@ -345,19 +308,5 @@ public class answers {
      */
     public void setCorrect(String correct) {
         this.correct = correct;
-    }
-
-    /**
-     * @return the weight
-     */
-    public int getWeight() {
-        return weight;
-    }
-
-    /**
-     * @param weight the weight to set
-     */
-    public void setWeight(int weight) {
-        this.weight = weight;
     }
 }

@@ -15,27 +15,25 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-    private int compareTo;
 
-    public questions(int questID, int pollID, String demographic, String responseType, String questionText, int compareTo) {
+    public questions(int questID, int pollID, String demographic, String responseType, String questionText) {
         this.questID = questID;
         this.pollID= pollID;
         this.demographic = demographic;
         this.responseType = responseType;
         this.questionText = questionText;
-        this.compareTo = compareTo;
     }
 
     public questions(int questID) {
-        this(questID, -1, "N", "N", "", -1);
+        this(questID, -1, "N", "N", "");
     }
 
-    public questions(int pollID, String demographic, String responseType, String questionText, int compareTo) {
-        this(-1, pollID, demographic, responseType, questionText, compareTo);
+    public questions(int pollID, String demographic, String responseType, String questionText) {
+        this(-1, pollID, demographic, responseType, questionText);
     }
 
     public questions() {
-        this(-1, -1, "N", "N", "", -1);
+        this(-1, -1, "N", "N", "");
     }
     
     /**
@@ -139,12 +137,6 @@ public class questions {
                     + ")";  
             runQuery(query);
 
-            if (getCompareTo() != -1) {
-                query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
-                        + getQuestID() + ", " + getCompareTo() + ")";
-                runQuery(query);
-            }
-
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -180,27 +172,6 @@ public class questions {
                     + getQuestionText() + "', pollID=" + getPollID() + ", WHERE questID=" + getQuestID();  
             runQuery(query);
 
-            /* Check ranking existance in database */
-            query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
-            int exists = runQuery(query).getInt(1);
-
-            if (getCompareTo() != -1) {
-                if (exists == 1) {
-                    /* Edit */
-                    query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
-                            + ", WHERE questID=" + getQuestID();
-                } else {
-                    /* Add */
-                    query = "INSERT INTO Comparitives(questID, compareTo) VALUES ("
-                            + getQuestID() + ", " + getCompareTo() + ")";
-                    runQuery(query);
-                }
-            } else if (exists == 1) {
-                /* Remove */
-                query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
-                runQuery(query);
-            }
-
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -226,19 +197,29 @@ public class questions {
             } 
             getOracleConnection();
             
-            /* Delete responses under question */
+            /* Delete answers under question */
             String query= "SELECT answerID FROM Answers WHERE questID=" + getQuestID();
             ResultSet resultSet = runQuery(query);
             
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
-                temp.setQuestID(resultSet.getInt("answersID"));
+                temp.setAnswerID(resultSet.getInt("answersID"));
                 temp.deleteAnswer();
             }
-
-            query = "DELETE FROM Comparitives WHERE questID=" + getQuestID();
-            runQuery(query);
+            
+            /* Delete comparitives under question */
+            query= "SELECT * FROM Comparitives WHERE questID=" + getQuestID() 
+                    + " OR compareTo=" + getQuestID();
+            resultSet = runQuery(query);
+            
+            /* Calls each comparitive to delete itself and its children */
+            while (resultSet.next()) {
+                comparitives temp = new comparitives();
+                temp.setQuestID(resultSet.getInt("questID"));
+                temp.setCompareTo(resultSet.getInt("compareTo"));
+                temp.deleteComparitive();
+            }
 
             /* Delete question */
             query= "DELETE FROM Questions WHERE questID=" + getQuestID();
@@ -276,17 +257,6 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
-
-                query = "SELECT COUNT(*) FROM Comparitives WHERE questID=" + getQuestID();
-                int exists = runQuery(query).getInt(1);
-                if (exists == 1) {
-                    query = "SELECT * FROM Comparitives WHERE questID=" + getQuestID();
-                    resultSet = runQuery(query);
-                    resultSet.next();
-                    setCompareTo(resultSet.getInt("compareTo"));
-                } else {
-                    setCompareTo(-1);
-                }
                 closeOracleConnection();
                 return 0;
             }
@@ -380,19 +350,5 @@ public class questions {
      */
     public String getQuestionText() {
         return questionText;
-    }
-
-    /**
-     * @return the compareTo
-     */
-    public int getCompareTo() {
-        return compareTo;
-    }
-
-    /**
-     * @param compareTo the compareTo to set
-     */
-    public void setCompareTo(int compareTo) {
-        this.compareTo = compareTo;
     }
 }
