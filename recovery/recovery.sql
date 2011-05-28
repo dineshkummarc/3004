@@ -22,7 +22,7 @@ CREATE TABLE Questions(
     responseType CHAR(1) NOT NULL,
     question VARCHAR2(255) NOT NULL,
     pollID NUMBER(6) NOT NULL,      -- pollID of Polls
-    created TIMESTAMP NOT NULL,
+    created DATE NOT NULL,
     font VARCHAR(255),
     correctIndicator VARCHAR(255),
     chartType NUMBER(6),   -- chartID of Charts
