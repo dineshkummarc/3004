@@ -23,24 +23,25 @@ CREATE TABLE Questions(
     question VARCHAR2(255) NOT NULL,
     pollID NUMBER(6) NOT NULL,      -- pollID of Polls
     created TIMESTAMP NOT NULL,
-    font VARCHAR(255) NOT NULL,
-    correctIndicator VARCHAR(255) NOT NULL,
-    chartType NUMBER(6) NOT NULL,   -- chartID of Charts
-    images VARCHAR(255) NOT NULL,
+    font VARCHAR(255),
+    correctIndicator VARCHAR(255),
+    chartType NUMBER(6),   -- chartID of Charts
+    images VARCHAR(255),
     creator NUMBER(6) NOT NULL,     -- userID of Users
     CONSTRAINT pk_Questions PRIMARY KEY (questID)
 );
 
-CREATE TABLE Widgits(
-    widgitID NUMBER(6) NOT NULL,
-    widgitName VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_Widgits PRIMARY KEY (widgitID)
+CREATE TABLE Widgets(
+    widgetID NUMBER(6) NOT NULL,
+    widgetName VARCHAR(255) NOT NULL,
+    widgetDescription VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_Widgets PRIMARY KEY (widgetID)
 );
 
-CREATE TABLE QuestionWidgits(
+CREATE TABLE QuestionWidgets(
     questID NUMBER(6) NOT NULL,     -- questID of Questions
-    widgitID NUMBER(6) NOT NULL,    -- widgitID of Widgits
-    CONSTRAINT pk_QuestionWidgits PRIMARY KEY (questID, widgitID)
+    widgetID NUMBER(6) NOT NULL,    -- widgetID of Widgets
+    CONSTRAINT pk_QuestionWidgets PRIMARY KEY (questID, widgetID)
 );
 
 CREATE TABLE Templates(
@@ -112,7 +113,8 @@ CREATE TABLE Users(
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
     location VARCHAR2(255) NOT NULL,
-    userLevel CHAR(1) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
     CONSTRAINT pk_Users PRIMARY KEY (userID)
 );
 
