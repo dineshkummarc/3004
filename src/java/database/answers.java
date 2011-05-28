@@ -93,6 +93,7 @@ public class answers {
      */
     public int addAnswer() {
         try {
+            getOracleConnection();
             if (getAnswerID() == -1) {
                 String query = "SELECT aseq.nextval FROM dual";
                 ResultSet resultSet = runQuery(query);
@@ -107,7 +108,6 @@ public class answers {
                 return -1;
             }
             
-            getOracleConnection();
             String query = "INSERT INTO Answers(answerID, keypad, answer, "
                     + "questID, correct) VALUES (" + getAnswerID() + ", '"
                     + getKeypad() + "', '" + getAnswer() + "', "
