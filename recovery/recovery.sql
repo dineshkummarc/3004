@@ -23,10 +23,10 @@ CREATE TABLE Questions(
     question VARCHAR2(255) NOT NULL,
     pollID NUMBER(6) NOT NULL,      -- pollID of Polls
     created TIMESTAMP NOT NULL,
-    font VARCHAR(255) NOT NULL,
-    correctIndicator VARCHAR(255) NOT NULL,
-    chartType NUMBER(6) NOT NULL,   -- chartID of Charts
-    images VARCHAR(255) NOT NULL,
+    font VARCHAR(255),
+    correctIndicator VARCHAR(255),
+    chartType NUMBER(6),   -- chartID of Charts
+    images VARCHAR(255),
     creator NUMBER(6) NOT NULL,     -- userID of Users
     CONSTRAINT pk_Questions PRIMARY KEY (questID)
 );
@@ -112,7 +112,8 @@ CREATE TABLE Users(
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
     location VARCHAR2(255) NOT NULL,
-    userLevel CHAR(1) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
     CONSTRAINT pk_Users PRIMARY KEY (userID)
 );
 
