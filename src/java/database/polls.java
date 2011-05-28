@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import java.util.Vector;
 /**
  *
  * @author Darren
@@ -43,7 +44,7 @@ public class polls {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4203658", "tiara9");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -62,7 +63,7 @@ public class polls {
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("polls.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -84,21 +85,63 @@ public class polls {
      * 
      * Pre-condition: The pollID must be set to an existing poll
      * 
-     * @return  ResultSet   for attempt made.
-     *          null        for error.
+     * @return  Vector<questions>   for attempt made.
+     *          null                for error.
      */
-    public ResultSet getQuestions() {
+    public Vector<questions> getQuestions() {
         try {
             if (getPollID() == -1) {
                 return null;
             }
-            
+            Vector<questions> returnQuestions = new Vector<questions>();
+
             getOracleConnection();
-            String query= "SELECT questID FROM Questions WHERE pollID=" 
+            String query= "SELECT * FROM Questions WHERE pollID=" 
                     + getPollID();  
             ResultSet resultSet = runQuery(query);
+            
+            while (resultSet.next()) {
+                System.out.println("calling rs.next()");
+
+                returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
+                        resultSet.getString("demographic"), resultSet.getString("responseType"),
+                        resultSet.getString("question"), resultSet.getTimestamp("created"),
+                        resultSet.getString("font"), resultSet.getString("correctIndicator"),
+                        resultSet.getInt("chartType"), resultSet.getString("images"), 
+                        resultSet.getInt("creator")));
+                        
+            }
             closeOracleConnection();
-            return resultSet;
+            return returnQuestions;
+        } catch (Exception e) {
+            System.out.println("getQuestions(): " + e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * Attempts to locate all pollIDs for the polls in the database.
+     * Will not check for success.
+     *
+     * @return  Vector<polls>   for attempt made.
+     *          null            for error.
+     */
+    public Vector<polls> getAllPollIDs() {
+        try {
+            if (getPollID() == -1) {
+                return null;
+            }
+            Vector<polls> returnPolls = new Vector();
+
+            getOracleConnection();
+            String query= "SELECT pollID FROM Polls"
+                    + getPollID();
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                returnPolls.add(new polls(resultSet.getInt("pollID")));
+            }
+            closeOracleConnection();
+            return returnPolls;
         } catch (Exception e) {
             System.out.println(e.toString());
             return null;
@@ -121,7 +164,10 @@ public class polls {
             if (getPollID() == -1) {
                 String query = "SELECT pseq.nextval FROM dual";
                 ResultSet resultSet = runQuery(query);
-                setPollID(resultSet.getInt(1));
+                while(resultSet.next()) {
+                    setPollID(resultSet.getInt(1));
+                }
+                
             } else if (getPollName().equals("")) {
                 return -1;
             } else if (getLocation().equals("")) {
@@ -170,7 +216,7 @@ public class polls {
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("EditPoll() " + e.toString());
             return -2;
         }
     }
@@ -259,7 +305,7 @@ public class polls {
      * @return the pollID
      */
     public int getPollID() {
-        return pollID;
+        return this.pollID;
     }
 
     /**

@@ -64,7 +64,7 @@ public class questions {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4203658", "tiara9");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -79,11 +79,12 @@ public class questions {
      */
     private ResultSet runQuery(String query) {
         try {
+            getOracleConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println("questions.runQuery(): " + e.toString() +  " Query: " + query);
             return null;
         }
     }
@@ -145,13 +146,36 @@ public class questions {
             } else if (getQuestID() == -1) {
                 String query = "SELECT qseq.nextval FROM dual";
                 ResultSet resultSet = runQuery(query);
-                setQuestID(resultSet.getInt(1));
+                while(resultSet.next()) {
+                    System.out.println("ResultSet.getInt(): " + resultSet.getInt(1));
+                    setQuestID(resultSet.getInt(1));
+                }
+                resultSet.close();
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
             
             getOracleConnection();
-            String query= "INSERT INTO Questions(questID, demographic, "
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            //INSERT INTO Questions(questID, demographic, responseType, question, pollID, created, font, correctIndicator, chartType, images, creator) VALUES (1000, 'd', 'd', 'blah', 2, SYSDATE, 'Arial', 'cock', 1, 'bla', 1)
+            //insert into questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) values(1, 'd', 'e', 'd', 1, SYSDATE, 'f', 'y', 1, 'e', 7);
+            
+
+
+            statement.setInt(1, getQuestID());
+            statement.setString(2, getDemographic());
+            statement.setString(3, getResponseType());
+            statement.setString(4, getQuestionText());
+            statement.setInt(5, getPollID());
+            statement.setTimestamp(6, getCreated());
+            statement.setString(7, getFont());
+            statement.setString(8, getCorrectIndicator());
+            statement.setInt(9, getChartType());
+            statement.setString(10, getImages());
+            statement.setInt(11, getCreator());
+            
+            /*String query= "INSERT INTO Questions(questID, demographic, "
                     + "responseType, question, pollID, created, font, "
                     + "correctIndicator, chartType, images, creator) VALUES (" 
                     + getQuestID() + ", '" + getDemographic() + "', '" 
@@ -159,12 +183,13 @@ public class questions {
                     + getPollID() + ", " + getCreated() + ", '" + getFont() 
                     + "', '" + getCorrectIndicator() + "', " + getChartType() 
                     + ", '" + getImages() + "', " + getCreator() + ")";  
-            runQuery(query);
+            runQuery(query);*/
+            statement.executeUpdate();
 
             closeOracleConnection();
             return 0;
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (SQLException e) {
+            System.out.println("addQuestion(): " + e.toString());
             return -2;
         }
     }
@@ -305,7 +330,34 @@ public class questions {
             return -2;
         }
     }
-    
+
+    /**
+     * Attempts to locate all questIDs for questions created between the
+     * given dates
+     * Will not check for success.
+     *
+     * @return  ResultSet   for attempt made.
+     *          null        for error.
+     */
+    public ResultSet findQuestions(Date startDate, Date endDate) {
+        try {
+            if (getQuestID() == -1) {
+                return null;
+            } 
+            getOracleConnection();
+            String query= "SELECT questID FROM Questions WHERE created >= '"
+                    + startDate + "' AND created <= '" + endDate + "'";
+            ResultSet resultSet = runQuery(query);
+            
+            closeOracleConnection();
+            return resultSet;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+
+
     /**
      * @param pollID the pollID to set
      */
@@ -352,7 +404,7 @@ public class questions {
      * @return the questID
      */
     public int getQuestID() {
-        return questID;
+        return this.questID;
     }
 
     /**

@@ -60,14 +60,14 @@ public class answers {
      */
     private ResultSet runQuery(String query) {
         try {
-            while(conn.isClosed()) {
+            while (conn.isClosed()) {
                 getOracleConnection();
             }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println("runQuery(): " + "QUERY: " + query);
+            System.out.println(e.toString());
             return null;
         }
     }
@@ -96,6 +96,7 @@ public class answers {
      */
     public int addAnswer() {
         try {
+            getOracleConnection();
             if (getAnswerID() == -1) {
                 String query = "SELECT aseq.nextval FROM dual";
                 ResultSet resultSet = runQuery(query);
@@ -110,7 +111,6 @@ public class answers {
                 return -1;
             }
             
-            getOracleConnection();
             String query = "INSERT INTO Answers(answerID, keypad, answer, "
                     + "questID, correct) VALUES (" + getAnswerID() + ", '"
                     + getKeypad() + "', '" + getAnswer() + "', "
