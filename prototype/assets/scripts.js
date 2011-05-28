@@ -1,6 +1,15 @@
-var DEBUG_MODE = true;
+var DEBUG_MODE = true,
+	POLL;
 
 $(function() {
+	if(window.location.hash.length > 0) {
+		POLL = window.location.hash.substr(1);
+		request("polls.jsp?action=grab", {id: id}, function(obj) {
+			parseDate(obj);
+		});
+	}
+
+
 	/**
 	* Toggle visibility of comparitive options
 	*/
@@ -157,6 +166,8 @@ $(function() {
 		data.font = parent.find("input.font").val();
 		data.image = parent.find("input.image").val();
 		data.indicator = parent.find("input.indicator").val();
+		data.pollID = POLL;
+		data.creator = 1;
 		
 		console.log(data);
 		
