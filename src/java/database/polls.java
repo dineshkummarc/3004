@@ -44,7 +44,7 @@ public class polls {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4203658", "tiara9");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -113,7 +113,7 @@ public class polls {
             }
             closeOracleConnection();
             return returnQuestions;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("getQuestions(): " + e.toString());
             return null;
         }
@@ -128,17 +128,15 @@ public class polls {
      */
     public Vector<polls> getAllPollIDs() {
         try {
-            if (getPollID() == -1) {
-                return null;
-            }
             Vector<polls> returnPolls = new Vector();
 
             getOracleConnection();
-            String query= "SELECT pollID FROM Polls"
-                    + getPollID();
+            String query= "SELECT pollID FROM Polls";
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
-                returnPolls.add(new polls(resultSet.getInt("pollID")));
+                this.setPollID(resultSet.getInt("pollID"));
+                this.getPoll();
+                returnPolls.add(new polls(this.getPollID(), this.getPollName(), this.getLocation(), this.getDescription()));
             }
             closeOracleConnection();
             return returnPolls;

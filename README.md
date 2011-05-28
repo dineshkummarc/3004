@@ -22,3 +22,5 @@ Push to GitHub:
 Pull the latest copy from GitHub:
 
 	git pull
+    
+    PULL ME

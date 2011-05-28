@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import java.util.Vector;
 /**
  *
  * @author Darren
@@ -110,19 +111,24 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public ResultSet getAnswers() {
+    public Vector<answers> getAnswers() {
         try {
             if (getQuestID() == -1) {
                 return null;
             }
+             Vector<answers> returnQuestions = new Vector<answers>();
             
             getOracleConnection();
             String query= "SELECT answerID FROM Answers WHERE questID="
                     + getQuestID();  
             ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                returnQuestions.add(new answers(resultSet.getInt("answerID"), resultSet.getInt("questID"),
+                        resultSet.getString("keypad"), resultSet.getString("answer"), resultSet.getString("correct")));
+            }
             closeOracleConnection();
-            return resultSet;
-        } catch (Exception e) {
+            return returnQuestions;
+        } catch (SQLException e) {
             System.out.println(e.toString());
             return null;
         }
@@ -339,19 +345,32 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public ResultSet findQuestions(Date startDate, Date endDate) {
+    public Vector<questions> findQuestions(Date startDate, Date endDate) {
         try {
             if (getQuestID() == -1) {
                 return null;
             } 
+            Vector<questions> returnQuestions = new Vector<questions>();
             getOracleConnection();
+            /* check this if it works */
             String query= "SELECT questID FROM Questions WHERE created >= '"
                     + startDate + "' AND created <= '" + endDate + "'";
-            ResultSet resultSet = runQuery(query);
+             ResultSet resultSet = runQuery(query);
+            
+            while (resultSet.next()) {
+                System.out.println("calling rs.next()");
+                returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
+                        resultSet.getString("demographic"), resultSet.getString("responseType"),
+                        resultSet.getString("question"), resultSet.getTimestamp("created"),
+                        resultSet.getString("font"), resultSet.getString("correctIndicator"),
+                        resultSet.getInt("chartType"), resultSet.getString("images"), 
+                        resultSet.getInt("creator")));
+                        
+            }
             
             closeOracleConnection();
-            return resultSet;
-        } catch (Exception e) {
+            return returnQuestions;
+        } catch (SQLException e) {
             System.out.println(e.toString());
             return null;
         }
