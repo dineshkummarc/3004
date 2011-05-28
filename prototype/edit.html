@@ -41,21 +41,57 @@
 	<span class="error"></span>
 	<button class="saveq"><img src="assets/images/disk.png" /> Save</button>
 
+	<div class="clearer"></div>
+	<div class="indent"></div>
+	
+	<div class="extras comparitive">
+		<h3>Comparitive</h3>
+
+		<!-- this select should have a list of previous questions created in this very form
+			 hence why they need to be stored immediately and this select updated -->
+		<select class="compare">
+			<option value="NULL">Select a previous Question</option>
+		</select>
+	</div>
+	
+	<div class="extras">
+		<h3>Chart</h3>
+		<select class="chart">
+			<option value="1">Pie</option>
+			<option value="2">Vertical Bar</option>
+			<option value="3">Horizontal Bar</option>
+		</select>
+	</div>
+	
+	<div class="extras">
+		<h3>Font</h3>
+		<input type="text" class="font" />
+	</div>
+	
+	<div class="extras">
+		<h3>Image</h3>
+		<input type="text" class="image" />
+	</div>
+
+	<div class="extras">
+		<h3>Correct Indicator</h3>
+		<input type="text" class="indicator" />
+	</div>
+	
+	<div class="extras">
+		<h3>Widget</h3>
+		<select class="widget" multiple="multiple">
+			<option value="1">Countdown Timer</option>
+			<option value="2">Response Counter</option>
+		</select>
+	</div>
+	
+	<div class="clearer"></div>
+	
 	<div>
 
 	<blockquote>
-		<div class="comparitive">
-			<h3>Comparitive</h3>
-
-			<!-- this select should have a list of previous questions created in this very form
-				 hence why they need to be stored immediately and this select updated -->
-			<select class="compare">
-				<option value="NULL">Select a previous Question</option>
-			</select>
-			
-			<button class="saveq"><img src="assets/images/disk.png" /> Save</button>
-		</div>
-
+		
 		<h3>Responses</h3>
 		
 		<button class="newr"><img src="assets/images/add.png" /> New Response</button>

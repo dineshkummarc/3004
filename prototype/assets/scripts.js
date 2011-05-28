@@ -90,10 +90,23 @@ $(function() {
 	* Display a save button whenever a field has changed
 	*/
 	$("input, select").live("change", showSave).live("keyup", showSave);
+	$("select.compare, select.chart, select.widget, input.font, input.image, input.indicator")
+		.live("change", showSaveUp)
+		.live("keyup", showSaveUp);
 	
 	function showSave() {
 		$(this).parent().children("button.saveq, button.saver").show();
 	}
+	
+	function showSaveUp() {
+		$(this).parent().parent().children("button.saveq").show();
+	}
+	
+	$("select.widget").live("focus", function() {
+		$(this).css({height: 100, position: "absolute"});
+	}).live("blur", function() {
+		$(this).css({height: 20, position: ""});
+	});
 	
 	
 	/**
@@ -139,6 +152,11 @@ $(function() {
 		data.qformat = parent.find("select.qformat").val();
 		data.compareTo = parent.find("select.compare").val();
 		data.demographic = parent.find("input.demographicbox")[0].checked;
+		data.widget = (parent.find("select.widget").val() || []).join(",");
+		data.chart = parent.find("select.chart").val();
+		data.font = parent.find("input.font").val();
+		data.image = parent.find("input.image").val();
+		data.indicator = parent.find("input.indicator").val();
 		
 		console.log(data);
 		
@@ -229,6 +247,9 @@ $(function() {
 		qelem.find("input.qid").val(data.id);
 		qelem.find("input.qname").val(data.text);
 		qelem.find("select.qformat").val(data.type);
+		qelem.find("input.font").val(data.font);
+		qelem.find("input.image").val(data.image);
+		qelem.find("input.indicator").val(data.indicator);
 		
 		if(data.compareTo != "NULL") {
 			qelem.find("input.comparitivebox").attr("checked", "checked");
@@ -242,6 +263,15 @@ $(function() {
 		
 		if(data.demographic) {
 			qelem.find("input.demographicbox").attr("checked", "checked");
+		}
+		
+		if(data.widget) {
+			var wiz = data.widget.split(",");
+			qelem.find("select.widget").val(wiz);
+		}
+		
+		if(data.chart) {
+			qelem.find("select.chart").val(data.chart);
 		}
 		
 		questionCount++;
