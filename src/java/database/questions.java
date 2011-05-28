@@ -15,7 +15,7 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-    private Date created;
+    private Timestamp created;
     private String font;
     private String correctIndicator;
     private int chartType;
@@ -23,7 +23,7 @@ public class questions {
     private int creator;
 
     public questions(int questID, int pollID, String demographic, 
-            String responseType, String questionText, Date created,
+            String responseType, String questionText, Timestamp created, 
             String font, String correctIndicator, int chartType, String images, 
             int creator) {
         this.questID = questID;
@@ -40,11 +40,11 @@ public class questions {
     }
 
     public questions(int questID) {
-        this(questID, -1, "N", "N", "", new Date(0), "", "", -1, "", -1);
+        this(questID, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
 
     public questions(int pollID, String demographic, String responseType, 
-            String questionText, Date created, String font,
+            String questionText, Timestamp created, String font, 
             String correctIndicator, int chartType, String images, 
             int creator) {
         this(-1, pollID, demographic, responseType, questionText, created, font, 
@@ -52,7 +52,7 @@ public class questions {
     }
 
     public questions() {
-        this(-1, -1, "N", "N", "", new Date(0), "", "", -1, "", -1);
+        this(-1, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
     }
     
     /**
@@ -289,7 +289,7 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("questionText"));
-                setCreated(resultSet.getDate("created"));
+                setCreated(resultSet.getTimestamp("created"));
                 setFont(resultSet.getString("font"));
                 setCorrectIndicator(resultSet.getString("correctIndicator"));
                 setChartType(resultSet.getInt("chartType"));
@@ -406,14 +406,14 @@ public class questions {
     /**
      * @return the created
      */
-    public Date getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
     /**
      * @param created the created to set
      */
-    public void setCreated(Date created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
