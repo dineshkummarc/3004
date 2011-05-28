@@ -43,7 +43,7 @@ public class polls {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "username", "password");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
