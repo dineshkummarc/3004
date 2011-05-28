@@ -64,7 +64,7 @@ public class questions {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "username", "password");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -305,7 +305,34 @@ public class questions {
             return -2;
         }
     }
-    
+
+    /**
+     * Attempts to locate all questIDs for questions created between the
+     * given dates
+     * Will not check for success.
+     *
+     * @return  ResultSet   for attempt made.
+     *          null        for error.
+     */
+    public ResultSet findQuestions(Date startDate, Date endDate) {
+        try {
+            if (getQuestID() == -1) {
+                return null;
+            } 
+            getOracleConnection();
+            String query= "SELECT questID FROM Questions WHERE created >= '"
+                    + startDate + "' AND created <= '" + endDate + "'";
+            ResultSet resultSet = runQuery(query);
+            
+            closeOracleConnection();
+            return resultSet;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+
+
     /**
      * @param pollID the pollID to set
      */
