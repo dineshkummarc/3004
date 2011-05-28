@@ -34,6 +34,7 @@ CREATE TABLE Questions(
 CREATE TABLE Widgets(
     widgetID NUMBER(6) NOT NULL,
     widgetName VARCHAR(255) NOT NULL,
+    widgetDescription VARCHAR(255) NOT NULL,
     CONSTRAINT pk_Widgets PRIMARY KEY (widgetID)
 );
 
