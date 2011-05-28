@@ -45,7 +45,7 @@ public class answers {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "username", "password");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -60,11 +60,14 @@ public class answers {
      */
     private ResultSet runQuery(String query) {
         try {
+            while(conn.isClosed()) {
+                getOracleConnection();
+            }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("runQuery(): " + "QUERY: " + query);
             return null;
         }
     }
@@ -93,7 +96,6 @@ public class answers {
      */
     public int addAnswer() {
         try {
-            getOracleConnection();
             if (getAnswerID() == -1) {
                 String query = "SELECT aseq.nextval FROM dual";
                 ResultSet resultSet = runQuery(query);
@@ -108,6 +110,7 @@ public class answers {
                 return -1;
             }
             
+            getOracleConnection();
             String query = "INSERT INTO Answers(answerID, keypad, answer, "
                     + "questID, correct) VALUES (" + getAnswerID() + ", '"
                     + getKeypad() + "', '" + getAnswer() + "', "
@@ -148,10 +151,10 @@ public class answers {
             }
             
             getOracleConnection();
-            String query= "UPDATE Answers SET questID='" + getQuestID()
-                    + "', answer='" + getAnswerText()
+            String query= "UPDATE Answers SET questID=" + getQuestID()
+                    + ", answer='" + getAnswerText()
                     + "', keypad='" + getKeypad() + "', correct='"
-                    + getCorrect() + "', WHERE answerID=" + getAnswerID();
+                    + getCorrect() + "' WHERE answerID=" + getAnswerID();
             runQuery(query);
 
 
