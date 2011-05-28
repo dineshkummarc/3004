@@ -63,6 +63,10 @@ $(function() {
 	$("button.remq").live("click", function() {
 		if(questionCount > 1) {
 			$(this).parent().remove();
+			var id = $(this).parent().find("input.qid").val();
+			if(id != "-1") {
+				request("questions.jsp?action=delete", {id: id});
+			}
 			questionCount--;
 		}
 	});
@@ -72,6 +76,12 @@ $(function() {
 	*/
 	$("button.remr").live("click", function() {
 		if($(this).parent().parent().children("div.response").size() > 1) {
+			var id = $(this).parent().find("input.aid").val();
+			
+			if(id != "-1") {
+				request("responses.jsp?action=delete", {id: id});
+			}
+			
 			$(this).parent().remove();
 		}
 	});
@@ -79,9 +89,12 @@ $(function() {
 	/**
 	* Display a save button whenever a field has changed
 	*/
-	$("input, select").live("change", function() {
+	$("input, select").live("change", showSave).live("keyup", showSave);
+	
+	function showSave() {
 		$(this).parent().children("button.saveq, button.saver").show();
-	});
+	}
+	
 	
 	/**
 	* Save Responses
@@ -96,6 +109,12 @@ $(function() {
 		data.keypad = parent.find("select.keypad").val();
 		data.correct = parent.find("input.correct")[0].checked;
 		data.weight = parent.find("input.weight").val() || "NULL";
+		data.questionID = parent.parent().parent().parent().parent().parent().find("input.qid").val();
+		
+		if(data.questionID) {
+			showError(parent, "Save question first");
+			return;
+		}
 		
 		console.log(data);
 		//send the request to the server
@@ -129,13 +148,17 @@ $(function() {
 			if(resp.newid) {
 				parent.find("input.qid").val(resp.newid);
 			}
+			updateCompare();
 		});
 	});
 	
+	/**
+	* Send a POST request returning JSON
+	*/
 	function request(url, data, success) {
 		$.ajax(url, {
 			type: "POST",
-			dataType: "html",
+			dataType: "json",
 			data: data,
 			success: success,
 			
@@ -143,6 +166,33 @@ $(function() {
 				console.log("ERROR", e,f,g);
 			}
 		});
+	}
+	
+	/**
+	* Show an error message on a specific line
+	*/
+	function showError(line, msg) {
+		line.find("span.error").fadeIn().text(msg).delay(1600).fadeOut();
+	}
+	
+	/**
+	* Grab all the questions and put them in
+	* the compare dropdown box.
+	*/
+	function updateCompare() {
+		var optionlist = "";
+		
+		$("div.question").each(function() {
+			var self = $(this),				
+				id = self.find("input.qid").val(),
+				qtext = self.find("input.qname").val();
+				
+			if(id !== "-1") {
+				optionlist += "<option value='"+id+"'>"+qtext+"</option>";
+			}
+		});
+		
+		$("select.compare").html(optionlist);
 	}
 	
 	/**
@@ -170,6 +220,7 @@ $(function() {
 		}
 		
 		container.children("div.question:first").remove();
+		updateCompare();
 	}
 	
 	function createQuestion(data) {

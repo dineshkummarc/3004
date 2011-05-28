@@ -3,10 +3,14 @@
 <script src="assets/jquery.js"></script>
 <script src="assets/scripts.js"></script>
 <link href="assets/style.css" type="text/css" rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Maven+Pro' rel='stylesheet' type='text/css'>
 <title>dbPOLL - Prototype</title>
 </head>
 <body>
 <div id="container">
+<div id="header">
+<img src="assets/images/logo.png" />
+</div>
 
 <h1>Edit Poll Questions</h1>
 
@@ -34,6 +38,7 @@
 	<label><input type="checkbox" class="rankingbox" /> Ranking</label>
 	<label><input type="checkbox" class="demographicbox"/> Demographic</label>
 	
+	<span class="error"></span>
 	<button class="saveq"><img src="assets/images/disk.png" /> Save</button>
 
 	<div>
@@ -77,6 +82,7 @@
 				<label><input type="checkbox" class="correct" /> correct</label>
 				<label class="ranking"><input type="text" size="2" class="weight" /> weight</label>
 				
+				<span class="error"></span>
 				<button class="saver"><img src="assets/images/disk.png" /> Save</button>
 			</div>
 		</div>
@@ -84,6 +90,10 @@
 	</div>
 </div>
 
+</div>
+
+<div id="footer">
+&copy; 2010. dbPOLL Turning Point.
 </div>
 </body>
 </html>
