@@ -31,16 +31,16 @@ CREATE TABLE Questions(
     CONSTRAINT pk_Questions PRIMARY KEY (questID)
 );
 
-CREATE TABLE Widgits(
-    widgitID NUMBER(6) NOT NULL,
-    widgitName VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_Widgits PRIMARY KEY (widgitID)
+CREATE TABLE Widgets(
+    widgetID NUMBER(6) NOT NULL,
+    widgetName VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_Widgets PRIMARY KEY (widgetID)
 );
 
-CREATE TABLE QuestionWidgits(
+CREATE TABLE QuestionWidgets(
     questID NUMBER(6) NOT NULL,     -- questID of Questions
-    widgitID NUMBER(6) NOT NULL,    -- widgitID of Widgits
-    CONSTRAINT pk_QuestionWidgits PRIMARY KEY (questID, widgitID)
+    widgetID NUMBER(6) NOT NULL,    -- widgetID of Widgets
+    CONSTRAINT pk_QuestionWidgets PRIMARY KEY (questID, widgetID)
 );
 
 CREATE TABLE Templates(
