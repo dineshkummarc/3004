@@ -113,8 +113,8 @@ CREATE TABLE Users(
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
     location VARCHAR2(255) NOT NULL,
-    role VARCHAR(255) NOT NULL,
-    CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
+    userLevel VARCHAR(255) NOT NULL,
+    CONSTRAINT userLevel_const CHECK (userLevel IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
     CONSTRAINT pk_Users PRIMARY KEY (userID)
 );
 

@@ -9,11 +9,11 @@ DROP SEQUENCE useq;
 ALTER TABLE Questions DROP CONSTRAINT pk_Questions;
 DROP TABLE Questions;
 
-ALTER TABLE Widgits DROP CONSTRAINT pk_Widgits;
-DROP TABLE Widgits;
+ALTER TABLE Widgets DROP CONSTRAINT pk_Widgets;
+DROP TABLE Widgets;
 
-ALTER TABLE QuestionWidgits DROP CONSTRAINT pk_QuestionWidgits;
-DROP TABLE QuestionWidgits;
+ALTER TABLE QuestionWidgets DROP CONSTRAINT pk_QuestionWidgets;
+DROP TABLE QuestionWidgets;
 
 ALTER TABLE Templates DROP CONSTRAINT pk_Templates;
 DROP TABLE Templates;
