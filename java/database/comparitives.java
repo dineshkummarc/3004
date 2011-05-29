@@ -32,6 +32,7 @@ public class comparitives {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
             conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4203040", "064460");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -46,6 +47,9 @@ public class comparitives {
      */
     private ResultSet runQuery(String query) {
         try {
+            while (conn.isClosed()) {
+                getOracleConnection();
+            }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
@@ -116,8 +120,10 @@ public class comparitives {
             } else if (getCompareTo() == -1) {
                 return -1;
             }
+            
+            getOracleConnection();
             String query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
-                            + ", WHERE questID=" + getQuestID();
+                            + " WHERE questID=" + getQuestID();
             runQuery(query);
             closeOracleConnection();
             return 0;
