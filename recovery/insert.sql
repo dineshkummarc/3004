@@ -72,9 +72,9 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (28, 'F',
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (29, 'F', '5', 9, 'F');
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (30, 'F', '6', 9, 'F');
 
-INSERT into Assigned(1, 1, 'Poll Creator');
-INSERT into Assigned(1, 2, 'Poll Creator');
-INSERT into Assigned(2, 3, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 1, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 2, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (2, 3, 'Poll Creator');
 
 
 commit;
