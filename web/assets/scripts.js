@@ -262,17 +262,18 @@ $(function() {
 		qelem.find("input.image").val(data.image);
 		qelem.find("input.indicator").val(data.indicator);
 		
-		if(data.compareTo != "NULL") {
+		if(data.compareTo != "-1") {
 			qelem.find("input.comparitivebox").attr("checked", "checked");
 			qelem.find(".comparitive").show();
+			qelem.find("select.compare").val(data.compareTo);
 		}
 		
-		if(data.ranking) {
+		if(data.ranking && data.ranking != "null") {
 			qelem.find("input.rankingbox").attr("checked", "checked");
 			qelem.find(".ranking").show();
 		}
 		
-		if(data.demographic) {
+		if(data.demographic && data.demographic == "T") {
 			qelem.find("input.demographicbox").attr("checked", "checked");
 		}
 		
