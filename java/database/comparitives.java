@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import oracle.jdbc.pool.OracleDataSource;
 /**
  *
  * @author Darren
@@ -28,11 +29,12 @@ public class comparitives {
     private Connection getOracleConnection() {
         conn=null;
         try {
-            /* Load the Oracle JDBC Driver and register it. */
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
-            //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4203040", "064460");
+            OracleDataSource ods = new OracleDataSource();
+            ods.setUser("CSSE3004GF");
+            ods.setPassword("pass123");
+            ods.setURL("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo");
+            ods.setConnectionCachingEnabled(true);
+            conn = ods.getConnection();
         } catch(Exception ex){
             System.out.println(ex.toString());
         }

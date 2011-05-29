@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import oracle.jdbc.pool.OracleDataSource;
 /**
  *
  * @author Darren
@@ -28,10 +29,12 @@ public class rankings {
     private Connection getOracleConnection() {
         conn=null;
         try {
-            /* Load the Oracle JDBC Driver and register it. */
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            OracleDataSource ods = new OracleDataSource();
+            ods.setUser("CSSE3004GF");
+            ods.setPassword("pass123");
+            ods.setURL("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo");
+            ods.setConnectionCachingEnabled(true);
+            conn = ods.getConnection();
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -46,6 +49,9 @@ public class rankings {
      */
     private ResultSet runQuery(String query) {
         try {
+            while (conn.isClosed()) {
+                getOracleConnection();
+            }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
@@ -117,7 +123,7 @@ public class rankings {
                 return -1;
             }
             String query = "UPDATE Rankings SET weight=" + getWeight()
-                            + ", WHERE answerID=" + getAnswerID();
+                            + " WHERE answerID=" + getAnswerID();
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -168,9 +174,7 @@ public class rankings {
         try {
             if (getAnswerID() == -1) {
                 return -1;
-            } else if (getWeight() == -1) {
-                return -1;
-            }
+            } 
             getOracleConnection();
             String query= "SELECT * FROM Rankings WHERE answerID=" 
                     + getAnswerID();

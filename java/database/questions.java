@@ -339,6 +339,8 @@ public class questions {
      * given dates
      * Will not check for success.
      *
+     * @param startDate The initial date for the range
+     * @param endDate   The final date for the range
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
@@ -399,7 +401,7 @@ public class questions {
     }
 
     /**
-     * @param question the question to set
+     * @param questionText the questionText to set
      */
     public void setQuestionText(String questionText) {
         this.questionText = questionText;

@@ -5,6 +5,7 @@ package database;
 
 import java.sql.*;
 import java.util.Vector;
+import oracle.jdbc.pool.OracleDataSource;
 /**
  *
  * @author Darren
@@ -41,10 +42,12 @@ public class polls {
     private Connection getOracleConnection() {
         conn=null;
         try {
-            /* Load the Oracle JDBC Driver and register it. */
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            OracleDataSource ods = new OracleDataSource();
+            ods.setUser("CSSE3004GF");
+            ods.setPassword("pass123");
+            ods.setURL("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo");
+            ods.setConnectionCachingEnabled(true);
+            conn = ods.getConnection();
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -105,7 +108,7 @@ public class polls {
 
                 returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
                         resultSet.getString("demographic"), resultSet.getString("responseType"),
-                        resultSet.getString("question"), resultSet.getTimestamp("created"),
+                        resultSet.getString("question"), resultSet.getDate("created"),
                         resultSet.getString("font"), resultSet.getString("correctIndicator"),
                         resultSet.getInt("chartType"), resultSet.getString("images"), 
                         resultSet.getInt("creator")));
