@@ -44,7 +44,7 @@ public class polls {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4203658", "tiara9");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -145,6 +145,34 @@ public class polls {
             return null;
         }
     }
+    
+    /**
+     * Attempts to locate all polls belonging to a given userID.
+     * Will not check for success.
+     *
+     * @return  Vector<polls>   for attempt made.
+     *          null            for error.
+     */
+    public Vector<polls> getAllPollsByUser(int userID) {
+        try {
+            Vector<polls> returnPolls = new Vector<polls>();
+
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Polls WHERE pollID IN (SELECT pollID FROM Assigned WHERE userID=?)");
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt("pollID"));
+                returnPolls.add(new polls(resultSet.getInt("pollID"), resultSet.getNString("pollName"), resultSet.getNString("location"), resultSet.getNString("description")));
+            }
+            closeOracleConnection();
+            return returnPolls;
+        } catch (Exception e) {
+            System.out.println("getAllPollsByUser(): " + e.toString());
+            return null;
+        }
+    }
+    
     
     /**
      * Attempts to add this poll to the database. 

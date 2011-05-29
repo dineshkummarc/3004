@@ -111,6 +111,42 @@ public class pollsTest {
             System.out.println("ERROR OCCURRED IN testAddPoll(): " + e.toString());
         }
     }
+    
+    @Test
+    public void testGetAllPollsByUser() {
+        reset();
+        System.out.println("testGetAllPollsByUser()");
+        polls instance = new polls(1, "FruitVeg", "1", "Fruits and vegetables");
+        instance.addPoll();
+        polls instance1 = new polls(2, "Icecream", "1", "Favourite icecream flavour");
+        instance1.addPoll();
+        try {
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO ASSIGNED(userID, pollID, role) VALUES" +
+                "(?, ?, ?)");
+            statement.setInt(1, 1);
+            statement.setInt(2, 1);
+            statement.setString(3, "Web User");
+            statement.executeUpdate();
+
+            
+            statement.setInt(1, 1);
+            statement.setInt(2, 2);
+            statement.setString(3, "Web User");
+            statement.executeUpdate();
+            statement.close();
+            
+            conn.close();
+        }
+        catch(SQLException e) {
+            System.out.println("Error in testGetAllPollsByUser(): " + e.toString());
+        }
+        
+        assertEquals(1, instance.getAllPollsByUser(1).get(0).getPollID());
+        assertEquals(2, instance.getAllPollsByUser(1).get(1).getPollID());
+        
+    }
+            
 
     /**
      * Test of editPoll method, of class polls.
@@ -290,7 +326,7 @@ public class pollsTest {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4203658", "tiara9");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -307,6 +343,9 @@ public class pollsTest {
             PreparedStatement cockstatement = conn.prepareStatement("TRUNCATE TABLE Questions");
             cockstatement.execute();
             cockstatement.close();
+            PreparedStatement assignedStatement = conn.prepareStatement("TRUNCATE TABLE Assigned");
+            assignedStatement.execute();
+            assignedStatement.close();
             
             conn.close();
         }
