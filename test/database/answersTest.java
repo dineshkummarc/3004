@@ -243,7 +243,7 @@ public class answersTest {
      */
     @Test
     public void testGetKeypad() {
-        System.out.println("getKeypad()");
+        System.out.println("getKeypad");
         answers instance = new answers(10, 5, "test", "", "N");
         assertTrue(instance.getKeypad().matches("test"));
     }
@@ -327,7 +327,8 @@ public class answersTest {
             /* Load the Oracle JDBC Driver and register it. */
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            //conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4203040", "064460");
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
