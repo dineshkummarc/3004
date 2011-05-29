@@ -49,14 +49,18 @@ public class comparitives {
      */
     private ResultSet runQuery(String query) {
         try {
+<<<<<<< HEAD
             while (conn.isClosed()) {
+=======
+            if(conn == null) {
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
                 getOracleConnection();
             }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("answers.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -67,6 +71,7 @@ public class comparitives {
     private void closeOracleConnection() {
         try {
             conn.close();
+            conn = null;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -92,9 +97,16 @@ public class comparitives {
             }
             
             getOracleConnection();
-            String query= "INSERT INTO Comparitives(questID, compareTo) VALUES (" 
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Comparitives(questID, compareTo)"
+                    + " VALUES(?, ?)");
+            statement.setInt(1, getQuestID());
+            statement.setInt(2, getCompareTo());
+            statement.executeUpdate();
+            
+            /*String query= "INSERT INTO Comparitives(questID, compareTo) VALUES (" 
                     + getQuestID() + ", " + getCompareTo() + ")";  
-            runQuery(query);
+            runQuery(query);*/
+            statement.close();
 
             closeOracleConnection();
             return 0;
@@ -124,9 +136,22 @@ public class comparitives {
             }
             
             getOracleConnection();
+<<<<<<< HEAD
             String query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
                             + " WHERE questID=" + getQuestID();
             runQuery(query);
+=======
+            PreparedStatement statement = conn.prepareStatement("UPDATE Comparitives SET compareTo=? "
+                    + " WHERE questID=?");
+            statement.setInt(1, getCompareTo());
+            statement.setInt(2, getQuestID());
+            statement.executeUpdate();
+            statement.close();
+            /*
+            String query = "UPDATE Comparitives SET compareTo=" + getCompareTo()
+                            + " WHERE questID=" + getQuestID();
+            runQuery(query);*/
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -150,11 +175,19 @@ public class comparitives {
             if (getQuestID() == -1) {
                 return -1;
             } 
+            
             getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM Comparitives WHERE questID=? "
+                    + " AND compareTo=?");
+            statement.setInt(1, getQuestID());
+            statement.setInt(2, getCompareTo());
 
-            String query = "DELETE FROM Comparitives WHERE questID=" + getQuestID() 
+            statement.executeUpdate();
+            statement.close();
+
+            /*String query = "DELETE FROM Comparitives WHERE questID=" + getQuestID() 
                     + " AND compareTo=" + getCompareTo();
-            runQuery(query);
+            runQuery(query);*/
 
             closeOracleConnection();
             return 0;
@@ -178,21 +211,29 @@ public class comparitives {
         try {
             if (getQuestID() == -1) {
                 return -1;
-            } else if (getCompareTo() == -1) {
-                return -1;
             }
+            
             getOracleConnection();
-            String query= "SELECT * FROM Comparitives WHERE questID=" 
-                    + getQuestID() + " AND compareTo=" + getCompareTo();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Comparitives WHERE questID=?");
+            statement.setInt(1, getQuestID());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                setQuestID(resultSet.getInt("questID"));
+                setCompareTo(resultSet.getInt("compareTo"));
+            }
+            resultSet.close();
+            statement.close();
+
+/*            String query= "SELECT * FROM Comparitives WHERE questID=" 
+                    + getQuestID();
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
                 setQuestID(resultSet.getInt("questID"));
                 setCompareTo(resultSet.getInt("compareTo"));
-                closeOracleConnection();
-                return 0;
             }
+            resultSet.close();*/
             closeOracleConnection();
-            return -1;
+            return 0;
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;

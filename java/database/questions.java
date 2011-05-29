@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 import oracle.jdbc.pool.OracleDataSource;
 /**
@@ -83,15 +84,21 @@ public class questions {
      */
     private ResultSet runQuery(String query) {
         try {
+<<<<<<< HEAD
             while (conn.isClosed()) {
                 getOracleConnection();
             }
             getOracleConnection();
+=======
+            if(conn == null) {
+                getOracleConnection();
+            }
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
-        } catch (Exception e) {
-            System.out.println("questions.runQuery(): " + e.toString() +  " Query: " + query);
+        } catch (SQLException e) {
+            System.out.println("answers.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -102,6 +109,7 @@ public class questions {
     private void closeOracleConnection() {
         try {
             conn.close();
+            conn = null;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -116,23 +124,59 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public Vector<answers> getAnswers() {
+    public ArrayList<String> getAnswers(int qid) {
         try {
-            if (getQuestID() == -1) {
+            if (qid == -1) {
                 return null;
             }
+<<<<<<< HEAD
              Vector<answers> returnQuestions = new Vector<answers>();
             
             getOracleConnection();
             String query= "SELECT * FROM Answers WHERE questID="
                     + getQuestID();  
+=======
+            ArrayList<String> returnAnswers = new ArrayList<String>();
+            //getOracleConnection();
+            String query= "SELECT * FROM Answers  WHERE questID=" + qid;
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
-                returnQuestions.add(new answers(resultSet.getInt("answerID"), resultSet.getInt("questID"),
-                        resultSet.getString("keypad"), resultSet.getString("answer"), resultSet.getString("correct")));
+                //System.out.println("calling rs.next() in getAnswers()");
+                returnAnswers.add("{\"id\": "+resultSet.getInt("answerID") +
+                        ",\"keypad\": \"" +resultSet.getString("keypad")+ "\""
+                        + ",\"text\": \"" + resultSet.getString("answer")+ "\""
+                                + ",\"questionID\": " +resultSet.getInt("questID")
+                                + ",\"correct\": \"" +resultSet.getString("correct") + "\"}");
+                System.out.print("answer printed: "+resultSet.getInt("answerID")+"<br/>");
             }
+            resultSet.close();
             closeOracleConnection();
-            return returnQuestions;
+            return returnAnswers;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+    
+    
+    
+    public ArrayList<Integer> getAnswerIDs(int qid) {
+        try {
+            if (qid == -1) {
+                return null;
+            }
+            ArrayList<Integer> returnAnswers = new ArrayList<Integer>();
+            //getOracleConnection();
+            String query= "SELECT * FROM Answers  WHERE questID=" + qid;
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                //System.out.println("calling rs.next() in getAnswers()");
+                returnAnswers.add(resultSet.getInt("answerID"));
+            }
+            resultSet.close();
+            closeOracleConnection();
+            return returnAnswers;
         } catch (SQLException e) {
             System.out.println(e.toString());
             return null;
@@ -211,21 +255,16 @@ public class questions {
      *          -2   for undefined error.
      */
     public int addQuestion() {
+        int pk = -1;
+        int test = -1;
         try {
             getOracleConnection();
             if (getPollID() == -1) {
                 return -1;
-            } else if (getQuestID() == -1) {
-                String query = "SELECT qseq.nextval FROM dual";
-                ResultSet resultSet = runQuery(query);
-                while(resultSet.next()) {
-                    System.out.println("ResultSet.getInt(): " + resultSet.getInt(1));
-                    setQuestID(resultSet.getInt(1));
-                }
-                resultSet.close();
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
+<<<<<<< HEAD
             //PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             String query = "INSERT INTO Questions(questid, demographic, "
                     + "responsetype, question, pollid, created, font, "
@@ -249,8 +288,62 @@ public class questions {
 
             //statement.executeUpdate();
             runQuery(query);
+=======
+            
+            
+            if(getDemographic().matches("true")) {
+                setDemographic("T");
+            } else if(getDemographic().matches("false")) {
+                setDemographic("F");
+            }
+            
+            /*PreparedStatement statement1 = conn.prepareStatement("SELECT qseq.nextval FROM dual");
+            ResultSet rset = statement1.executeQuery();
+            if(rset.next()) {
+                test = rset.getInt(1);
+                //rset.getInt("questID");
+            }
+            System.out.println("test debug: " + test);*/
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (qseq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            System.out.println("\n addQuestion() got called; demographic: " + getDemographic());
+            //INSERT INTO Questions(questID, demographic, responseType, question, pollID, created, font, correctIndicator, chartType, images, creator) VALUES (1000, 'd', 'd', 'blah', 2, SYSDATE, 'Arial', 'cock', 1, 'bla', 1)
+            //insert into questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) values(1, 'd', 'e', 'd', 1, SYSDATE, 'f', 'y', 1, 'e', 7);
+            
+
+            statement.setString(1, getDemographic());
+            statement.setString(2, getResponseType());
+            statement.setString(3, getQuestionText());
+            statement.setInt(4, getPollID());
+            statement.setTimestamp(5, getCreated());
+            statement.setString(6, getFont());
+            statement.setString(7, getCorrectIndicator());
+            statement.setInt(8, getChartType());
+            statement.setString(9, getImages());
+            statement.setInt(10, getCreator());
+            
+            /*String query= "INSERT INTO Questions(questID, demographic, "
+                    + "responseType, question, pollID, created, font, "
+                    + "correctIndicator, chartType, images, creator) VALUES (" 
+                    + getQuestID() + ", '" + getDemographic() + "', '" 
+                    + getResponseType() + "', '" + getQuestionText() + "', " 
+                    + getPollID() + ", " + getCreated() + ", '" + getFont() 
+                    + "', '" + getCorrectIndicator() + "', " + getChartType() 
+                    + ", '" + getImages() + "', " + getCreator() + ")";  
+            runQuery(query);*/
+            statement.executeUpdate();
+            
+            statement = conn.prepareStatement("SELECT qseq.currval FROM dual");
+            ResultSet rset = statement.executeQuery();
+            if(rset.next()) {
+                pk = rset.getInt(1);
+                //rset.getInt("questID");
+            }
+            System.out.println("pk: " + pk);
+            statement.close();
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             closeOracleConnection();
-            return 0;
+            return pk;
         } catch (SQLException e) {
             System.out.println("addQuestion(): " + e.toString());
             return -2;
@@ -277,21 +370,50 @@ public class questions {
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
-
+            if(getDemographic().matches("true")) {
+                setDemographic("T");
+            } else if(getDemographic().matches("false")) {
+                setDemographic("F");
+            }
+            
             getOracleConnection();
-            String query= "UPDATE Questions SET demographic='" + getDemographic() 
+            PreparedStatement statement = conn.prepareStatement("UPDATE Questions SET demographic=?, responseType=?,"
+                    + "question=?, pollID=?, font=?, correctIndicator=?, chartType=?, "
+                    + "images=?, creator=? WHERE questID=?");
+            statement.setString(1, getDemographic());
+            statement.setString(2, getResponseType());
+            statement.setString(3, getQuestionText());
+            statement.setInt(4, getPollID());
+            statement.setString(5, getFont());
+            statement.setString(6, getCorrectIndicator());
+            statement.setInt(7, getChartType());
+            statement.setString(8, getImages());
+            statement.setInt(9, getCreator());
+            statement.setInt(10, getQuestID());
+            
+            statement.executeUpdate();
+            statement.close();
+            /*String query= "UPDATE Questions SET demographic='" + getDemographic() 
                     + "', responseType='" + getResponseType() 
                     + "', question='" + getQuestionText() 
                     + "', pollID=" + getPollID()
+<<<<<<< HEAD
                     + ", created= DATE '" + getCreated()
                     + "', font='" + getFont()
+=======
+                    + ", font='" + getFont()
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
                     + "', correctIndicator='" + getCorrectIndicator()
                     + "', chartType=" + getChartType()
                     + ", images='" + getImages()
                     + "', creator=" + getCreator()
                     + " WHERE questID=" + getQuestID();  
+<<<<<<< HEAD
+=======
+            System.out.println(query);
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             runQuery(query);
-
+            System.out.println(query);*/
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -315,7 +437,7 @@ public class questions {
             if (getQuestID() == -1) {
                 return -1;
             } 
-            getOracleConnection();
+            
             
             /* Delete answers under question */
             String query= "SELECT answerID FROM Answers WHERE questID=" + getQuestID();
@@ -324,10 +446,10 @@ public class questions {
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
-                temp.setAnswerID(resultSet.getInt("answersID"));
+                temp.setAnswerID(resultSet.getInt("answerID"));
                 temp.deleteAnswer();
             }
-            
+            closeOracleConnection();
             /* Delete comparitives under question */
             query= "SELECT * FROM Comparitives WHERE questID=" + getQuestID() 
                     + " OR compareTo=" + getQuestID();
@@ -340,12 +462,12 @@ public class questions {
                 temp.setCompareTo(resultSet.getInt("compareTo"));
                 temp.deleteComparitive();
             }
-
+            closeOracleConnection();
             /* Delete question */
             query= "DELETE FROM Questions WHERE questID=" + getQuestID();
             runQuery(query);
-
             closeOracleConnection();
+            
             return 0;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -368,7 +490,7 @@ public class questions {
             if (getQuestID() == -1) {
                 return -1;
             } 
-            getOracleConnection();
+            
             String query= "SELECT * FROM Questions WHERE questID=" + getQuestID();
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
@@ -377,17 +499,19 @@ public class questions {
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
                 setQuestionText(resultSet.getString("question"));
+<<<<<<< HEAD
                 setCreated(resultSet.getDate("created"));
+=======
+                setCreated(resultSet.getTimestamp("created"));
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
                 setFont(resultSet.getString("font"));
                 setCorrectIndicator(resultSet.getString("correctIndicator"));
                 setChartType(resultSet.getInt("chartType"));
                 setImages(resultSet.getString("images"));
                 setCreator(resultSet.getInt("creator"));
-                closeOracleConnection();
-                return 0;
             }
             closeOracleConnection();
-            return -1;
+            return 0;
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;
@@ -404,8 +528,9 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public Vector<questions> findQuestions(Date startDate, Date endDate) {
+    public ArrayList<String> findQuestions(String startDate, String endDate, String username) {
         try {
+<<<<<<< HEAD
             Vector<questions> returnQuestions = new Vector<questions>();
             getOracleConnection();
             /* check this if it works */
@@ -421,9 +546,45 @@ public class questions {
                         resultSet.getInt("chartType"), resultSet.getString("images"), 
                         resultSet.getInt("creator")));
                         
+=======
+
+            ArrayList<String> returnQuestions = new ArrayList<String>();
+            String query = "";
+            /* check this if it works */
+            if(startDate!=null && endDate!=null && username==null){
+                query= "SELECT * FROM Questions WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND created <= TO_DATE('" + endDate + "', 'YYYY-MM-DD HH24:MI:SS')";
+                
+            }
+            else if(startDate!=null && endDate==null && username==null){
+                query= "SELECT * FROM Questions WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS')";
+            }
+            else if(startDate!=null && endDate==null && username!=null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND u.userName ='" + username + "'";
+            }
+            else if(startDate!=null && endDate!=null && username!=null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND created <= TO_DATE('" + endDate + "', 'YYYY-MM-DD HH24:MI:SS') "
+                        + "AND u.userName ='" + username + "'";
+            }
+            else if(username!=null && startDate==null && endDate==null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE u.userName ='" + username + "'";
+            
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             }
             
-            closeOracleConnection();
+            if(!query.equals("")){
+                ResultSet resultSet = runQuery(query);
+            
+                while (resultSet.next()) {
+                    System.out.println("calling rs.next()");
+                    returnQuestions.add(resultSet.getString("question") + "," + resultSet.getInt("pollID"));
+                }
+                resultSet.close();
+                closeOracleConnection();
+            }
             return returnQuestions;
         } catch (SQLException e) {
             System.out.println(e.toString());

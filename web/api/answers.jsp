@@ -11,7 +11,7 @@
 <%
 try{
     String action = request.getParameter("action");
-    String questID = request.getParameter("questID");
+    String questID = request.getParameter("questionID");
     String weight = request.getParameter("weight"); 
     String answer = request.getParameter("text");
     String keypad = request.getParameter("keypad");
@@ -21,99 +21,65 @@ try{
     questions Questions = new questions();
     rankings Rankings = new rankings();
 	Boolean run = true;
-	
-    if(action == null  && action.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "action = null");
-         out.println("}");
-		 run = false;
-    }
-    if(questID == null && questID.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "Qid = null");
-         out.println("}");
-		 run = false;
-    }
-	if(answerID == null && answerID.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "answerID = null");
-         out.println("}");
-		 run = false;
-    }
-	if(keypad == null && keypad.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "keypad = null");
-         out.println("}");
-		 run = false;
-    }
-	if(weight == null && weight.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "weight = null");
-         out.println("}");
-		 run = false;
-    }
-	if(answer == null && answer.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "answer = null");
-         out.println("}");
-		 run = false;
-    }
-	if(correct == null && correct.equals("")){
-         out.println("Status: " + "error" + ",");
-         out.println("Error: " + "correct = null");
-         out.println("}");
-		 run = false;
-    }
 	if(run){
 		if(Integer.parseInt(answerID) == -1){
-			Answers.setAnswerID(-1);
-			if(weight != null){
-				Rankings.setAnswerID(Answers.getAnswerID());
-				Rankings.setWeight(Integer.parseInt(weight));
-				int check1 = Rankings.addRanking();
-				if(check1 == -2){
-					out.println("{");
-					out.println("Status: " + "error" + ",");
-					out.println("Error: " + "answerID wrong or sth wrong in the rankings.java file");
-					out.println("}");
-				}
-			}
+			
             /*print message for debug 0: gd, -2 : bad */
-			if(keypad != null || keypad.equals("")){
-				Answers.setKeypad(keypad);
-			}
+			Answers.setAnswerID(-1);
+			Answers.setKeypad(keypad);
+			
 			Answers.setAnswerText(answer);
 			Answers.setQuestID(Integer.parseInt(questID));
 			Answers.setCorrect(correct);
 			int check = Answers.addAnswer();
 			if(check == -2){
 				out.println("{");
-				out.println("Status: " + "error" + ",");
-				out.println("Error: " + "answerID wrong or sth wrong in the answers.java file");
-				out.println("}");
+					out.println("\"Status:\" " + "\"error\"" + ",");
+					out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
+					out.println("}");
 			}
+             
 			/*print message for debug 0: gd, -2 : bad */
+                        Answers.setAnswerID(-1);
+			if(!weight.equals("")){
+				Rankings.setAnswerID(Answers.getAnswerID());
+				Rankings.setWeight(Integer.parseInt(weight));
+				int check1 = Rankings.addRanking();
+				if(check1 == -2){
+					out.println("{");
+					out.println("\"Status:\" " + "\"error\"" + ",");
+					out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the rankings.java file\"");
+					out.println("}");
+				}
+			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
         
 		}
 		
 		if(Integer.parseInt(answerID) != -1 && action.equals("delete")){
-			Answers.setAnswerID(Integer.parseInt(answerID));
-			Rankings.setAnswerID(Answers.getAnswerID());
-			int check1 = Rankings.deleteRanking();
+                        answers answerShit = new answers(Integer.parseInt(answerID));
+			//Answers.setAnswerID(Integer.parseInt(answerID));
+			//Rankings.setAnswerID(Answers.getAnswerID());
+			/*int check1 = Rankings.deleteRanking();
 			if(check1 == -2){
 				out.println("{");
 				out.println("Status: " + "error" + ",");
 				out.println("Error: " + "answerID wrong or sth wrong in the rankings.java file");
 				out.println("}");
-			}
+			}*/
 			/*delete all the rankings which have the responseID*/
-			int check = Answers.deleteAnswer();
+			//int check = Answers.deleteAnswer();
+                        int check = answerShit.deleteAnswer();
 			if(check == -2){
-				out.println("{");
-				out.println("Status: " + "error" + ",");
-				out.println("Error: " + "answerID wrong or sth wrong in the answers.java file");
+				out.println("\"Status:\" " + "\"error\"" + ",");
+				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
 				out.println("}");
 			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
 			/*print message for debug 0: gd, -2 : bad */
 		}
 		else if(Integer.parseInt(answerID) != -1 && action.equals("update")){
@@ -122,14 +88,39 @@ try{
 			Answers.setKeypad(keypad);
 			Answers.setCorrect(correct);
 			Answers.setAnswerText(answer);
+                        
+                        if(weight.equals("")) {
+                            Rankings.setAnswerID(Integer.parseInt(answerID));
+                            int check1 = Rankings.deleteRanking();
+                            if(check1 == -2){
+				out.println("\"Status:\" " + "\"error\"" + ",");
+				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the Rankings.java file\"");
+				out.println("}");
+                            }
+                        }
+                        else{
+				Rankings.setAnswerID(Answers.getAnswerID());
+                                Rankings.deleteRanking();
+				Rankings.setWeight(Integer.parseInt(weight));
+				int check1 = Rankings.addRanking();
+				if(check1 == -2){
+					out.println("{");
+					out.println("\"Status:\" " + "\"error\"" + ",");
+					out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the rankings.java file\"");
+					out.println("}");
+				}
+			}
+                        
 			/*print message for debug 0: gd, -2 : bad */
 			int check = Answers.editAnswer();
 			if(check == -2){
-				out.println("{");
-				out.println("Status: " + "error" + ",");
-				out.println("Error: " + "answerID wrong or sth wrong in the answers.java file");
+				out.println("\"Status:\" " + "\"error\"" + ",");
+				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
 				out.println("}");
 			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
 		}
     }
 }

@@ -49,14 +49,18 @@ public class rankings {
      */
     private ResultSet runQuery(String query) {
         try {
+<<<<<<< HEAD
             while (conn.isClosed()) {
+=======
+            if(conn == null) {
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
                 getOracleConnection();
             }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("answers.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -67,6 +71,7 @@ public class rankings {
     private void closeOracleConnection() {
         try {
             conn.close();
+            conn = null;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -91,7 +96,6 @@ public class rankings {
                 return -1;
             }
             
-            getOracleConnection();
             String query= "INSERT INTO Rankings(answerID, weight) VALUES (" 
                     + getAnswerID() + ", " + getWeight() + ")";  
             runQuery(query);
@@ -174,8 +178,13 @@ public class rankings {
         try {
             if (getAnswerID() == -1) {
                 return -1;
+<<<<<<< HEAD
             } 
             getOracleConnection();
+=======
+            }
+      
+>>>>>>> a370d8d4f2328cdde847f6c0b394f07b88da3ac7
             String query= "SELECT * FROM Rankings WHERE answerID=" 
                     + getAnswerID();
             ResultSet resultSet = runQuery(query);
@@ -188,7 +197,7 @@ public class rankings {
             closeOracleConnection();
             return -1;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("getRanking() exception: " + e.toString());
             return -2;
         }
     }
@@ -204,14 +213,14 @@ public class rankings {
      * @return the answerID
      */
     public int getAnswerID() {
-        return answerID;
+        return this.answerID;
     }
 
     /**
      * @return the weight
      */
     public int getWeight() {
-        return weight;
+        return this.weight;
     }
 
     /**
