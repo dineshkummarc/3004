@@ -81,12 +81,14 @@ public class questions {
      */
     private ResultSet runQuery(String query) {
         try {
-            getOracleConnection();
+            if(conn == null) {
+                getOracleConnection();
+            }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
-        } catch (Exception e) {
-            System.out.println("questions.runQuery(): " + e.toString() +  " Query: " + query);
+        } catch (SQLException e) {
+            System.out.println("answers.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -97,6 +99,7 @@ public class questions {
     private void closeOracleConnection() {
         try {
             conn.close();
+            conn = null;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -184,7 +187,7 @@ public class questions {
                 return -1;
             }
             
-            getOracleConnection();
+            
             if(getDemographic().matches("true")) {
                 setDemographic("T");
             } else if(getDemographic().matches("false")) {
@@ -198,7 +201,7 @@ public class questions {
                 //rset.getInt("questID");
             }
             System.out.println("test debug: " + test);*/
-            
+            getOracleConnection();
             PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (qseq.nextval, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             System.out.println("\n addQuestion() got called; demographic: " + getDemographic());
             //INSERT INTO Questions(questID, demographic, responseType, question, pollID, created, font, correctIndicator, chartType, images, creator) VALUES (1000, 'd', 'd', 'blah', 2, SYSDATE, 'Arial', 'cock', 1, 'bla', 1)
@@ -263,21 +266,42 @@ public class questions {
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
-
+            if(getDemographic().matches("true")) {
+                setDemographic("T");
+            } else if(getDemographic().matches("false")) {
+                setDemographic("F");
+            }
+            
             getOracleConnection();
-            String query= "UPDATE Questions SET demographic='" + getDemographic() 
+            PreparedStatement statement = conn.prepareStatement("UPDATE Questions SET demographic=?, responseType=?,"
+                    + "question=?, pollID=?, font=?, correctIndicator=?, chartType=?, "
+                    + "images=?, creator=? WHERE questID=?");
+            statement.setString(1, getDemographic());
+            statement.setString(2, getResponseType());
+            statement.setString(3, getQuestionText());
+            statement.setInt(4, getPollID());
+            statement.setString(5, getFont());
+            statement.setString(6, getCorrectIndicator());
+            statement.setInt(7, getChartType());
+            statement.setString(8, getImages());
+            statement.setInt(9, getCreator());
+            statement.setInt(10, getQuestID());
+            
+            statement.executeUpdate();
+            statement.close();
+            /*String query= "UPDATE Questions SET demographic='" + getDemographic() 
                     + "', responseType='" + getResponseType() 
                     + "', question='" + getQuestionText() 
                     + "', pollID=" + getPollID()
-                    + ", created=" + getCreated()
                     + ", font='" + getFont()
                     + "', correctIndicator='" + getCorrectIndicator()
                     + "', chartType=" + getChartType()
                     + ", images='" + getImages()
                     + "', creator=" + getCreator()
-                    + ", WHERE questID=" + getQuestID();  
+                    + " WHERE questID=" + getQuestID();  
+            System.out.println(query);
             runQuery(query);
-
+            System.out.println(query);*/
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -301,7 +325,7 @@ public class questions {
             if (getQuestID() == -1) {
                 return -1;
             } 
-            getOracleConnection();
+            
             
             /* Delete answers under question */
             String query= "SELECT answerID FROM Answers WHERE questID=" + getQuestID();
@@ -310,10 +334,10 @@ public class questions {
             /* Calls each answer to delete itself and its children */
             while (resultSet.next()) {
                 answers temp = new answers();
-                temp.setAnswerID(resultSet.getInt("answersID"));
+                temp.setAnswerID(resultSet.getInt("answerID"));
                 temp.deleteAnswer();
             }
-            
+            closeOracleConnection();
             /* Delete comparitives under question */
             query= "SELECT * FROM Comparitives WHERE questID=" + getQuestID() 
                     + " OR compareTo=" + getQuestID();
@@ -326,12 +350,12 @@ public class questions {
                 temp.setCompareTo(resultSet.getInt("compareTo"));
                 temp.deleteComparitive();
             }
-
+            closeOracleConnection();
             /* Delete question */
             query= "DELETE FROM Questions WHERE questID=" + getQuestID();
             runQuery(query);
-
             closeOracleConnection();
+            
             return 0;
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -354,7 +378,7 @@ public class questions {
             if (getQuestID() == -1) {
                 return -1;
             } 
-            getOracleConnection();
+            
             String query= "SELECT * FROM Questions WHERE questID=" + getQuestID();
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
@@ -362,18 +386,16 @@ public class questions {
                 setQuestID(resultSet.getInt("questID"));
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
-                setQuestionText(resultSet.getString("questionText"));
+                setQuestionText(resultSet.getString("question"));
                 setCreated(resultSet.getTimestamp("created"));
                 setFont(resultSet.getString("font"));
                 setCorrectIndicator(resultSet.getString("correctIndicator"));
                 setChartType(resultSet.getInt("chartType"));
                 setImages(resultSet.getString("images"));
                 setCreator(resultSet.getInt("creator"));
-                closeOracleConnection();
-                return 0;
             }
             closeOracleConnection();
-            return -1;
+            return 0;
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;
@@ -394,7 +416,7 @@ public class questions {
                 return null;
             } 
             Vector<questions> returnQuestions = new Vector<questions>();
-            getOracleConnection();
+            
             /* check this if it works */
             String query= "SELECT questID FROM Questions WHERE created >= '"
                     + startDate + "' AND created <= '" + endDate + "'";

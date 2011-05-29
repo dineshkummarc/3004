@@ -49,16 +49,16 @@ try{
                                                 out.println(temp_Question);
                                                 /* below needs to be modified*/
                                                 
-                                                ArrayList<String> results_Answer = Questions.getAnswers(results_qid.get(i));
+                                                ArrayList<String> results_Answer = listpolls.getAnswers(results_qid.get(i));
                                                 //ArrayList<Integer> results_AnswerID = Questions.getAnswerID(Questions.getQuestID());
 						if(results_Answer != null){
                                                 
                                                         int size_A = results_Answer.size();
 							for (int j=0; j<size_A; j++) {
-                                                                String temp_Answer = results_Answer.get(j);
+                                                                 
 								//Rankings.setAnswerID(results_AnswerID.get(j));
 								//Rankings.getRanking();
-								out.println(temp_Answer);
+								out.println(results_Answer.get(j));
 								//out.println(",\"weight\": " + Rankings.getWeight() + "}");
 								if((j+1) != results_Answer.size()){
                                                                     out.println(",");

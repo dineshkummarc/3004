@@ -46,6 +46,7 @@ $(function() {
 		}
 		
 		questionCount++;
+		updateCompare();
 	});
 	
 	/**
@@ -54,16 +55,13 @@ $(function() {
 	$("button.newr").live("click", function() {
 		var parent = $(this).next(),
 			response = $(this).next().children(":first-child"),
-			type = $(this).parent().parent().parent().children("select.qformat"),
-			r;
+			type = $(this).parent().parent().parent().children("select.qformat");
 			
 		if(type.val() == "M" && $(this).next().children("div.response").size() >= 10) {
 			return;
 		}
 		
-		r = response.clone().appendTo(parent);
-		r.find("button.saveq, button.saver").hide();
-		r.find("input.aid").val("-1");
+		createResponse($(this).parent(), {});
 	});
 	
 	/**
@@ -84,31 +82,44 @@ $(function() {
 	* Cancel a response
 	*/
 	$("button.remr").live("click", function() {
-		if($(this).parent().parent().children("div.response").size() > 1) {
-			var id = $(this).parent().find("input.aid").val();
+		var id = $(this).parent().find("input.aid").val();
+		
+		if(id != "-1") {
+			request("api/answers.jsp?action=delete", {id: id});
+                        
+			if($(this).parent().parent().children("div.response").size() == 1) {
+                            createResponse($(this).parent().parent().parent().parent().parent(), {});
+                        }
+                         $(this).parent().remove();
 			
-			if(id != "-1") {
-				request("api/answers.jsp?action=delete", {id: id});
-			}
-			
-			$(this).parent().remove();
-		}
+		} else {
+                
+                    if($(this).parent().parent().children("div.response").size() > 1) {
+                        $(this).parent().remove();
+                    }
+                }
 	});
 	
 	/**
 	* Display a save button whenever a field has changed
 	*/
-	$("input, select").live("change", showSave).live("keyup", showSave);
-	$("select.compare, select.chart, select.widget, input.font, input.image, input.indicator")
-		.live("change", showSaveUp)
-		.live("keyup", showSaveUp);
+	$("input, select").live("change", showSave).live("keyup", showSave)
 	
-	function showSave() {
-		$(this).parent().children("button.saveq, button.saver").show();
-	}
+    //$("select.compare, select.chart, select.widget, input.font, input.image, input.indicator")
+	//	.live("change", showSaveUp)
+	//	.live("keyup", showSaveUp);
 	
-	function showSaveUp() {
-		$(this).parent().parent().children("button.saveq").show();
+	function showSave(parent) {
+            if(!parent || !parent.hasClass) {
+                parent = $(this).parent();
+            }
+            console.log(parent);
+            if(parent.hasClass("response")) {
+                parent.children("button.saveq, button.saver").show();
+                return;
+            } else {
+                return showSave(parent.parent());
+            }
 	}
 	
 	$("select.widget").live("focus", function() {
@@ -130,7 +141,7 @@ $(function() {
 		data.text = parent.find("input.resptext").val();
 		data.keypad = parent.find("select.keypad").val();
 		data.correct = parent.find("input.correct")[0].checked;
-		data.weight = parent.find("input.weight").val() || "NULL";
+		data.weight = parent.find("input.weight").val() || "";
 		data.questionID = parent.parent().parent().parent().parent().parent().find("input.qid").val();
 		
 		if(data.questionID == "-1") {
@@ -159,7 +170,7 @@ $(function() {
 		data.id = parent.find("input.qid").val();
 		data.text = parent.find("input.qname").val();
 		data.qformat = parent.find("select.qformat").val();
-		data.compareTo = parent.find("select.compare").val();
+		data.compareTo = parent.find("select.compare").val() || "";
 		data.demographic = parent.find("input.demographicbox")[0].checked;
 		data.widget = (parent.find("select.widget").val() || []).join(",");
 		data.chart = parent.find("select.chart").val();
@@ -189,6 +200,7 @@ $(function() {
 			type: "POST",
 			dataType: "json",
 			data: data,
+			cache: false,
 			success: success,
 			
 			error: function(e,f,g) {
@@ -209,7 +221,7 @@ $(function() {
 	* the compare dropdown box.
 	*/
 	function updateCompare() {
-		var optionlist = "";
+		var optionlist = "<option value=\"\">Select a previous Question</option>";
 		
 		$("div.question").each(function() {
 			var self = $(this),				
@@ -228,7 +240,7 @@ $(function() {
 	* Parse data returned from selecting a Poll
 	*
 	* @example
-	* [{id: 1, text: "Question", type: "M", compareTo: 2, demographic: true, ranking:true, responses: [{id: 2, text: "Repsonse A", keypad: "NULL", correct: true, weight: 50}]}]
+	* [{id: 1, text: "Question", type: "M", compareTo: 2, demographic: true, ranking:true, responses: [{id: 2, text: "Repsonse A", keypad: "", correct: true, weight: 50}]}]
 	*/
 	parseData = function parseData(data) {
 		var q = 0, l = data.length, r, k, quest, resp, qelem;
@@ -245,11 +257,14 @@ $(function() {
 				createResponse(qelem, resp);
 			}
 			
-			qelem.find("div.response:first").remove();
+			//remove the last one if there are answers
+			if(k > 0) {
+				qelem.find("div.response:first").remove();
+			}
 		}
 		
 		container.children("div.question:first").remove();
-		updateCompare();
+		
 	}
 	
 	function createQuestion(data) {
@@ -265,10 +280,11 @@ $(function() {
 		if(data.compareTo != "-1") {
 			qelem.find("input.comparitivebox").attr("checked", "checked");
 			qelem.find(".comparitive").show();
+                        updateCompare();
 			qelem.find("select.compare").val(data.compareTo);
 		}
 		
-		if(data.ranking && data.ranking != "null") {
+		if(data.ranking && data.ranking != "") {
 			qelem.find("input.rankingbox").attr("checked", "checked");
 			qelem.find(".ranking").show();
 		}
@@ -295,58 +311,14 @@ $(function() {
 			relem = response.clone().appendTo(quest.find("div.responses"));
 		
 		relem.find("button.saveq, button.saver").hide();
-		relem.find("input.aid").val(data.id);
-		relem.find("input.resptext").val(data.text);
-		relem.find("select.keypad").val(data.keypad);
+		relem.find("input.aid").val(data.id || "-1");
+		relem.find("input.resptext").val(data.text || "");
+		relem.find("select.keypad").val(data.keypad || "");
 		
 		if(data.correct) {
 			relem.find("input.correct").attr("checked", "checked");
 		}
 		
-		if(data.weight && data.weight != "NULL") {
-			relem.find("input.weight").val(data.weight);
-		}
-	}
-	
-	function grabData() {
-		var data = {};
-		data.name = $("#pname").val() || "NULL";
-		data.questions = [];
-		
-		//grab an array of questions
-		$("div.question").each(function() {
-			data.questions.push(grabQuestionData($(this)));
-		});
-		
-		data.questionsCount = data.questions.length;
-		
-		return data;
-	}
-	
-	/**
-	* Method to find out all the information to
-	* insert into the database from a question DIV.
-	*/
-	function grabQuestionData(question) {
-		var data = {}, i = 0;
-		data.demographic = question.find("input.demographicbox")[0].checked;
-		data.responseType = question.find("select.qformat").val() || "NULL";
-		data.question = question.find("input.qname").val() || "NULL";
-		data.compareTo = question.find("select.compare").val() || "NULL";
-		data.responses = [];
-		
-		question.find("div.response").each(function() {
-			var self = $(this), obj = {};
-			obj.response = self.find("input.resptext").val() || "NULL";
-			obj.keypad = self.find("select.keypad").val() || "NULL";
-			obj.weight = self.find("input.weight").val() || "NULL";
-			obj.correct = self.find("input.correct")[0].checked;
-			
-			data.responses.push(obj);
-		});
-		
-		data.responsesCount = data.responses.length;
-		
-		return data;
+		relem.find("input.weight").val(data.weight || "");
 	}
 });

@@ -21,56 +21,56 @@ INSERT into Polls(pollID, pollName, location, description) values (pseq.nextval,
 SELECT 'Inserting Questions' FROM dual;
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'How old are you?', 1, SYSDATE, 1);
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Whats your favourite colour?', 1, SYSDATE, 1);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite animal?', 1, SYSDATE, 1);
+--INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite animal?', 1, SYSDATE, 1);
 
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Star Wars movie?', 2, SYSDATE, 1);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite LOTR movie?', 2, SYSDATE, 1);
+--INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite LOTR movie?', 2, SYSDATE, 1);
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Back to the Future movie?', 2, SYSDATE, 1);
 
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '1+1=?', 3, SYSDATE, 3);
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', '2+1=?', 3, SYSDATE, 3);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '5+1=?', 3, SYSDATE, 3);
+--INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '5+1=?', 3, SYSDATE, 3);
 
 -- Answers
 SELECT 'Inserting Answers' FROM dual;
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '17-20', 1, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '21-25', 1, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '26+', 1, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', '17-20', 1, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', '21-25', 1, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '26+', 1, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 2, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Blue', 2, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Geen', 2, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', 'Red', 2, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Blue', 2, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', 'Geen', 2, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Dog', 3, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Cat', 3, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Bird', 3, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', 'Dog', 3, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Cat', 3, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', 'Bird', 3, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 1', 4, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 2', 4, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 3', 4, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 4', 4, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 5', 4, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 6', 4, 'T');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', 'Episode 1', 4, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 2', 4, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', 'Episode 3', 4, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '3', 'Episode 4', 4, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 5', 4, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '4', 'Episode 6', 4, 'T');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '1', 5, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '2', 5, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '3', 5, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', '1', 5, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', '2', 5, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '3', '3', 5, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'I', 6, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'II', 6, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'III', 6, 'T');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', 'I', 6, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', 'II', 6, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '3', 'III', 6, 'T');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '1', 7, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '2', 7, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '3', 7, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', '1', 7, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', '2', 7, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '3', 7, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '1', 8, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '2', 8, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '3', 8, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', '1', 8, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '2', '2', 8, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '3', 8, 'F');
 
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '4', 9, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '5', 9, 'F');
-INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '6', 9, 'F');
+INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, '1', '4', 9, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '5', 9, 'F');
+--INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '6', 9, 'F');
 
 INSERT into Assigned(userID, pollID, role) values (1, 1, 'Poll Creator');
 INSERT into Assigned(userID, pollID, role) values (1, 2, 'Poll Creator');

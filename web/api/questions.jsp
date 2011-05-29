@@ -23,12 +23,13 @@ try{
     String demographic = request.getParameter("demographic");
     String images = request.getParameter("image");
     /* String created = request.getParameter("created"); */
-	String question = request.getParameter("text");
+    String question = request.getParameter("text");
 	/* for demo only*/
-    int creator = 1;
+    
     String font = request.getParameter("font");
     String chartType = request.getParameter("chart");
     String correctIndicator = request.getParameter("indicator");
+    String creator = request.getParameter("creator");
     questions Questions = new questions();
     rankings Rankings = new rankings();
     answers Answers = new answers();
@@ -129,7 +130,7 @@ try{
                 out.println("\"error\": " + "\"Qid wrong or sth wrong in the question.java file\"");
                 out.println("}");
         }
-        if(compareTo != null && compareTo == "comparitive"){
+        if(!compareTo.equals("")){
             Comparitives.setCompareTo(Integer.parseInt(compareTo));
             Comparitives.setQuestID(Questions.getQuestID());
             int check1 = Comparitives.addComparitive();
@@ -158,6 +159,7 @@ try{
                 out.println("}");
             }*/
             Questions.setQuestID(Integer.parseInt(questID));
+            
             int check = Questions.deleteQuestion();
             if(check == -2){
                 out.println("{");
@@ -166,6 +168,9 @@ try{
                 out.println("}");
             }
             /*print message for debug 0: gd, -2 : bad */
+            out.println("{");
+            out.println("\"status\": " + "\"ok\"");
+            out.println("}");
         
     }
     else if(Integer.parseInt(questID) != -1 && action.equals("update")){
@@ -173,14 +178,13 @@ try{
         Questions.getQuestion();
         Questions.setDemographic(demographic);
         Questions.setImages(images);
-        Questions.setFont(font);
-        if(pollID != null){
-            Questions.setPollID(Integer.parseInt(pollID));
-        }
+        Questions.setFont(font); 
+        Questions.setPollID(Integer.parseInt(pollID));
         Questions.setQuestionText(question);
         Questions.setResponseType(responseType);
         Questions.setChartType(Integer.parseInt(chartType));
         Questions.setCorrectIndicator(correctIndicator);
+        Questions.setCreator(Integer.parseInt(creator));
         int check = Questions.editQuestion();
             if(check == -2){
                 out.println("{");
@@ -188,8 +192,12 @@ try{
                 out.println("\"error\": " + "\"Qid wrong or sth wrong in the question.java file\"");
                 out.println("}");
             }
+        out.println("{");
+        out.println("\"status\": " + "\"ok\"");
+        out.println("}");
          /*print message for debug 0: gd, -2 : bad */
-		}
+        }
+    
 	}
 }
 

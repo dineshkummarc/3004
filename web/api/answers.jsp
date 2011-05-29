@@ -11,7 +11,7 @@
 <%
 try{
     String action = request.getParameter("action");
-    String questID = request.getParameter("questID");
+    String questID = request.getParameter("questionID");
     String weight = request.getParameter("weight"); 
     String answer = request.getParameter("text");
     String keypad = request.getParameter("keypad");
@@ -25,9 +25,9 @@ try{
 		if(Integer.parseInt(answerID) == -1){
 			
             /*print message for debug 0: gd, -2 : bad */
-			if(keypad != null || keypad.equals("")){
-				Answers.setKeypad(keypad);
-			}
+			Answers.setAnswerID(-1);
+			Answers.setKeypad(keypad);
+			
 			Answers.setAnswerText(answer);
 			Answers.setQuestID(Integer.parseInt(questID));
 			Answers.setCorrect(correct);
@@ -38,9 +38,10 @@ try{
 					out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
 					out.println("}");
 			}
+             
 			/*print message for debug 0: gd, -2 : bad */
                         Answers.setAnswerID(-1);
-			if(weight != null){
+			if(!weight.equals("")){
 				Rankings.setAnswerID(Answers.getAnswerID());
 				Rankings.setWeight(Integer.parseInt(weight));
 				int check1 = Rankings.addRanking();
@@ -51,6 +52,9 @@ try{
 					out.println("}");
 				}
 			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
         
 		}
 		
@@ -73,6 +77,9 @@ try{
 				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
 				out.println("}");
 			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
 			/*print message for debug 0: gd, -2 : bad */
 		}
 		else if(Integer.parseInt(answerID) != -1 && action.equals("update")){
@@ -81,6 +88,29 @@ try{
 			Answers.setKeypad(keypad);
 			Answers.setCorrect(correct);
 			Answers.setAnswerText(answer);
+                        
+                        if(weight.equals("")) {
+                            Rankings.setAnswerID(Integer.parseInt(answerID));
+                            int check1 = Rankings.deleteRanking();
+                            if(check1 == -2){
+				out.println("\"Status:\" " + "\"error\"" + ",");
+				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the Rankings.java file\"");
+				out.println("}");
+                            }
+                        }
+                        else{
+				Rankings.setAnswerID(Answers.getAnswerID());
+                                Rankings.deleteRanking();
+				Rankings.setWeight(Integer.parseInt(weight));
+				int check1 = Rankings.addRanking();
+				if(check1 == -2){
+					out.println("{");
+					out.println("\"Status:\" " + "\"error\"" + ",");
+					out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the rankings.java file\"");
+					out.println("}");
+				}
+			}
+                        
 			/*print message for debug 0: gd, -2 : bad */
 			int check = Answers.editAnswer();
 			if(check == -2){
@@ -88,6 +118,9 @@ try{
 				out.println("\"Error:\" " + "\"answerID wrong or sth wrong in the answers.java file\"");
 				out.println("}");
 			}
+                        out.println("{");
+                        out.println("\"status\": " + "\"ok\"");
+                        out.println("}");
 		}
     }
 }

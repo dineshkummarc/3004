@@ -46,11 +46,14 @@ public class rankings {
      */
     private ResultSet runQuery(String query) {
         try {
+            if(conn == null) {
+                getOracleConnection();
+            }
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             return resultSet;
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            System.out.println("answers.runQuery(): " + e.toString());
             return null;
         }
     }
@@ -61,6 +64,7 @@ public class rankings {
     private void closeOracleConnection() {
         try {
             conn.close();
+            conn = null;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -85,7 +89,6 @@ public class rankings {
                 return -1;
             }
             
-            getOracleConnection();
             String query= "INSERT INTO Rankings(answerID, weight) VALUES (" 
                     + getAnswerID() + ", " + getWeight() + ")";  
             runQuery(query);
@@ -117,7 +120,7 @@ public class rankings {
                 return -1;
             }
             String query = "UPDATE Rankings SET weight=" + getWeight()
-                            + ", WHERE answerID=" + getAnswerID();
+                            + " WHERE answerID=" + getAnswerID();
             runQuery(query);
             closeOracleConnection();
             return 0;
@@ -168,10 +171,8 @@ public class rankings {
         try {
             if (getAnswerID() == -1) {
                 return -1;
-            } else if (getWeight() == -1) {
-                return -1;
             }
-            getOracleConnection();
+      
             String query= "SELECT * FROM Rankings WHERE answerID=" 
                     + getAnswerID();
             ResultSet resultSet = runQuery(query);
