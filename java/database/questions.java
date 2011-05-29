@@ -410,30 +410,45 @@ public class questions {
      * @return  ResultSet   for attempt made.
      *          null        for error.
      */
-    public Vector<questions> findQuestions(Date startDate, Date endDate) {
+    public ArrayList<String> findQuestions(String startDate, String endDate, String username) {
         try {
-            if (getQuestID() == -1) {
-                return null;
-            } 
-            Vector<questions> returnQuestions = new Vector<questions>();
-            
+
+            ArrayList<String> returnQuestions = new ArrayList<String>();
+            String query = "";
             /* check this if it works */
-            String query= "SELECT questID FROM Questions WHERE created >= '"
-                    + startDate + "' AND created <= '" + endDate + "'";
-             ResultSet resultSet = runQuery(query);
-            
-            while (resultSet.next()) {
-                System.out.println("calling rs.next()");
-                returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
-                        resultSet.getString("demographic"), resultSet.getString("responseType"),
-                        resultSet.getString("question"), resultSet.getTimestamp("created"),
-                        resultSet.getString("font"), resultSet.getString("correctIndicator"),
-                        resultSet.getInt("chartType"), resultSet.getString("images"), 
-                        resultSet.getInt("creator")));
-                        
+            if(startDate!=null && endDate!=null && username==null){
+                query= "SELECT * FROM Questions WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND created <= TO_DATE('" + endDate + "', 'YYYY-MM-DD HH24:MI:SS')";
+                
             }
-            resultSet.close();
-            closeOracleConnection();
+            else if(startDate!=null && endDate==null && username==null){
+                query= "SELECT * FROM Questions WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS')";
+            }
+            else if(startDate!=null && endDate==null && username!=null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND u.userName ='" + username + "'";
+            }
+            else if(startDate!=null && endDate!=null && username!=null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE created >= TO_DATE('"
+                    + startDate + "', 'YYYY-MM-DD HH24:MI:SS') AND created <= TO_DATE('" + endDate + "', 'YYYY-MM-DD HH24:MI:SS') "
+                        + "AND u.userName ='" + username + "'";
+            }
+            else if(username!=null && startDate==null && endDate==null){
+                query= "SELECT * FROM Questions q INNER JOIN Users u ON q.creator = u.userID WHERE u.userName ='" + username + "'";
+            
+            }
+            
+            if(!query.equals("")){
+                ResultSet resultSet = runQuery(query);
+            
+                while (resultSet.next()) {
+                    System.out.println("calling rs.next()");
+                    returnQuestions.add(resultSet.getString("question") + "," + resultSet.getInt("pollID"));
+                }
+                resultSet.close();
+                closeOracleConnection();
+            }
             return returnQuestions;
         } catch (SQLException e) {
             System.out.println(e.toString());

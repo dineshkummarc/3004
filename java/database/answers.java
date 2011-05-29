@@ -118,12 +118,22 @@ public class answers {
             } else if(getCorrect().matches("false")) {
                 setCorrect("F");
             }
-            
-            String query = "INSERT INTO Answers(answerID, keypad, answer, "
+            // change 1
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Answers(answerID, keypad,"
+                    + "answer, questID, correct) VALUES(?, ?, ?, ?, ?)");
+            statement.setInt(1,getAnswerID());
+            statement.setString(2, getKeypad());
+            statement.setString(3, getAnswerText());
+            statement.setInt(4, getQuestID());
+            statement.setString(5, getCorrect());
+            statement.executeUpdate();
+            statement.close();
+            /*String query = "INSERT INTO Answers(answerID, keypad, answer, "
                     + "questID, correct) VALUES (" + getAnswerID() + ", '"
                     + getKeypad() + "', '" + getAnswerText() + "', "
                     + getQuestID() + ", '" + getCorrect() + "')";
-            runQuery(query);
+            runQuery(query);*/
             
             closeOracleConnection();
             return 0;
@@ -163,11 +173,19 @@ public class answers {
                 setCorrect("F");
             }
             
-            
-            String query= "UPDATE Answers SET answer='" + getAnswerText()
+            // change 2
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("UPDATE Answers SET"
+                    + " answer=?, keypad=?, correct=? WHERE answerID=?");
+            statement.setString(1, getAnswerText());
+            statement.setString(2, getKeypad());
+            statement.setString(3, getCorrect());
+            statement.setInt(4, getAnswerID());
+            statement.executeUpdate();
+            /*String query= "UPDATE Answers SET answer='" + getAnswerText()
                     + "', keypad='" + getKeypad() + "', correct='"
                     + getCorrect() + "' WHERE answerID=" + getAnswerID();
-            runQuery(query);
+            runQuery(query);*/
 
 
             closeOracleConnection();
@@ -193,13 +211,21 @@ public class answers {
             if (getAnswerID() == -1) {
                 return -1;
             } 
-            String query = "DELETE FROM Rankings WHERE answerID=" + getAnswerID();
-            runQuery(query);
-             closeOracleConnection();
-            query= "DELETE FROM Answers WHERE answerID="
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM Rankings WHERE answerID=?");
+            statement.setInt(1, getAnswerID());
+            statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM Answers WHERE answerID=?");
+            statement.setInt(1, getAnswerID());
+            statement.executeUpdate();
+            statement.close();
+            /*String query = "DELETE FROM Rankings WHERE answerID=" + getAnswerID();
+            runQuery(query);*/
+            //closeOracleConnection();
+            /*query= "DELETE FROM Answers WHERE answerID="
                     + getAnswerID();
             runQuery(query);
-             closeOracleConnection();
+             closeOracleConnection();*/
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
@@ -223,9 +249,12 @@ public class answers {
             if (getAnswerID() == -1) {
                 return -1;
             } 
-            
-            String query= "SELECT * FROM Answers WHERE answerID=" + getAnswerID();
-            ResultSet resultSet = runQuery(query);
+            getOracleConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM Answers WHERE answerID=?");
+            statement.setInt(1, getAnswerID());
+            ResultSet resultSet = statement.executeQuery();
+            /*String query= "SELECT * FROM Answers WHERE answerID=" + getAnswerID();
+            ResultSet resultSet = runQuery(query);*/
             while (resultSet.next()) {
                 setAnswerID(resultSet.getInt("answerID"));
                 setQuestID(resultSet.getInt("questID"));
@@ -233,6 +262,8 @@ public class answers {
                 setAnswerText(resultSet.getString("answer"));
                 setCorrect(resultSet.getString("correct"));
             }
+            resultSet.close();
+            statement.close();
             closeOracleConnection();
             return 0;
         } catch (Exception e) {

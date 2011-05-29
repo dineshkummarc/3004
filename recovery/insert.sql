@@ -19,16 +19,16 @@ INSERT into Polls(pollID, pollName, location, description) values (pseq.nextval,
 
 -- Question
 SELECT 'Inserting Questions' FROM dual;
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'How old are you?', 1, SYSDATE, 1);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Whats your favourite colour?', 1, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'How old are you?', 1, TO_DATE('2011-01-18 12:42:21', 'YYYY-MM-DD HH24:MI:SS'), 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Whats your favourite colour?', 1, TO_DATE('2011-02-18 06:42:21', 'YYYY-MM-DD HH24:MI:SS'), 1);
 --INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite animal?', 1, SYSDATE, 1);
 
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Star Wars movie?', 2, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Star Wars movie?', 2, TO_DATE('2012-03-22 12:22:21', 'YYYY-MM-DD HH24:MI:SS'), 1);
 --INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', 'Favourite LOTR movie?', 2, SYSDATE, 1);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Back to the Future movie?', 2, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', 'Favourite Back to the Future movie?', 2, TO_DATE('2011-04-21 15:42:21', 'YYYY-MM-DD HH24:MI:SS'), 1);
 
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '1+1=?', 3, SYSDATE, 3);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', '2+1=?', 3, SYSDATE, 3);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '1+1=?', 3, TO_DATE('2011-05-11 13:42:22', 'YYYY-MM-DD HH24:MI:SS'), 3);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'S', '2+1=?', 3, TO_DATE('2010-06-06 19:42:21', 'YYYY-MM-DD HH24:MI:SS'), 3);
 --INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'M', '5+1=?', 3, SYSDATE, 3);
 
 -- Answers
