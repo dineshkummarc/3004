@@ -173,10 +173,17 @@ public class polls {
             }
             
             getOracleConnection();
-            String query= "INSERT INTO Polls(pollID, pollName, location, description) VALUES"
+            /*String query= "INSERT INTO Polls(pollID, pollName, location, description) VALUES"
                     + "(" + getPollID() + ", '" + getPollName() + "', '" 
-                    + getLocation() + "', '" + getDescription() + "')";  
-            runQuery(query);
+                    + getLocation() + "', '" + getDescription() + "')";  */
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO POLLS(pollID, pollName, location, description) VALUES" +
+                    "(?, ?, ?, ?)");
+            statement.setInt(1, getPollID());
+            statement.setString(2, getPollName());
+            statement.setString(3, getLocation());
+            statement.setString(4, getDescription());
+            statement.executeUpdate();
+            //runQuery(query);
             closeOracleConnection();
             return 0;
         } catch (Exception e) {
