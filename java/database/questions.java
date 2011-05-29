@@ -140,6 +140,66 @@ public class questions {
     }
     
     /**
+     * Attempts to locate all comparitives in the database with the same questID
+     * 
+     * Pre-condition: The questID must be set to an existing question
+     * 
+     * @return  Vector<comparitives>   for attempt made.
+     *          null                    for error.
+     */
+    public Vector<comparitives> getComparitives() {
+        try {
+            if (getQuestID() == -1) {
+                return null;
+            }
+             Vector<comparitives> returnQuestions = new Vector<comparitives>();
+            
+            getOracleConnection();
+            String query= "SELECT * FROM Comparitives WHERE questID="
+                    + getQuestID();  
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                returnQuestions.add(new comparitives(resultSet.getInt("questID"), resultSet.getInt("compareTo")));
+            }
+            closeOracleConnection();
+            return returnQuestions;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+    
+    /**
+     * Attempts to locate all questionWidgets in the database with the same questID
+     * 
+     * Pre-condition: The questID must be set to an existing question
+     * 
+     * @return  Vector<questionWidgets>   for attempt made.
+     *          null                    for error.
+     */
+    public Vector<questionWidgets> getQuestionWidgets() {
+        try {
+            if (getQuestID() == -1) {
+                return null;
+            }
+             Vector<questionWidgets> returnQuestions = new Vector<questionWidgets>();
+            
+            getOracleConnection();
+            String query= "SELECT * FROM QuestionWidgets WHERE questID="
+                    + getQuestID();  
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                returnQuestions.add(new questionWidgets(resultSet.getInt("questID"), resultSet.getInt("widgetID")));
+            }
+            closeOracleConnection();
+            return returnQuestions;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+    
+    /**
      * Attempts to add this question to the database. 
      * Database will not be checked for success.
      * Will not update existing question.

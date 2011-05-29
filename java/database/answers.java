@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import java.util.Vector;
 import oracle.jdbc.pool.OracleDataSource;
 /**
  *
@@ -125,6 +126,36 @@ public class answers {
         } catch (Exception e) {
             System.out.println(e.toString());
             return -2;
+        }
+    }
+    
+    /**
+     * Attempts to locate all rankings in the database with the same questID
+     * 
+     * Pre-condition: The questID must be set to an existing question
+     * 
+     * @return  Vector<rankings>   for attempt made.
+     *          null                    for error.
+     */
+    public Vector<rankings> getRankings() {
+        try {
+            if (getQuestID() == -1) {
+                return null;
+            }
+             Vector<rankings> returnQuestions = new Vector<rankings>();
+            
+            getOracleConnection();
+            String query= "SELECT * FROM Rankings WHERE answerID="
+                    + getAnswerID();  
+            ResultSet resultSet = runQuery(query);
+            while (resultSet.next()) {
+                returnQuestions.add(new rankings(resultSet.getInt("answerID"), resultSet.getInt("weight")));
+            }
+            closeOracleConnection();
+            return returnQuestions;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
         }
     }
     
