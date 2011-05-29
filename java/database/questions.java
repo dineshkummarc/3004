@@ -5,6 +5,7 @@ package database;
 
 import java.sql.*;
 import java.util.Vector;
+import oracle.jdbc.pool.OracleDataSource;
 /**
  *
  * @author Darren
@@ -16,7 +17,7 @@ public class questions {
     private String demographic;
     private String responseType;
     private String questionText;
-    private Timestamp created;
+    private Date created;
     private String font;
     private String correctIndicator;
     private int chartType;
@@ -24,7 +25,7 @@ public class questions {
     private int creator;
 
     public questions(int questID, int pollID, String demographic, 
-            String responseType, String questionText, Timestamp created, 
+            String responseType, String questionText, Date created, 
             String font, String correctIndicator, int chartType, String images, 
             int creator) {
         this.questID = questID;
@@ -41,11 +42,11 @@ public class questions {
     }
 
     public questions(int questID) {
-        this(questID, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
+        this(questID, -1, "N", "N", "", new Date(0), "", "", -1, "", -1);
     }
 
     public questions(int pollID, String demographic, String responseType, 
-            String questionText, Timestamp created, String font, 
+            String questionText, Date created, String font, 
             String correctIndicator, int chartType, String images, 
             int creator) {
         this(-1, pollID, demographic, responseType, questionText, created, font, 
@@ -53,7 +54,7 @@ public class questions {
     }
 
     public questions() {
-        this(-1, -1, "N", "N", "", new Timestamp(0), "", "", -1, "", -1);
+        this(-1, -1, "N", "N", "", new Date(0), "", "", -1, "", -1);
     }
     
     /**
@@ -62,10 +63,12 @@ public class questions {
     private Connection getOracleConnection() {
         conn=null;
         try {
-            /* Load the Oracle JDBC Driver and register it. */
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            /* Open a new connection */
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "CSSE3004GF", "pass123");
+            OracleDataSource ods = new OracleDataSource();
+            ods.setUser("CSSE3004GF");
+            ods.setPassword("pass123");
+            ods.setURL("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo");
+            ods.setConnectionCachingEnabled(true);
+            conn = ods.getConnection();
         } catch(Exception ex){
             System.out.println(ex.toString());
         }
@@ -80,6 +83,9 @@ public class questions {
      */
     private ResultSet runQuery(String query) {
         try {
+            while (conn.isClosed()) {
+                getOracleConnection();
+            }
             getOracleConnection();
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -102,8 +108,7 @@ public class questions {
     }
     
     /**
-     * Attempts to locate all answerIDs for answers to this question in
-     * the database. 
+     * Attempts to locate all answers to this question in the database. 
      * Will not check for success.
      * 
      * Pre-condition: The questID must be set to an existing question
@@ -119,7 +124,7 @@ public class questions {
              Vector<answers> returnQuestions = new Vector<answers>();
             
             getOracleConnection();
-            String query= "SELECT answerID FROM Answers WHERE questID="
+            String query= "SELECT * FROM Answers WHERE questID="
                     + getQuestID();  
             ResultSet resultSet = runQuery(query);
             while (resultSet.next()) {
@@ -147,6 +152,7 @@ public class questions {
      */
     public int addQuestion() {
         try {
+            getOracleConnection();
             if (getPollID() == -1) {
                 return -1;
             } else if (getQuestID() == -1) {
@@ -160,38 +166,29 @@ public class questions {
             } else if (getQuestionText().equals("")) {
                 return -1;
             }
-            
-            getOracleConnection();
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            
-            //INSERT INTO Questions(questID, demographic, responseType, question, pollID, created, font, correctIndicator, chartType, images, creator) VALUES (1000, 'd', 'd', 'blah', 2, SYSDATE, 'Arial', 'cock', 1, 'bla', 1)
-            //insert into questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) values(1, 'd', 'e', 'd', 1, SYSDATE, 'f', 'y', 1, 'e', 7);
-            
-
-
-            statement.setInt(1, getQuestID());
+            //PreparedStatement statement = conn.prepareStatement("INSERT INTO Questions(questid, demographic, responsetype, question, pollid, created, font, correctindicator, charttype, images, creator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            String query = "INSERT INTO Questions(questid, demographic, "
+                    + "responsetype, question, pollid, created, font, "
+                    + "correctindicator, charttype, images, creator) VALUES "
+                    + "(" + getQuestID() + ", '" + getDemographic() + "', '" 
+                    + getResponseType() + "', '" + getQuestionText() + "', " 
+                    + getPollID() + ", DATE '" + getCreated() + "', '" 
+                    + getFont() + "', '" + getCorrectIndicator() + "', " 
+                    + getChartType() + ", '" + getImages() + "', " + getCreator() + ")";
+            /*statement.setInt(1, getQuestID());
             statement.setString(2, getDemographic());
             statement.setString(3, getResponseType());
             statement.setString(4, getQuestionText());
             statement.setInt(5, getPollID());
-            statement.setTimestamp(6, getCreated());
+            statement.setDate(6, getCreated());
             statement.setString(7, getFont());
             statement.setString(8, getCorrectIndicator());
             statement.setInt(9, getChartType());
             statement.setString(10, getImages());
-            statement.setInt(11, getCreator());
-            
-            /*String query= "INSERT INTO Questions(questID, demographic, "
-                    + "responseType, question, pollID, created, font, "
-                    + "correctIndicator, chartType, images, creator) VALUES (" 
-                    + getQuestID() + ", '" + getDemographic() + "', '" 
-                    + getResponseType() + "', '" + getQuestionText() + "', " 
-                    + getPollID() + ", " + getCreated() + ", '" + getFont() 
-                    + "', '" + getCorrectIndicator() + "', " + getChartType() 
-                    + ", '" + getImages() + "', " + getCreator() + ")";  
-            runQuery(query);*/
-            statement.executeUpdate();
+            statement.setInt(11, getCreator());*/
 
+            //statement.executeUpdate();
+            runQuery(query);
             closeOracleConnection();
             return 0;
         } catch (SQLException e) {
@@ -226,13 +223,13 @@ public class questions {
                     + "', responseType='" + getResponseType() 
                     + "', question='" + getQuestionText() 
                     + "', pollID=" + getPollID()
-                    + ", created=" + getCreated()
-                    + ", font='" + getFont()
+                    + ", created= DATE '" + getCreated()
+                    + "', font='" + getFont()
                     + "', correctIndicator='" + getCorrectIndicator()
                     + "', chartType=" + getChartType()
                     + ", images='" + getImages()
                     + "', creator=" + getCreator()
-                    + ", WHERE questID=" + getQuestID();  
+                    + " WHERE questID=" + getQuestID();  
             runQuery(query);
 
             closeOracleConnection();
@@ -319,8 +316,8 @@ public class questions {
                 setQuestID(resultSet.getInt("questID"));
                 setDemographic(resultSet.getString("demographic"));
                 setResponseType(resultSet.getString("responseType"));
-                setQuestionText(resultSet.getString("questionText"));
-                setCreated(resultSet.getTimestamp("created"));
+                setQuestionText(resultSet.getString("question"));
+                setCreated(resultSet.getDate("created"));
                 setFont(resultSet.getString("font"));
                 setCorrectIndicator(resultSet.getString("correctIndicator"));
                 setChartType(resultSet.getInt("chartType"));
@@ -347,21 +344,17 @@ public class questions {
      */
     public Vector<questions> findQuestions(Date startDate, Date endDate) {
         try {
-            if (getQuestID() == -1) {
-                return null;
-            } 
             Vector<questions> returnQuestions = new Vector<questions>();
             getOracleConnection();
             /* check this if it works */
-            String query= "SELECT questID FROM Questions WHERE created >= '"
-                    + startDate + "' AND created <= '" + endDate + "'";
+            String query= "SELECT * FROM Questions WHERE created >= to_date('"
+                    + startDate + "', 'yyyy-mm-dd') AND created <= to_date('" + endDate + "', 'yyyy-mm-dd')";
              ResultSet resultSet = runQuery(query);
             
             while (resultSet.next()) {
-                System.out.println("calling rs.next()");
                 returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
                         resultSet.getString("demographic"), resultSet.getString("responseType"),
-                        resultSet.getString("question"), resultSet.getTimestamp("created"),
+                        resultSet.getString("question"), resultSet.getDate("created"),
                         resultSet.getString("font"), resultSet.getString("correctIndicator"),
                         resultSet.getInt("chartType"), resultSet.getString("images"), 
                         resultSet.getInt("creator")));
@@ -450,14 +443,14 @@ public class questions {
     /**
      * @return the created
      */
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
     /**
      * @param created the created to set
      */
-    public void setCreated(Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
