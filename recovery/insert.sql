@@ -23,9 +23,9 @@ INSERT into Questions(questID, demographic, responseType, question, pollID, crea
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (2, 'F', 'M', 'Whats your favourite colour?', 1, SYSDATE, 1);
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (3, 'F', 'S', 'Favourite animal?', 1, SYSDATE, 1);
 
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (4, 'F', 'M', 'Favourite Star Wars movie?', 2, SYSDATE, 2);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (5, 'F', 'S', 'Favourite LOTR movie?', 2, SYSDATE, 2);
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (6, 'F', 'M', 'Favourite Back to the Future movie?', 2, SYSDATE, 2);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (4, 'F', 'M', 'Favourite Star Wars movie?', 2, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (5, 'F', 'S', 'Favourite LOTR movie?', 2, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (6, 'F', 'M', 'Favourite Back to the Future movie?', 2, SYSDATE, 1);
 
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (7, 'F', 'M', '1+1=?', 3, SYSDATE, 3);
 INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (8, 'F', 'S', '2+1=?', 3, SYSDATE, 3);
@@ -71,5 +71,10 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (27, 'F',
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (28, 'F', '4', 9, 'F');
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (29, 'F', '5', 9, 'F');
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (30, 'F', '6', 9, 'F');
+
+INSERT into Assigned(1, 1, 'Poll Creator');
+INSERT into Assigned(1, 2, 'Poll Creator');
+INSERT into Assigned(2, 3, 'Poll Creator');
+
 
 commit;
