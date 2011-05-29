@@ -209,7 +209,7 @@ public class polls {
             getOracleConnection();
             String query= "UPDATE Polls SET pollName='" + getPollName() 
                     + "', location='" + getLocation() + "', description='" 
-                    + getDescription() + "', WHERE pollID=" + getPollID();  
+                    + getDescription() + "' WHERE pollID=" + getPollID();  
             runQuery(query);
             closeOracleConnection();
             return 0;
