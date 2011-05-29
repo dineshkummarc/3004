@@ -4,6 +4,7 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 /**
  *
@@ -88,12 +89,12 @@ public class polls {
      * @return  Vector<questions>   for attempt made.
      *          null                for error.
      */
-    public Vector<questions> getQuestions() {
+    public ArrayList<String> getQuestions() {
         try {
             if (getPollID() == -1) {
                 return null;
             }
-            Vector<questions> returnQuestions = new Vector<questions>();
+            ArrayList<String> returnQuestions = new ArrayList<String>();
 
             getOracleConnection();
             String query= "SELECT * FROM Questions WHERE pollID=" 
@@ -102,15 +103,47 @@ public class polls {
             
             while (resultSet.next()) {
                 System.out.println("calling rs.next()");
+             //   returnQuestions.add(Integer.toString(resultSet.getInt("questID")));
+		returnQuestions.add("{\"id\": " + resultSet.getInt("questID") + ","+
+			"\"demographic\": \"" + resultSet.getString("demographic") + "\","+
+			"\"responseType\": \"" + resultSet.getString("responseType") + "\","+
+			"\"text\": \"" + resultSet.getString("question")  + "\","+
+			"\"created\": \"" + resultSet.getTimestamp("created")  + "\","+
+			"\"font\": \"" + resultSet.getString("font")  + "\","+
+			"\"indicator\": \"" + resultSet.getString("correctIndicator")  + "\","+
+			"\"chart\": \"" + resultSet.getInt("chartType")  + "\","+
+			"\"image\": \"" + resultSet.getString("images") + "\","+
+			"\"creator\": " + resultSet.getInt("creator") + ","+
+			"\"responses\": [");
+                        System.out.print("question printed: "+resultSet.getInt("questID")+"<br/>");
+            }
+            resultSet.close();
+            closeOracleConnection();
+            return returnQuestions;
+        } catch (SQLException e) {
+            System.out.println("getQuestions(): " + e.toString());
+            return null;
+        }
+    }
+    
+    public ArrayList<Integer> getQuestionIDs() {
+        try {
+            if (getPollID() == -1) {
+                return null;
+            }
+            ArrayList<Integer> returnQuestions = new ArrayList<Integer>();
 
-                returnQuestions.add(new questions(resultSet.getInt("questID"), resultSet.getInt("pollID"), 
-                        resultSet.getString("demographic"), resultSet.getString("responseType"),
-                        resultSet.getString("question"), resultSet.getTimestamp("created"),
-                        resultSet.getString("font"), resultSet.getString("correctIndicator"),
-                        resultSet.getInt("chartType"), resultSet.getString("images"), 
-                        resultSet.getInt("creator")));
+            getOracleConnection();
+            String query= "SELECT questID FROM Questions WHERE pollID=" 
+                    + getPollID();  
+            ResultSet resultSet = runQuery(query);
+            
+            while (resultSet.next()) {
+                
+		returnQuestions.add(resultSet.getInt("questID"));
                         
             }
+            resultSet.close();
             closeOracleConnection();
             return returnQuestions;
         } catch (SQLException e) {

@@ -184,7 +184,7 @@ public class rankings {
             closeOracleConnection();
             return -1;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println("getRanking() exception: " + e.toString());
             return -2;
         }
     }
@@ -200,14 +200,14 @@ public class rankings {
      * @return the answerID
      */
     public int getAnswerID() {
-        return answerID;
+        return this.answerID;
     }
 
     /**
      * @return the weight
      */
     public int getWeight() {
-        return weight;
+        return this.weight;
     }
 
     /**

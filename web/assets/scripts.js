@@ -88,7 +88,7 @@ $(function() {
 			var id = $(this).parent().find("input.aid").val();
 			
 			if(id != "-1") {
-				request("responses.jsp?action=delete", {id: id});
+				request("api/answers.jsp?action=delete", {id: id});
 			}
 			
 			$(this).parent().remove();
@@ -133,14 +133,14 @@ $(function() {
 		data.weight = parent.find("input.weight").val() || "NULL";
 		data.questionID = parent.parent().parent().parent().parent().parent().find("input.qid").val();
 		
-		if(data.questionID) {
+		if(data.questionID == "-1") {
 			showError(parent, "Save question first");
 			return;
 		}
 		
 		console.log(data);
 		//send the request to the server
-		request("api/response.jsp?action=update", data, function(resp) {
+		request("api/answers.jsp?action=update", data, function(resp) {
 			self.hide();
 			if(resp.newid) {
 				parent.find("input.aid").val(resp.newid);

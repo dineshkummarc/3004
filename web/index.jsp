@@ -28,7 +28,10 @@ results = Polls.getAllPollIDs();
 if(results != null){
     for(int i=0;i<results.size();i++){
         out.println("<a href=edit.html#"+results.get(i).getPollID() + ">" + results.get(i).getPollName()+"</a><br/>");
+        
+        
     }
+     
 }
 else{
     out.print("<p>1231232132131321321</p>");

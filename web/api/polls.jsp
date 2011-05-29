@@ -3,6 +3,7 @@
     Created on : 2011/5/25, ?? 09:44:09
     Author     : Hsu
 --%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@ page import="database.*"%>
 <%@page import = "java.text.*"%>
@@ -15,11 +16,11 @@ try{
     String action = request.getParameter("action");
     String Pollid = request.getParameter("id");
     questions Questions = new questions();
-    polls polls = new polls();
+    listPolls listpolls = new listPolls();
     rankings Rankings = new rankings();
     answers Answers = new answers();
     comparitives Comparitives = new comparitives();
-	Boolean run = true;
+    Boolean run = true;
     if(action == null && action.equals("")){
          out.println("Status: " + "error" + ",");
          out.println("Error: " + "action = null");
@@ -34,49 +35,36 @@ try{
     }
 	if(run){
 		int id = Integer.parseInt(Pollid);
-		polls.setPollID(id);
 		if(action.equals("grab")){
-			Vector<questions> results = polls.getQuestions();
+			ArrayList<String> results = listpolls.getQuestions(id);
+                        ArrayList<Integer> results_qid = listpolls.getQIDs();
 				if(results != null){
 					out.println("[");
-					for(int i=0; i<results.size();i++) {
-						Comparitives.setQuestID(results.get(i).getQuestID());
-						Comparitives.getComparitive();
+                                        int size_Q = results.size(); 
+					for(int i=0; i<size_Q;i++) {
+						//Comparitives.setQuestID(results.get(i).getQuestID());
+						//Comparitives.getComparitive();
                                                 /* check  this one*/
-						Vector<answers> results_Answer = Questions.getAnswers();
-						
-						out.println("{");
-						out.println("\"id\": " + results.get(i).getQuestID() + ",");
-						out.println("\"compareTo\": \"" + Comparitives.getCompareTo() + "\",");
-						out.println("\"demographic\": \"" + results.get(i).getDemographic() + "\",");
-						out.println("\"responseType\": \"" + results.get(i).getResponseType() + "\",");
-						out.println("\"text\": \"" + results.get(i).getQuestionText()  + "\",");
-						out.println("\"created\": \"" + results.get(i).getCreated()  + "\",");
-						out.println("\"font\": \"" + results.get(i).getFont()  + "\",");
-						out.println("\"indicator\": \"" + results.get(i).getCorrectIndicator()  + "\",");
-						out.println("\"chart\": \"" + results.get(i).getChartType()  + "\",");
-						out.println("\"image\": \"" + results.get(i).getImages() + "\",");
-						out.println("\"creator\": " + results.get(i).getCreator() + ",");
-						out.println("\"responses\": [");
+						String temp_Question = results.get(i);
+                                                out.println(temp_Question);
                                                 /* below needs to be modified*/
+                                                
+                                                ArrayList<String> results_Answer = Questions.getAnswers(results_qid.get(i));
+                                                //ArrayList<Integer> results_AnswerID = Questions.getAnswerID(Questions.getQuestID());
 						if(results_Answer != null){
-							for (int j=0; j<results_Answer.size(); j++) {
-								Rankings.setAnswerID(results_Answer.get(i).getAnswerID());
-								Rankings.getRanking();
-								out.println("\"id\": " + results_Answer.get(i).getAnswerID() + ",");
-								out.println("\"keypad\": \"" + results_Answer.get(i).getKeypad() + "\",");
-								out.println("\"text\": \"" + results_Answer.get(i).getAnswer() + "\",");
-								out.println("\"questionID\": " + results_Answer.get(i).getQuestID() + ",");
-								out.println("\"correct\": \"" + results_Answer.get(i).getCorrect()  + "\",");
-								out.println("\"weight\": " + Rankings.getWeight());
+                                                
+                                                        int size_A = results_Answer.size();
+							for (int j=0; j<size_A; j++) {
+                                                                String temp_Answer = results_Answer.get(j);
+								//Rankings.setAnswerID(results_AnswerID.get(j));
+								//Rankings.getRanking();
+								out.println(temp_Answer);
+								//out.println(",\"weight\": " + Rankings.getWeight() + "}");
 								if((j+1) != results_Answer.size()){
                                                                     out.println(",");
 								}
 							}
                                                         
-						}
-						else{
-							out.println("\"No Answers\"");
 						}
 						out.println("]");
 						out.println("}");
@@ -86,13 +74,16 @@ try{
 						}
 					}
 					out.println("]");
+                                        listpolls.closeOracleConnection();
 				}
+                       
+                                
 				else{
 					out.println("{");
 					out.println("Status: " + "error" + ",");
 					out.println("Error: " + "Poll ID does not exist, pick a existing one");
 					out.println("}");
-                   }
+                                        }
 		}
     }
 }
@@ -100,4 +91,6 @@ try{
 catch(Exception e){
     out.write(e.toString());
 }
+
+
 %>

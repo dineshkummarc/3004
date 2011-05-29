@@ -183,6 +183,7 @@ public class comparitives {
                 closeOracleConnection();
                 return 0;
             }
+            resultSet.close();
             closeOracleConnection();
             return -1;
         } catch (Exception e) {

@@ -4,6 +4,7 @@
     Author     : Hsu
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.*"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import = "java.text.*"%>
@@ -34,7 +35,7 @@ try{
     comparitives Comparitives = new comparitives();
 	Boolean run = true;
 	
-    if(questID == null && questID.equals("")){
+    /*if(questID == null && questID.equals("")){
          out.println("Status: " + "error" + ",");
          out.println("Error: " + "Qid = null");
          out.println("}");
@@ -93,23 +94,13 @@ try{
          out.println("Error: " + "question = null");
          out.println("}");
 		 run = false;
-    }
+    /*}*/
 	if(run){
     if(Integer.parseInt(questID) == -1){
-         if(compareTo != null && compareTo == "comparitive"){
-            Comparitives.setCompareTo(Integer.parseInt(compareTo));
-            Comparitives.setQuestID(Integer.parseInt(questID));
-            int check1 = Comparitives.addComparitive();
-            if(check1 == -2){
-            out.println("{");
-                out.println("Status: " + "error" + ",");
-                out.println("Error: " + "Qid wrong or sth wrong in the comparitives.java file");
-                out.println("}");
-            }
-        } 
+         
             /* print message for debug 0: gd, -2 : bad */
         
-        Questions.setQuestID(-1);/* set a new id for the Q*/
+        Questions.setQuestID(10);/* set a new id for the Q*/
         Questions.setDemographic(demographic);
         Questions.setResponseType(responseType);
         Questions.setQuestionText(question);
@@ -130,40 +121,48 @@ try{
         Questions.setCorrectIndicator(correctIndicator);
         Questions.setChartType(Integer.parseInt(chartType));
         Questions.setImages(images);
-        Questions.setCreator(creator);
+        Questions.setCreator(1);
         int check = Questions.addQuestion();
         if(check == -2){
             out.println("{");
-                out.println("Status: " + "error" + ",");
-                out.println("Error: " + "Qid wrong or sth wrong in the question.java file");
+                out.println("\"status\": " + "\"error\"" + ",");
+                out.println("\"error\": " + "\"Qid wrong or sth wrong in the question.java file\"");
                 out.println("}");
         }
+        if(compareTo != null && compareTo == "comparitive"){
+            Comparitives.setCompareTo(Integer.parseInt(compareTo));
+            Comparitives.setQuestID(Questions.getQuestID());
+            int check1 = Comparitives.addComparitive();
+            if(check1 == -2){
+                out.println("{");
+                out.println("\"status\": " + "\"error\"" + ",");
+                out.println("\"error\": " + "\"Qid wrong or sth wrong in the comparitives.java file\"");
+                out.println("}");
+            }
+        } 
+        out.println("{");
+        out.println("\"status\": " + "\"ok\"" + ",");
+        out.println("\"newid\": " + check);
+        out.println("}");
          /* print message for debug 0: gd, -2 : bad */
     }
     if(Integer.parseInt(questID) != -1 && action.equals("delete")){
-            Comparitives.setQuestID(Integer.parseInt(questID));
-            Comparitives.deleteComparitive();
+                
+            //Comparitives.setQuestID(Integer.parseInt(questID));
+            /*Comparitives.deleteComparitive();
             int check1 = Comparitives.deleteComparitive();
             if(check1 == -2){
                 out.println("{");
                 out.println("Status: " + "error" + ",");
                 out.println("Error: " + "Qid wrong or sth wrong in the comparitives.java file");
                 out.println("}");
-            }
-            Questions.setQuestID(Integer.parseInt(questID));
-            Vector<answers> results = Questions.getAnswers();
-            for(int i =0; i<results.size(); i++) {
-                Rankings.setAnswerID(results.get(i).getAnswerID());
-                Rankings.deleteRanking();
-                Answers.setAnswerID(results.get(i).getAnswerID());
-                Answers.deleteAnswer();
-            }
+            }*/
             Questions.setQuestID(Integer.parseInt(questID));
             int check = Questions.deleteQuestion();
             if(check == -2){
                 out.println("{");
-                out.println("Status: " + "error" + ",");
-                out.println("Error: " + "Qid wrong or sth wrong in the question.java file");
+                out.println("\"status\": " + "\"error\"" + ",");
+                out.println("\"error\": " + "\"Qid wrong or sth wrong in the question.java file\"");
                 out.println("}");
             }
             /*print message for debug 0: gd, -2 : bad */
@@ -185,8 +184,8 @@ try{
         int check = Questions.editQuestion();
             if(check == -2){
                 out.println("{");
-                out.println("Status: " + "error" + ",");
-                out.println("Error: " + "Qid wrong or sth wrong in the question.java file");
+                out.println("\"status\": " + "\"error\"" + ",");
+                out.println("\"error\": " + "\"Qid wrong or sth wrong in the question.java file\"");
                 out.println("}");
             }
          /*print message for debug 0: gd, -2 : bad */
