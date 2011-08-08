@@ -1,0 +1,131 @@
+(function($, window, document, undefined) {
+var CONTAINER;
+
+function loadView(view) {
+	var pos = view.indexOf('/'),
+		qstr, vars, i = 0, l,
+		page = view;
+	
+	//if there are some URL vars
+	if(~pos) {
+		qstr = view.substr(pos+1);
+		vars = qstr.split('/');
+		
+		dbPoll.q = {};
+		//add it to the dbPoll namespace
+		for(l = vars.length; i < l; i += 2) {
+			dbPoll.q[vars[i]] = vars[i+1];
+		}
+		
+		page = view.substring(0, pos);
+	}
+
+	//load the HTML
+	$.ajax("view/"+page+".html", {
+		dataType: "html",
+		cache: false,
+		
+		success: function(html) {
+			CONTAINER.html(html);
+			
+			//save all jQuery elements in an object
+			$("*").each(function() {
+				var id = $(this).attr("id");
+				dbPoll.obj = {};
+				
+				if(id) {
+					dbPoll.obj[id] = $(this);
+				}
+			});
+			
+			//load the SCRIPT after the HTML
+                        var scr = document.createElement("script");
+                        scr.src = "model/"+page+".js";
+                        document.getElementsByTagName("head")[0].appendChild(scr);
+		}
+	});
+	
+	//change the URL
+	window.location.hash = "#!/" + view;
+}
+
+//on document ready
+$(function() {
+	//get the page from the hashbang
+	var page = window.location.hash.substr(3);
+	CONTAINER = $("#container");
+	
+	if(!page) {
+		loadView("Login");
+	} else {
+		loadView(page);
+	}
+	
+	//catch all links to detect a page change
+	$("a").live("click", function(e) {
+		var href = $(this).attr("href");
+                if(!href) return true;
+		
+		//need to load in a new view
+		if(href.charAt(0) === ":") {
+			loadView(href.substr(1));
+			
+			//stop the link from doing anything
+			e.preventDefault();
+			e.stopPropagation();
+			return false;
+		}
+		
+		//else treat as a normal link
+		return true;
+	});
+});
+
+//setup a global namespace
+if(!window.dbPoll) window.dbPoll = {};
+
+dbPoll.api = function(url, data, resp) {
+	if(typeof data === "function") {
+		resp = data;
+		data = {};
+	}
+	
+	$.ajax(url, {
+		data: data,
+		dataType: "text",
+		
+		success: function(d) {
+			//because the JSON will most 
+			//likely not be well formed
+                        try {
+			var json =  eval("(" + d + ")");
+                        } catch(err) {
+                            console.log(err, d);
+                        }
+                        
+                        if(json.error) {
+				dbPoll.error(json.error)
+			}
+			
+			if(resp) resp(json);
+		}
+	});
+};
+
+dbPoll.go = loadView;
+
+dbPoll.error = function(msg) {
+	console.log(msg);
+}
+
+$.fn.up = function(level) {
+	var i = 0, p;
+	
+	for(; i < level; ++i) {
+		p = $(this).parent();
+	}
+	
+	return p;
+};
+
+})(jQuery, window, document);
