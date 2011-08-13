@@ -5,8 +5,8 @@
 		"id": "2",
 		"question": "What is your favourite color?",
 		"answers": {
-			1: "Example answer 1",
-			2: "Example answer 2",
+			1: "Strongly Agree",
+			2: "Agree",
 			3: "Example answer 3",
 			4: "Example answer 4",
 			5: "Example answer 5",
