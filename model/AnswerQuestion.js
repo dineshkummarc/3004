@@ -13,8 +13,10 @@ dbPoll.api("test.txt", function(data) {
 	o.qnum.text(index+1);
 	o.qtotal.text(l);
 	
-	o.answer.css("font-family", question.font);
-	o.image.attr("src", question.images);
+	console.log(question);
+	
+	if(question.font && question.font != "null") o.answer.css("font-family", question.font);
+	if(question.images && question.images != "null") o.image.attr("src", question.images);
 	
 	o.name.text(question.question);
 	

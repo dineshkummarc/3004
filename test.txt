@@ -1,43 +1,46 @@
 {
-     "status": "error status (string)",
-     "questions": [{
-		"type": "mp-single",
-		"id": "2",
-		"question": "What is your favourite color?",
-		"answers": {
-			1: "Strongly Agree",
-			2: "Agree",
-			3: "Example answer 3",
-			4: "Example answer 4",
-			5: "Example answer 5",
-			6: "Example answer 6"
-		},
-		"font": "Comic Sans MS",
-		"correctIndicator": "tick.png",
-		"images": "assets/images/logo-small.png",
-		"widgets": {
-			"timer": 300,
-		}
-	 }
-	 ,
-	 {
-		"type": "sr-num",
-		"id": "3",
-		"question": "What is your favourite food?",
-		"answers": {
-			7: "Example answer 1",
-			8: "Example answer 2",
-			9: "Example answer 3",
-			10: "Example answer 4",
-			11: "Example answer 5",
-			12: "Example answer 6"
-		},
-		"font": "Verdana",
-		"correctIndicator": "tick.png",
-		"images": "assets/images/logo-small.png",
-		"widgets": {
-			"timer": 300,
-		}
-	 }]
-		
- }
+    "questions": [
+        {
+            "id": 4,
+            "type": "mp-multiple",
+            "question": "Favourite Star Wars movie?",
+            "font": "null",
+            "correctIndicator": "vaginas.png",
+            "images": "null",
+            "answers": {
+                "10": "Episode 1",
+                "11": "Episode 2",
+                "12": "Episode 3",
+                "13": "Episode 4",
+                "14": "Episode 5",
+                "15": "Episode 6"
+            }
+        },
+        {
+            "id": 5,
+            "type": "mp-multiple",
+            "question": "Favourite LOTR movie?",
+            "font": "null",
+            "correctIndicator": "vaginas.png",
+            "images": "null",
+            "answers": {
+                "16": "1",
+                "17": "2",
+                "18": "3"
+            }
+        },
+        {
+            "id": 6,
+            "type": "mp-multiple",
+            "question": "Favourite Back to the Future movie?",
+            "font": "null",
+            "correctIndicator": "vaginas.png",
+            "images": "null",
+            "answers": {
+                "19": "I",
+                "20": "II",
+                "21": "III"
+            }
+        }
+    ]
+}
