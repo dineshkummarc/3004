@@ -1,5 +1,5 @@
 //dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
-dbPoll.api("test.txt", function(data) {
+dbPoll.api("test2.txt", function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length,
 		question, html = "";
 		
@@ -37,15 +37,16 @@ dbPoll.api("test.txt", function(data) {
 	
 	if(question.type === "sr-num") {
 		$("#resp").keydown(function(e) {
-			return e.which >= 48 && e.which <= 57;
+			return (e.which >= 48 && e.which <= 57) || e.which === 8;
 		});
 	} else if(question.type === "sr-alphanum") {
 		$("#resp").keydown(function(e) {
-			return (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90);
+			return (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || e.which === 8;
 		});
 	}
 	
-	if(index < l) {
+	console.log(index, l);
+	if(index+1 < l) {
 		o.next.show();
 		o.next.attr("href", ":AnswerQuestion/q/"+(index+1));
 	} else {

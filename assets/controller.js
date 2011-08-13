@@ -41,7 +41,7 @@ function loadView(view) {
 			
 			//load the SCRIPT after the HTML
 			var scr = document.createElement("script");
-			scr.src = "model/"+page+".js";
+			scr.src = "model/"+page+".js?"+(+new Date);
 			document.getElementsByTagName("head")[0].appendChild(scr);
 		}
 	});
