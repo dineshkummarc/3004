@@ -5,7 +5,7 @@ $("#login-submit").click(function() {
 	console.log("LOGIN", user, pass);
 	dbPoll.api("dologin.jsp", {username: user, password: pass}, function(data) {
 		if(data.status == "OK") {
-			dbPoll.go("Main");
+			dbPoll.go("ManagePolls");
 		}
 	});
 });

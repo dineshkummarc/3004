@@ -31,7 +31,7 @@ $("#create-poll .create").click(function() {
 	
 	dbPoll.api("createpoll-json.jsp", {pollName: name}, function(data) {
 		if(data.status == "OK") {
-			dbPoll.go("ManagePolls");
+			window.location.reload();
 		}
 	});
 });
@@ -76,7 +76,7 @@ $("button.renameb").live("click", function() {
 		id = $(this).parent().parent().attr("data-id");
 		
 	dbPoll.api("editpoll-json.jsp", {pollName: name, pollID: id}, function() {
-		dbPoll.go("ManagePolls");
+		window.location.reload();
 	});
 });
 
