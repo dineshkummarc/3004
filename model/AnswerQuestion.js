@@ -1,5 +1,5 @@
 //dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
-dbPoll.api("test2.txt", function(data) {
+dbPoll.api("test.txt", function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length,
 		question, html = "";
 		
@@ -48,7 +48,7 @@ dbPoll.api("test2.txt", function(data) {
 	console.log(index, l);
 	if(index+1 < l) {
 		o.next.show();
-		o.next.attr("href", ":AnswerQuestion/q/"+(index+1));
+		o.next.attr("href", ":AnswerQuestion/poll/"+dbPoll.q.poll+"/q/"+(index+1));
 	} else {
 		o.next.hide();
 	}

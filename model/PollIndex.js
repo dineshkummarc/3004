@@ -5,7 +5,7 @@ dbPoll.api("test2.txt", function(data) {
 	//present polls
 	for(i = 0, l = data.present.length; i < l; ++i) {
 		poll = data.present[i];
-		html += "<tr><td>"+poll.name+"</td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.endDate+"</td><td>";
+		html += "<tr><td><a href=':AnswerQuestion/poll/"+poll.id+"'>"+poll.name+"</a></td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.finishDate+"</td><td>";
 		html += poll.completed == "yes" ? "yes" : "no" + "</td><td></tr>";
 	}
 	
@@ -16,7 +16,7 @@ dbPoll.api("test2.txt", function(data) {
 	html = "";
 	for(i = 0, l = data.future.length; i < l; ++i) {
 		poll = data.future[i];
-		html += "<tr><td>"+poll.name+"</td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.endDate+"</td><td>";
+		html += "<tr><td><a href=':AnswerQuestion/poll/"+poll.id+"'>"+poll.name+"</a></td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.finishDate+"</td><td>";
 		html += poll.completed == "yes" ? "yes" : "no" + "</td><td></tr>";
 	}
 	
@@ -26,7 +26,7 @@ dbPoll.api("test2.txt", function(data) {
 	html = "";
 	for(i = 0, l = data.past.length; i < l; ++i) {
 		poll = data.past[i];
-		html += "<tr><td>"+poll.name+"</td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.endDate+"</td><td>";
+		html += "<tr><td><a href=':AnswerQuestion/poll/"+poll.id+"'>"+poll.name+"</a></td><td>"+poll.description+"</td><td>"+poll.startDate+"</td><td>"+poll.finishDate+"</td><td>";
 		html += poll.completed == "yes" ? "yes" : "no" + "</td><td></tr>";
 	}
 	
