@@ -1,0 +1,80 @@
+{
+     "past": [
+         {	
+			"id": 1,
+			"name": "COMP3301-Quiz1",
+			"description": "Quiz involving microcontrollers",
+			"feedback": "yes",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 4,
+			"name": "COMP3301-Quiz2",
+			"description": "Yet another quiz",
+			"feedback": "no",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 6,
+			"name": "COMP3301-Quiz4",
+			"description": "Quiz involving kernal programming",
+			"feedback": "no",
+			"completed": "no",
+			"assigned_date": "11/2/2011"
+		 },
+     ]
+     "future": [
+         {	
+			"id": 22,
+			"name": "COMP3301-Quiz12",
+			"description": "Quiz involving microcontrollers",
+			"feedback": "yes",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 42,
+			"name": "COMP3301-Quiz22",
+			"description": "Yet another quiz",
+			"feedback": "no",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 62,
+			"name": "COMP3301-Quiz42",
+			"description": "Quiz involving kernal programming",
+			"feedback": "no",
+			"completed": "no",
+			"assigned_date": "11/2/2011"
+		 },
+     ],
+	"present": [
+         {	
+			"id": 22,
+			"name": "COMP3301-Quiz12",
+			"description": "Quiz involving microcontrollers",
+			"feedback": "yes",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 42,
+			"name": "COMP3301-Quiz22",
+			"description": "Yet another quiz",
+			"feedback": "no",
+			"completed": "yes",
+			"assigned_date": "11/2/2011"
+		 },
+         {	
+			"id": 62,
+			"name": "COMP3301-Quiz42",
+			"description": "Quiz involving kernal programming",
+			"feedback": "no",
+			"completed": "no",
+			"assigned_date": "11/2/2011"
+		 },
+     ],
+ }

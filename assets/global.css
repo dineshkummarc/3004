@@ -1,0 +1,33 @@
+body, html { margin: 0; padding: 0; font-family: Arial;  }
+
+#top { padding: 5px 30px; background: #212121; border-bottom: 1px dotted #aaa; font-size: 12px; color: #eee }
+
+#top a { float: right; color: #eee }
+
+#top .name { font-family: Georgia; font-style: italic; font-weight: bold }
+
+#nav ul { padding: 0; margin: 25px 0 0 0; list-style: none }
+
+#nav li {  margin: 10px 0; }
+
+#nav a { text-decoration: none; color: #111; display: block; padding: 5px 5px 5px 20px }
+
+#nav a:hover { background: #eee }
+
+#nav { width: 170px; float: left; margin: 25px 0 0 15px; font-size: 14px }
+
+#container { float: left; padding: 20px }
+
+#container label { display: block; margin: 5px 0; }
+
+#header { padding: 10px; border-bottom: 1px solid #C3C3C3; background: #e3e3e3; }
+
+#header img { margin-left: 20px; }
+
+#footer { font-size: 13px; border-top: 1px solid #ccc; width: 90%; margin:50px auto 0 auto; text-align: center; padding-top: 10px; }
+
+#nav a.button1, .button1 { display:inline; padding: 8px 20px; border: 1px solid #62BD26; border-radius: 5px; background: #79de35; color: #fff; text-shadow: 1px 1px 0 #888; font-weight: bold }
+
+#nav a.button1 { margin-left: 18px }
+
+.clearer { clear: both }
