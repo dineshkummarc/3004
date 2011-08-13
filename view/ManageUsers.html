@@ -5,6 +5,12 @@
 <label>Email: <input type="text" class="email" /></label>
 <label>Role: <select class="role"><option value="5">System Admin</option><option value="4">Poll Admin</option></select></label>
 <label class='exp'>Expiry: <input type="text" class="expiry" /></label>
+
+<label>Location: <br />
+
+<div id="map" style="width:400px; height:300px"></div>
+</label>
+
 <button id="create">Create</button>
 </div>
 
@@ -15,8 +21,14 @@
 <label>Email: <input type="text" class="email" /></label>
 <label>Role: <select class="role"><option value="5">System Admin</option><option value="4">Poll Admin</option></select></label>
 <label class='exp'>Expiry: <input type="text" class="expiry"/></label>
+<label>Location: <br />
+
+<div id="map2"></div>
+</label>
 <button id="modify">Update Changes</button>
 </div>
 
 <h2>Remove User</h2>
 <label>Username: <input type="text" class="username" /><button id="remove">Remove</button></label>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&callback=init"></script>

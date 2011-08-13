@@ -1,12 +1,16 @@
+var MAP1, MAP2;
+
 $("#create").click(function() {
 	var param = {},
-		p = $(this).parent();
+		p = $(this).parent(),
+		pos = MAP1.getPosition();
 	
 	param.action = "register";
 	param.username = p.find(".username").val();
 	param.password = p.find(".password").val();
 	param.email = p.find(".email").val();
 	param.userType = p.find(".role").val();
+	param.location = "(" + pos.Na + "," + pos.Oa + ")";
 	
 	console.log(param);
 	dbPoll.api("edituser.jsp", param);
@@ -41,3 +45,29 @@ $("#remove").click(function() {
 	
 	dbPoll.api("edituser.jsp", {action: "remove", userName: username});
 });
+
+
+function init() {
+	console.log("TEST");
+	var latlng = new google.maps.LatLng(-27.45741210341303, 153.01979345703126);
+	var myOptions = {
+		zoom: 8,
+		center: latlng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: false
+	};
+
+	var map = new google.maps.Map(document.getElementById("map"), myOptions);
+	
+	google.maps.event.addListener(map, "click", function(e) {
+		console.log(e);
+		if(MAP1) {
+			MAP1.setPosition(e.latLng);
+		} else {
+			MAP1 = new google.maps.Marker({
+				position: e.latLng,
+				map: map
+			});
+		}
+	});
+}
