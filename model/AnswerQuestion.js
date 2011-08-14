@@ -32,7 +32,7 @@ dbPoll.api("test.txt", function(data) {
 			}
 		}
 	} else {
-		html = "<label><input id='resp' type='text' name='ans' /></label>";
+		html = "<input id='resp' type='text' name='ans' />";
 	}
 	
 	o.response.html(html);

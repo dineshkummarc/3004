@@ -4,16 +4,16 @@
             "id": 1,
             "name": "General survey",
             "description": "A general survey to get to know all the subjects.",
-            "startDate": "2008-8-12.12.0. 0. 0",
-            "finishDate": "2010-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
+            "finishDate": "2008-8-12 12:00:00",
             "completed": "true"
         },
         {
             "id": 2,
             "name": "Movie information",
             "description": "A Poll to determine movie information.",
-            "startDate": "2009-8-12.12.0. 0. 0",
-            "finishDate": "2010-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
+            "finishDate": "2008-8-12 12:00:00",
             "completed": "true"
         }
     ],
@@ -22,7 +22,7 @@
             "id": 7,
             "name": "General survey3",
             "description": "A general survey to get to know all the subjects.",
-            "startDate": "2029-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2030-8-12.12.0. 0. 0",
             "completed": "false"
         },
@@ -30,7 +30,7 @@
             "id": 9,
             "name": "Basci Mathematics3",
             "description": "Simple test to work out the mathemtical skill level of students.",
-            "startDate": "2029-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2032-8-12.12.0. 0. 0",
             "completed": "false"
         },
@@ -38,7 +38,7 @@
             "id": 8,
             "name": "Movie information3",
             "description": "A Poll to determine movie information.",
-            "startDate": "2029-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2030-8-12.12.0. 0. 0",
             "completed": "false"
         }
@@ -48,7 +48,7 @@
             "id": 3,
             "name": "Basci Mathematics",
             "description": "Simple test to work out the mathemtical skill level of students.",
-            "startDate": "2009-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2012-8-12.12.0. 0. 0",
             "completed": "true"
         },
@@ -56,7 +56,7 @@
             "id": 6,
             "name": "Basci Mathematics2",
             "description": "Simple test to work out the mathemtical skill level of students.",
-            "startDate": "2009-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2012-8-12.12.0. 0. 0",
             "completed": "false"
         },
@@ -64,7 +64,7 @@
             "id": 5,
             "name": "Movie information2",
             "description": "A Poll to determine movie information.",
-            "startDate": "2009-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2012-8-12.12.0. 0. 0",
             "completed": "false"
         },
@@ -72,7 +72,7 @@
             "id": 4,
             "name": "General survey2",
             "description": "A general survey to get to know all the subjects.",
-            "startDate": "2009-8-12.12.0. 0. 0",
+            "startDate": "2008-8-12 12:00:00",
             "finishDate": "2012-8-12.12.0. 0. 0",
             "completed": "false"
         }

@@ -1,5 +1,8 @@
 body, html { margin: 0; padding: 0; font-family: Arial;  }
 
+a, a:visited { color: #C46710; }
+a:hover { color: #FF8F26 }
+
 #top { padding: 5px 30px; background: #212121; border-bottom: 1px dotted #aaa; font-size: 12px; color: #eee }
 
 #top a { float: right; color: #eee }
@@ -18,18 +21,86 @@ body, html { margin: 0; padding: 0; font-family: Arial;  }
 
 #container { float: left; padding: 20px }
 
-#container label { display: block; margin: 5px 0; }
+label { display: block; margin: 5px 0; padding: 10px 0; width: 400px; border-bottom: 1px dotted #ccc }
 
-#header { padding: 10px; border-bottom: 1px solid #C3C3C3; background: #e3e3e3; }
+input, select { float: right; padding: 5px;  }
 
-#header:after { border-bottom:1px solid #fff; margin-top: -5px; content: "" }
+input[type=text], select { margin-top: -5px;  width: 200px; }
+
+label button { float: right }
+
+#container button { 
+	text-transform: uppercase; 
+	padding: 8px 20px; 
+	border: 1px solid #e48022; 
+	border-radius: 2px; 
+	background: #f99130; 
+	color: #fff; 
+	text-shadow: 1px 1px 1px rgba(0,0,0, 0.5); 
+	font-weight: bold; 
+	font-family: Arial;
+	font-size: 12px;
+	cursor: pointer 
+}
+
+#container h2 { margin:20px 0 0 0; font-weight: normal  }
+
+#header { padding: 10px; border-bottom: 1px solid #C3C3C3; background: #efefef; }
+
+#header span { display: block; border-bottom: 1px solid #fff; margin: 5px -10px -10px -10px; }
 
 #header img { margin-left: 20px; }
 
 #footer { font-size: 13px; border-top: 1px solid #ccc; width: 90%; margin:50px auto 0 auto; text-align: center; padding-top: 10px; }
 
-#nav a.button1, .button1 { display:inline; padding: 8px 20px; border: 1px solid #62BD26; border-radius: 5px; background: #79de35; color: #fff; text-shadow: 1px 1px 0 #888; font-weight: bold }
+#nav a.button1, .button1 { 
+	display:inline; 
+	padding: 8px 20px; 
+	border: 1px solid #62BD26; 
+	border-radius: 2px; 
+	background: #79de35; 
+	color: #fff; 
+	text-shadow: 1px 1px 1px rgba(0,0,0, 0.5); 
+	font-weight: bold; 
+	font-size: 12px;
+	text-decoration: none;
+	text-transform: uppercase; 
+}
 
 #nav a.button1 { margin-left: 18px }
 
 .clearer { clear: both }
+
+#map, #map2 { border: 1px solid #ccc }
+
+.column { float: left; margin-right: 40px }
+
+#feedback { background: #666; width: 400px; padding: 10px; border-radius: 5px; position: fixed; bottom: 0; right: 0; opacity: 0.5 }
+
+#feedback:hover { opacity: 1 }
+
+#feedback h2 { font-size: 14px; margin: 0; color: #eee; font-weight: bold }
+
+#feedback textarea { width: 300px; height: 30px }
+
+#feedback-sub { float: right } 
+
+#container h3 { font-size: 14px }
+
+#container h3 var { font-style: normal; font-family: Georgia }
+
+#next { float: right; }
+
+input#resp { float: none; margin: 0 0 20px 0; width: 100% }
+
+table { padding:0; border-collapse: collapse; border-spacing: 0; width: 100%; margin-top: 10px }
+
+td, th { padding: 5px 10px; font-size: 14px; border-bottom: 1px solid #ccc }
+
+tr:nth-child(odd) { background: #eee }
+
+th { background: #A63840; color: #fff; border-bottom: 1px solid #6E191F; font-size: 12px; text-transform: uppercase; text-shadow: 1px 1px 1px rgba(0,0,0,0.5) }
+
+table th:first-child { border-top-left-radius: 5px; }
+
+table th:last-child { border-top-right-radius: 5px }
