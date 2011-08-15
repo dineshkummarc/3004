@@ -27,16 +27,43 @@ $("select.role").change(function() {
 	}
 });
 
+var user;
 $("#edit").click(function() {
 	$("#editbox").toggle();
 	var username = $(this).parent().find(".username").val(),
 		p = $("#editbox");
 	
+	//set the global username
+	if(!user) {
+		user = username;
+	} else {
+		user = undefined;
+	}
+	
 	dbPoll.api("edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
-		p.find(".username").val(data.username);
-		p.find(".location").val(data.username);
+		var pos = data.location.split(",");
+		
+		MAP2.setPosition(new google.maps.LatLng(pos[0], pos[1]));
 		p.find(".email").val(data.email);
-		p.find(".userLevel").val(data.userLevel);
+		p.find(".role").val(data.userLevel);
+	});
+	
+	google.maps.event.trigger(map, 'resize');
+	google.maps.event.trigger(map2, 'resize');
+});
+
+$("#modify").click(function() {
+	var param = {},
+		pos = MAP2.getPosition();
+		
+	param.userName = user;
+	param.password = $(this).parent().find(".password").val();
+	param.location = "(" + pos.Na + "," + pos.Oa + ")";
+	param.userLevel = $(this).parent().find(".role").val();
+	param.email = $(this).parent().find(".role").val();
+	
+	dbPoll.api("edituser.jsp", param, function() {
+	
 	});
 });
 
@@ -58,6 +85,7 @@ function init() {
 	};
 
 	var map = new google.maps.Map(document.getElementById("map"), myOptions);
+	var map2 = new google.maps.Map(document.getElementById("map2"), myOptions);
 	
 	google.maps.event.addListener(map, "click", function(e) {
 		console.log(e);
@@ -70,4 +98,17 @@ function init() {
 			});
 		}
 	});
+	
+	google.maps.event.addListener(map2, "click", function(e) {
+		console.log(e);
+		if(MAP2) {
+			MAP2.setPosition(e.latLng);
+		} else {
+			MAP2 = new google.maps.Marker({
+				position: e.latLng,
+				map: map2
+			});
+		}
+	});
+	
 }

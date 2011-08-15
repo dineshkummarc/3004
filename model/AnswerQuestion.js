@@ -1,5 +1,5 @@
 //dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
-dbPoll.api("test.txt", function(data) {
+dbPoll.api("AnswerQuestion.txt", function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length,
 		question, html = "";
 		

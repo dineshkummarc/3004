@@ -1,0 +1,78 @@
+{"login": 0, "username": "null",
+        
+            
+             "numPolls": 3, "polls": [
+ 
+            
+                
+                
+                
+
+                {"pollID": 1, "pollName": "CSSE3004 Quiz: Week 1", "pollCreators": [
+                
+
+                
+                    
+            
+        "dcf"
+        
+                    ,
+                    
+                    
+            
+        "tester"
+        
+                ]} 
+          
+                
+                
+                , 
+                
+                
+
+                {"pollID": 2, "pollName": "CSSE3004 Quiz: Week 2", "pollCreators": [
+                
+
+                
+                    
+            
+        "dcf"
+        
+                    ,
+                    
+                    
+            
+        "admin"
+        
+                    ,
+                    
+                    
+            
+        "tester"
+        
+                ]} 
+          
+                
+                
+                , 
+                
+                
+
+                {"pollID": 3, "pollName": "CSSE3004 Demographic", "pollCreators": [
+                
+
+                
+                    
+            
+        "admin"
+        
+                    ,
+                    
+                    
+            
+        "dcf"
+        
+                ]} 
+          
+            ] }
+

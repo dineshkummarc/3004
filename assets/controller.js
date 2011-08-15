@@ -80,6 +80,10 @@ $(function() {
 		//else treat as a normal link
 		return true;
 	});
+	
+	$("#notify").click(function() {
+		$(this).stop().hide().css("top", -50);
+	});
 });
 
 //setup a global namespace
@@ -94,6 +98,7 @@ dbPoll.api = function(url, data, resp) {
 	$.ajax(url, {
 		data: data,
 		dataType: "text",
+		cache: false,
 		
 		success: function(d) {
 			//because the JSON will most 
@@ -102,22 +107,34 @@ dbPoll.api = function(url, data, resp) {
 				var json = eval("(" + d + ")");
 			} catch(err) {
 				console.log(err, d);
+				dbPoll.message("<strong>Server Error</strong>");
 			}
                      
             if(json.error) {
-				dbPoll.error(json.error)
+				dbPoll.message(json.error);
+			} else if(json.status && json.status != "OK") {
+				dbPoll.message(json.error);
 			}
 			
 			if(resp) resp(json);
+		},
+		
+		error: function() {
+			dbPoll.message("<strong>Server Error</strong>");
 		}
 	});
 };
 
 dbPoll.go = loadView;
 
-dbPoll.error = function(msg) {
-	
-	console.log(msg);
+dbPoll.message = function(msg) {
+	var n = $("#notify");
+	n.css({left: $(window).width() / 2 - n.width() / 2});
+	n.show().html(msg).animate({top: 50}, 500, function() {
+		$(this).delay(msg.length * 100).animate({top: -50}, 500, function() {
+			$(this).html("").hide();
+		});
+	});
 };
 
 $.fn.up = function(level) {

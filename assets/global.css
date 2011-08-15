@@ -25,7 +25,9 @@ label { display: block; margin: 5px 0; padding: 10px 0; width: 400px; border-bot
 
 input, select { float: right; padding: 5px;  }
 
-input[type=text], select { margin-top: -5px;  width: 200px; }
+input[type=text], input[type=password], select { margin-top: -5px;  width: 200px; }
+
+select { width: 214px; }
 
 label button { float: right }
 
@@ -71,7 +73,7 @@ label button { float: right }
 
 .clearer { clear: both }
 
-#map, #map2 { border: 1px solid #ccc }
+#map, #map2 { border: 1px solid #ccc; width:400px; height:300px }
 
 .column { float: left; margin-right: 40px }
 
@@ -104,3 +106,45 @@ th { background: #A63840; color: #fff; border-bottom: 1px solid #6E191F; font-si
 table th:first-child { border-top-left-radius: 5px; }
 
 table th:last-child { border-top-right-radius: 5px }
+
+.poll {
+	margin-top: 40px
+}
+
+.poll a.button { 
+	position: absolute;
+	left: 615px;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 12px;
+	background: #EEE;
+	padding: 5px 8px;
+	color: #555;
+	text-shadow: 1px 1px 1px white;
+	border-radius: 2px;
+	border: 1px solid #CCC;
+	margin-top: -5px;
+	width: 56px;
+	text-align: center;
+}
+
+.poll span { margin-right: 5px; background: #EEE; padding: 2px 5px; }
+
+.poll span a img { cursor: pointer; border: 0 }
+
+#notify {
+	width: 50%;
+	position: absolute;
+	z-index: 1000;
+	background: #FFF394;
+	border: 1px solid #E0D369;
+	padding: 10px;
+	border-radius: 5px;
+	text-align: center;
+	top: -50px;
+	box-shadow: 0 0 10px #FFF394;
+	display: none
+}
+
+.img { background: #eee; padding: 10px; border: 1px solid #ccc; margin: 10px auto; width: 305px; }
+.img img { border: 1px solid #ccc; }
