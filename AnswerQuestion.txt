@@ -41,6 +41,20 @@
                 "20": "II",
                 "21": "III"
             }
+        },
+
+	{
+            "id": 7,
+            "type": "sr-num",
+            "question": "Ideal movie length (in minutes)?",
+            "font": "null",
+            "correctIndicator": "null",
+            "images": "null",
+            "answers": {
+                "19": "I",
+                "20": "II",
+                "21": "III"
+            }
         }
     ]
 }

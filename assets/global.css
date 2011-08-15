@@ -148,3 +148,37 @@ table th:last-child { border-top-right-radius: 5px }
 
 .img { background: #eee; padding: 10px; border: 1px solid #ccc; margin: 10px auto; width: 305px; }
 .img img { border: 1px solid #ccc; }
+
+.col {
+	display: block;
+	float: left;
+	width: 130px;
+	background: #eee;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-right: 20px;
+	box-shadow: 0 0 3px #ccc;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none
+}
+
+.col.inactive {
+	opacity: 0.3
+}
+
+.col:hover {
+	box-shadow: 0 0 5px #79de35;
+	opacity: 1.0
+}
+
+.col span {
+	display: block;
+	text-align: center
+}
+
+a.col {
+	color: #444;
+	font-weight: bold
+}

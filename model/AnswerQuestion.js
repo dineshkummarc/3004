@@ -17,6 +17,7 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	
 	if(question.font && question.font != "null") o.answer.css("font-family", question.font);
 	if(question.images && question.images != "null") o.image.attr("src", question.images);
+	else $("div.img").hide();
 	
 	o.name.text(question.question);
 	
