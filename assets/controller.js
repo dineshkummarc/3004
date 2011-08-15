@@ -107,7 +107,7 @@ dbPoll.api = function(url, data, resp) {
 				var json = eval("(" + d + ")");
 			} catch(err) {
 				console.log(err, d);
-				dbPoll.message("<strong>Server Error</strong>");
+				dbPoll.message("<strong>Server Error:</strong> Invalid JSON data.");
 			}
                      
             if(json.error) {
@@ -120,7 +120,7 @@ dbPoll.api = function(url, data, resp) {
 		},
 		
 		error: function() {
-			dbPoll.message("<strong>Server Error</strong>");
+			dbPoll.message("<strong>Server Error:</strong> Request to server page failed.");
 		}
 	});
 };

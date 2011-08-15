@@ -86,3 +86,13 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 
 $("#submit").click(submit);
 $("#next").click(submit);
+
+$("#feedback-sub").click(function() {
+	var param = {};
+	param.qid = QID;
+	param.feedback = $("#feedback-resp").val();
+	
+	$("#feedback-resp").val("");
+	
+	dbPoll.api("submitfeedback.jsp", param);
+});
