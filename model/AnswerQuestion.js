@@ -1,3 +1,28 @@
+var QID, QTYPE;
+
+function submit() {
+	var param = {},
+		ans = [];
+		
+	param.qid = QID;
+	
+	if(QTYPE == "mp-multiple") {
+		$("input:checked").each(function() { 
+			ans.push($(this).val());
+		});
+		
+		param.aid = ans.join(",");
+	} else if(QTYPE == "mp-single") {
+		param.aid = $("input:radio[name=ans]:checked").val();
+	} else if(QTYPE.substr(0, 2) == "sr") {
+		param.a = $("#resp").val();
+	}
+	
+	dbPoll.api("submitanswer-json.jsp", param, function(data) {
+		
+	});
+}
+
 //dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
 dbPoll.api("AnswerQuestion.txt", function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length,
@@ -9,6 +34,8 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	
 	//load first question
 	question = data.questions[index];
+	QID = question.id;
+	QTYPE = question.type;
 		
 	o.qnum.text(index+1);
 	o.qtotal.text(l);
@@ -56,3 +83,6 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 		o.next.hide();
 	}
 });
+
+$("#submit").click(submit);
+$("#next").click(submit);
