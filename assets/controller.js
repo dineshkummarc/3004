@@ -159,4 +159,12 @@ $.fn.up = function(level) {
 	return p;
 };
 
+dbPoll.api("isloggedin.jsp", function(status) {
+	if(status.username) {
+		$("#top span.name").text(status.username);
+	} else {
+		dbPoll.go("Login");
+	}
+});
+
 })(jQuery, window, document);

@@ -1,4 +1,6 @@
-var QID, QTYPE, CHARTTYPE = "bar";
+var DATA, I, 
+	QID, QTYPE, QNAME,
+	CHARTTYPE = "bar";
 
 function submit() {
 	var param = {},
@@ -18,10 +20,12 @@ function submit() {
 		param.a = $("#resp").val();
 	}
 	
+	I++;
+	$("#chart").empty();
+	
 	dbPoll.api("submitanswer.txt", param, function(data) {
 		console.log(data);
 		if(data.responses) {
-			$("<div/>", {id: "chart"}).appendTo("body");
 			var table = new google.visualization.DataTable(),
 				key, i = 0, chart;
 				
@@ -39,25 +43,31 @@ function submit() {
 			}
 			
 			console.log(table);
-			chart.draw(table, {width: 500, height: 400, title: 'Results'});
-			$("#chart").css({left: $(window).width() / 2 - 250, top: $(window).height() / 2 - 200});
+			chart.draw(table, {width: 500, height: 400, title: DATA.questions[I-1].question});
 		}
 	});
 }
 
 //dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
 dbPoll.api("AnswerQuestion.txt", function(data) {
-	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length,
-		question, html = "";
+	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length;
 		
 	if(index >= l) {
 		index = l - 1;
 	}
 	
+	DATA = data;
+	I = index;
+	loadQuest(data.questions[index], index);
+});
+
+function loadQuest(question, index) {
 	//load first question
-	question = data.questions[index];
+	var o = dbPoll.obj, html = "", l = DATA.questions.length;
+	
 	QID = question.id;
 	QTYPE = question.type;
+	QNAME = question.question;
 		
 	o.qnum.text(index+1);
 	o.qtotal.text(l);
@@ -65,8 +75,11 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	console.log(question);
 	
 	if(question.font && question.font != "null") o.answer.css("font-family", question.font);
+	else o.answer.css("font-family", "Arial");
+	
 	if(question.fontColor && question.fontColor != "null") o.answer.css("color", question.fontColor);
-	if(question.fontSize && question.fontSize != "null") o.answer.css("font-size", question.fontSize);
+	else o.answer.css("color", "#000");
+	
 	if(question.images && question.images != "null") o.image.attr("src", question.images);
 	else $("div.img").hide();
 	
@@ -102,15 +115,20 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	console.log(index, l);
 	if(index+1 < l) {
 		o.next.show();
-		o.next.attr("href", ":AnswerQuestion/poll/"+dbPoll.q.poll+"/q/"+(index+1));
 	} else {
 		o.submit.text("Finish");
 		o.next.hide();
 	}
-});
+	
+	$("#feedback").show();
+}
 
 $("#submit").click(submit);
-$("#next").click(submit);
+$("#next").click(function() {
+	submit();
+	
+	loadQuest(DATA.questions[I], I);
+});
 
 $("#feedback-sub").click(function() {
 	var param = {};
@@ -120,4 +138,5 @@ $("#feedback-sub").click(function() {
 	$("#feedback-resp").val("");
 	
 	dbPoll.api("submitfeedback.jsp", param);
+	$("#feedback").hide();
 });
