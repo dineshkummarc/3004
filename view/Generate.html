@@ -1,6 +1,21 @@
+<div class="column">
+
 <h2>Generate Statistical Report</h2>
-<label>Poll: <select></select></label>
-<label>Demographic: <select></select></label>
-<label>Location: <input type="text"></label>
-<label>Chart: <select><option value="Bar">Bar</option><option value="Pie">Pie</option></select></label>
-<button id="submit">Generate</button>
+<label>Poll: <select id="polls"></select></label>
+<label>Demographic: <select id="demog"><option value="individual">Individual</option></select></label>
+<label>Value: <select id="value"></select></label>
+<label>Location: <input type="text" id="location"></label>
+<label>Chart: <select id="chartsel"><option value="Bar">Bar</option><option value="Pie">Pie</option></select></label>
+<button id="sr-submit">Generate</button>
+
+</div>
+
+<div class="column">
+<h2>Generate System Utilization</h2>
+<button id="su-submit">Generate</button>
+</div>
+
+<div class="column">
+<h2>Generate Session History</h2>
+<button id="sh-submit">Generate</button>
+</div>
