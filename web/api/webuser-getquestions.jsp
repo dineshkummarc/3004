@@ -119,18 +119,19 @@ if (pollID.equals("") || pollID == null ) {
                 inputsA[0] = questions.get(i)[0];
                 answers = db.doPreparedQuery("SELECT * FROM Answers WHERE questID = ?", inputsA, typesA, columnNamesQ, columnTypesQ);
 
+                if (answers.size() > 0) {
+                    out.print("\"answers\": {");
+                    for (int j = 0; j < answers.size(); j++) {
+                        out.print("\"" + answers.get(j)[0] +"\": \"" + answers.get(j)[1] + "\" ");
+                        //out.print("<h1> I IS " + i + " SIZE IS " + answers.size() + " </h1>");
 
-                out.print("\"answers\": {");
-                for (int j = 0; j < answers.size(); j++) {
-                    out.print("\"" + answers.get(j)[0] +"\": \"" + answers.get(j)[1] + "\" ");
-                    //out.print("<h1> I IS " + i + " SIZE IS " + answers.size() + " </h1>");
-
-                    if (j == (answers.size() -1)) {
-                        out.print("}");
-                    } else {
-                        out.print(",");
+                        if (j == (answers.size() -1)) {
+                            out.print("}");
+                        } else {
+                            out.print(",");
+                        }
                     }
-                }
+               }
                 
                 inputsW[0] = questions.get(i)[0];              
                 widgets = db.doPreparedQuery("SELECT i.widgetName, i.widgetDescription FROM QuestionWidgets w INNER JOIN Widgets i ON w.widgetID = i.widgetID WHERE w.questID = ?", inputsW, typesW, columnNamesW, columnTypesW);
