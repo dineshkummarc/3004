@@ -1,12 +1,4 @@
-var QID, QTYPE, CHARTTYPE;
-
-function init() {
-	console.log("INIT");
-	google.load('visualization', '1.0', {'packages':['corechart']});
-	google.setOnLoadCallback(function() {
-		
-	});
-}
+var QID, QTYPE, CHARTTYPE = "bar";
 
 function submit() {
 	var param = {},
@@ -29,24 +21,14 @@ function submit() {
 	dbPoll.api("submitanswer.txt", param, function(data) {
 		console.log(data);
 		if(data.responses) {
-			var data = new google.visualization.DataTable(),
+			$("<div/>", {id: "chart"}).appendTo("body");
+			var table = new google.visualization.DataTable(),
 				key, i = 0, chart;
 				
-			data.addColumn('string', 'Response');
-			data.addColumn('number', 'Amount');
+			table.addColumn('string', 'Response');
+			table.addColumn('number', 'Amount');
 			
-			//count
-			for(key in data.responses) i++;
-			
-			data.addRows(i);
-			
-			//add rows
-			i = 0;
-			for(key in data.responses) {
-				data.setValue(i, 0, key);
-				data.setValue(i, 1, data.response[key]);
-				i++;
-			}
+			table.addRows(data.responses);
 			
 			if(CHARTTYPE === "bar") {
 				chart = new google.visualization.BarChart(document.getElementById('chart'));
@@ -56,7 +38,9 @@ function submit() {
 				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			}
 			
-			chart.draw(data, {width: 500, height: 400, title: 'Results'});
+			console.log(table);
+			chart.draw(table, {width: 500, height: 400, title: 'Results'});
+			$("#chart").css({left: $(window).width() / 2 - 250, top: $(window).height() / 2 - 200});
 		}
 	});
 }
