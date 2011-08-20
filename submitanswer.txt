@@ -1,8 +1,0 @@
-{ "status": "OK","responses": 
-	[["Episode 6", 0],
-	 ["Episode 3", 0],
-	 ["Episode 5", 0],
-	 ["Episode 2", 0],
-	 ["Episode 1", 1],
-	 ["Episode 4", 0]]
-}

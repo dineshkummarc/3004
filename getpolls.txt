@@ -1,9 +1,0 @@
-[
-  {pollID: 1, pollName: "My Poll"},
-  {pollID: 2, pollName: "My Poll 2"},
-  {pollID: 3, pollName: "Iciepoll"},
-  {pollID: 4, pollName: "Pollitics"},
-  {pollID: 5, pollName: "Polly"},
-  {pollID: 6, pollName: "This is a Poll"},
-  {pollID: 7, pollName: "Another Poll"},
-]
