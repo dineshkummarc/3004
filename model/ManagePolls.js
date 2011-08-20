@@ -89,7 +89,7 @@ $(".poll a.del").live("click", function() {
             $creators = $(this).parent().parent(),
 		username = $(this).parent().text();
 	
-        username = username.substr(0, username.length - 3);
+    username = username.substr(0, username.length - 1);
 	
 	dbPoll.api("unassigncreator-json.jsp", {pollID: id, username: username}, function(data) {
 		$creators.html(updateCreators(data.pollCreators));
@@ -111,3 +111,10 @@ function updateCreators(creators) {
 	
 	return html;
 }
+
+dbPoll.exit = function() {
+	$(".poll a.del").die();
+	$(".renameb").die();
+	$(".assign").die();
+	$(".delete").die();
+};

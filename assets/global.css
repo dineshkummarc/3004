@@ -192,3 +192,7 @@ a.col {
 	top: 102px;
 	display: none;
 }
+
+#answer {
+	min-width: 200px;
+}

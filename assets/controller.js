@@ -6,6 +6,12 @@ function loadView(view) {
 		qstr, vars, i = 0, l,
 		page = view;
 	
+	//exit handler
+	if(dbPoll.exit) {
+		dbPoll.exit();
+		dbPoll.exit = null;
+	}
+	
 	dbPoll.q = {};
 	
 	//if there are some URL vars

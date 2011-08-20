@@ -14,7 +14,7 @@ dbPoll.api("getpolls.txt", function(data) {
 $("#poll").change(function() {
 	var id = $(this).val();
 	
-	dbPoll.api("geolocation.txt", {action: "load", pollID: id}, function(data) {
+	dbPoll.api("geolocation.txt", {action: "load", type: "poll", id: id}, function(data) {
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 			
