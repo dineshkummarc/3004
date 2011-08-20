@@ -1,0 +1,41 @@
+<div class="column">
+<h2>Create User</h2>
+<div class="form">
+<label>Username: <input type="text" class="username" /></label>
+<label>Password: <input type="text" class="password" /></label>
+<label>Email: <input type="text" class="email" /></label>
+<label>Role: <select class="role"><option value="System Admin">System Admin</option><option value="Poll Admin">Poll Admin</option></select></label>
+<label class='exp'>Expiry: <input type="text" class="expiry" /></label>
+
+<label>Location: <br />
+
+<div id="map" style="width:400px; height:300px"></div>
+</label>
+
+<button id="create">Create</button>
+</div>
+</div>
+
+<div class="column">
+<h2>Edit User</h2>
+<label>Username: <input type="text" class="username" /></label><button id="edit">Edit</button>
+
+<div id="editbox">
+<label>Password: <input type="text" class="password" /></label>
+<label>Email: <input type="text" class="email" /></label>
+<label>Role: <select class="role"><option value="System Admin">System Admin</option><option value="Poll Admin">Poll Admin</option></select></label>
+<label class='exp'>Expiry: <input type="text" class="expiry"/></label>
+<label>Location: <br />
+
+<div id="map2" style="width:400px; height:300px"></div>
+</label>
+<button id="modify">Update Changes</button>
+</div>
+</div>
+
+<div class="column">
+<h2>Remove User</h2>
+<label>Username: <input type="text" class="username" /></label><button id="remove">Remove</button>
+</div>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&callback=init"></script>
