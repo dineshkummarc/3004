@@ -1,4 +1,12 @@
-var QID, QTYPE;
+var QID, QTYPE, CHARTTYPE;
+
+function init() {
+	console.log("INIT");
+	google.load('visualization', '1.0', {'packages':['corechart']});
+	google.setOnLoadCallback(function() {
+		
+	});
+}
 
 function submit() {
 	var param = {},
@@ -18,8 +26,38 @@ function submit() {
 		param.a = $("#resp").val();
 	}
 	
-	dbPoll.api("submitanswer-json.jsp", param, function(data) {
-		
+	dbPoll.api("submitanswer.txt", param, function(data) {
+		console.log(data);
+		if(data.responses) {
+			var data = new google.visualization.DataTable(),
+				key, i = 0, chart;
+				
+			data.addColumn('string', 'Response');
+			data.addColumn('number', 'Amount');
+			
+			//count
+			for(key in data.responses) i++;
+			
+			data.addRows(i);
+			
+			//add rows
+			i = 0;
+			for(key in data.responses) {
+				data.setValue(i, 0, key);
+				data.setValue(i, 1, data.response[key]);
+				i++;
+			}
+			
+			if(CHARTTYPE === "bar") {
+				chart = new google.visualization.BarChart(document.getElementById('chart'));
+			} else if(CHARTTYPE === "pie") {
+				chart = new google.visualization.PieChart(document.getElementById('chart'));
+			} else if(CHARTTYPE === "column") {
+				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+			}
+			
+			chart.draw(data, {width: 500, height: 400, title: 'Results'});
+		}
 	});
 }
 
@@ -43,7 +81,8 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	console.log(question);
 	
 	if(question.font && question.font != "null") o.answer.css("font-family", question.font);
-	
+	if(question.fontColor && question.fontColor != "null") o.answer.css("color", question.fontColor);
+	if(question.fontSize && question.fontSize != "null") o.answer.css("font-size", question.fontSize);
 	if(question.images && question.images != "null") o.image.attr("src", question.images);
 	else $("div.img").hide();
 	

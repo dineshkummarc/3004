@@ -3,9 +3,10 @@ $("#login-submit").click(function() {
 		pass = $("#password").val();
 	
 	console.log("LOGIN", user, pass);
-	dbPoll.api("dologin.jsp", {username: user, password: pass}, function(data) {
-		if(data.status == "OK") {
-			dbPoll.go("ManagePolls");
+	dbPoll.api("admin-dologin.jsp", {username: user, password: pass}, function(data) {
+		if(data.username) {
+			$("#top span.name").text(data.username);
+			dbPoll.go("Home");
 		}
 	});
 });

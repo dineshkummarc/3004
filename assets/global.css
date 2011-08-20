@@ -182,3 +182,12 @@ a.col {
 	color: #444;
 	font-weight: bold
 }
+
+#chart {
+	position: absolute;
+	width: 500px;
+	height: 400px;
+	z-index: 1000;
+	left: 200px;
+	top: 200px
+}
