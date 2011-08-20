@@ -96,6 +96,14 @@ $(function() {
 		$('link[rel=stylesheet]').remove();
 		$("<link/>", {rel: "stylesheet", href: "assets/mobile.css", type: "text/css"}).append(head);
 	}
+	
+	dbPoll.api("isloggedin.jsp", function(status) {
+		if(status.username) {
+			$("#top span.name").text(status.username);
+		} else {
+			dbPoll.go("Login");
+		}
+	});
 });
 
 //setup a global namespace
@@ -125,7 +133,7 @@ dbPoll.api = function(url, data, resp) {
             if(json.error) {
 				dbPoll.message(json.error);
 			} else if(json.status && json.status != "OK") {
-				dbPoll.message(json.error);
+				dbPoll.message(json.status);
 			}
 			
 			if(resp) resp(json);
@@ -158,13 +166,5 @@ $.fn.up = function(level) {
 	
 	return p;
 };
-
-dbPoll.api("isloggedin.jsp", function(status) {
-	if(status.username) {
-		$("#top span.name").text(status.username);
-	} else {
-		dbPoll.go("Login");
-	}
-});
 
 })(jQuery, window, document);

@@ -8,6 +8,8 @@ $("#submit").click(function() {
 	param.email = o.email.val();
 		
 	dbPoll.api("registercreator-json.jsp", param, function(data) {
-		$parent.find(".message").html(data.status);
+		o.username.val("");
+		o.password.val("");
+		o.email.val("");
 	});
 });

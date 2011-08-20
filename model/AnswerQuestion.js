@@ -21,29 +21,37 @@ function submit() {
 	}
 	
 	I++;
-	$("#chart").empty();
+	$("#chart").show().empty();
 	
 	dbPoll.api("submitanswer.txt", param, function(data) {
 		console.log(data);
 		if(data.responses) {
 			var table = new google.visualization.DataTable(),
-				key, i = 0, chart;
+				key, i = 0, chart,
+				q = DATA.questions[I-1];
 				
 			table.addColumn('string', 'Response');
 			table.addColumn('number', 'Amount');
 			
 			table.addRows(data.responses);
 			
-			if(CHARTTYPE === "bar") {
+			if(q.chartType === "bar") {
 				chart = new google.visualization.BarChart(document.getElementById('chart'));
-			} else if(CHARTTYPE === "pie") {
+			} else if(q.chartType === "pie") {
 				chart = new google.visualization.PieChart(document.getElementById('chart'));
-			} else if(CHARTTYPE === "column") {
+			} else {
 				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			}
 			
 			console.log(table);
-			chart.draw(table, {width: 500, height: 400, title: DATA.questions[I-1].question});
+			chart.draw(table, {width: 500, height: 400, title: q.question});
+			
+			//if the last one
+			if(I === DATA.questions.length) {
+				$("#submit").text("Back").unbind("click").click(function() {
+					dbPoll.go("PollIndex");
+				});
+			}
 		}
 	});
 }

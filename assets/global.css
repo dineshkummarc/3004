@@ -187,7 +187,8 @@ a.col {
 	position: absolute;
 	width: 500px;
 	height: 400px;
-	
+	border: 1px solid #ccc;
 	right: 0;
-	top: 105px;
+	top: 102px;
+	display: none;
 }
