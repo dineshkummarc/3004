@@ -1,6 +1,6 @@
 var MAP, marker;
 
-dbPoll.api("getpolls.txt", function(data) {
+dbPoll.api("getpolls.jsp", function(data) {
 	var i = 0, l = data.length, html = "", poll;
 	
 	for(; i < l; ++i) {
@@ -14,7 +14,7 @@ dbPoll.api("getpolls.txt", function(data) {
 $("#poll").change(function() {
 	var id = $(this).val();
 	
-	dbPoll.api("geolocation.txt", {action: "load", type: "poll", id: id}, function(data) {
+	dbPoll.api("geolocation.jsp", {action: "load", type: "poll", id: id}, function(data) {
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 			
@@ -39,7 +39,7 @@ $("#submit").click(function() {
 	param.action = "set";
 	param.location = pos.Oa + "," + pos.Pa;
 	
-	dbPoll.api("geolocation", param);
+	dbPoll.api("geolocation.jsp", param);
 });
 
 function init() {

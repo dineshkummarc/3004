@@ -6,7 +6,7 @@ $("#sh-submit").click(function() {
 	window.location = "report.jsp?type=session"
 });
 
-dbPoll.api("getpolls.txt", function(data) {
+dbPoll.api("getpolls.jsp", function(data) {
 	var i = 0, l = data.length, html = "", p;
 	
 	for(; i < l; ++i) {

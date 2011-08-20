@@ -1,5 +1,4 @@
-//dbPoll.api("listpolls-json.jsp", function(data) {
-dbPoll.api("PollIndex.txt", function(data) {
+dbPoll.api("listpolls-json.jsp", function(data) {
 	var i, l, o = dbPoll.obj, html = "", poll;
 	console.log(data);
 	//present polls

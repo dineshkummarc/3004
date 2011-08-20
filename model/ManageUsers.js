@@ -40,7 +40,7 @@ $("#edit").click(function() {
 		user = undefined;
 	}
 	
-	dbPoll.api("edituser.txt", {returnBoolean: true, userName: username}, function(data) {
+	dbPoll.api("edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 		

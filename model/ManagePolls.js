@@ -2,7 +2,6 @@
 * Get list of polls
 */
 dbPoll.api("admin-listpolls.jsp", function(data) {
-//dbPoll.api("ManagePolls.txt", function(data) {
 	var i = 0, l = data.polls.length, j,
 		poll, creator, html = "";
 	
