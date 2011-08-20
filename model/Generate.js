@@ -20,7 +20,7 @@ dbPoll.api("getpolls.jsp", function(data) {
 $("#polls").change(function() {
 	var id = $(this).val();
 	
-	dbPoll.api("report.jsp", {pollID: id}, function(data) {
+	dbPoll.api("api/report.jsp", {pollID: id}, function(data) {
 		var i = 0, l = data.length, html = "", quest;
 		
 		for(; i < l; ++i) {

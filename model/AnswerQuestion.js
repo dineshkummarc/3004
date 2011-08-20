@@ -23,7 +23,7 @@ function submit() {
 	I++;
 	$("#chart").show().empty();
 	
-	dbPoll.api("submitanswer.jsp", param, function(data) {
+	dbPoll.api("api/submitanswer.jsp", param, function(data) {
 		console.log(data);
 		if(data.responses) {
 			var table = new google.visualization.DataTable(),
@@ -56,7 +56,7 @@ function submit() {
 	});
 }
 
-dbPoll.api("getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
+dbPoll.api("api/getquestion-json.jsp", {poll: dbPoll.q.poll}, function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length;
 		
 	if(index >= l) {
@@ -144,6 +144,6 @@ $("#feedback-sub").click(function() {
 	
 	$("#feedback-resp").val("");
 	
-	dbPoll.api("submitfeedback.jsp", param);
+	dbPoll.api("api/submitfeedback.jsp", param);
 	$("#feedback").hide();
 });

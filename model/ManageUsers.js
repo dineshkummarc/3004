@@ -13,7 +13,7 @@ $("#create").click(function() {
 	param.location = pos.Na + "," + pos.Oa;
 	
 	console.log(param);
-	dbPoll.api("edituser.jsp", param);
+	dbPoll.api("api/edituser.jsp", param);
 });
 
 $("label.exp").hide();
@@ -40,7 +40,7 @@ $("#edit").click(function() {
 		user = undefined;
 	}
 	
-	dbPoll.api("edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
+	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 		
@@ -71,7 +71,7 @@ $("#modify").click(function() {
 	param.userLevel = $(this).parent().find(".role").val();
 	param.email = $(this).parent().find(".email").val();
 	
-	dbPoll.api("edituser.jsp", param, function() {
+	dbPoll.api("api/edituser.jsp", param, function() {
 	
 	});
 });
@@ -79,7 +79,7 @@ $("#modify").click(function() {
 $("#remove").click(function() {
 	var username = $(this).parent().find(".username").val();
 	
-	dbPoll.api("edituser.jsp", {action: "remove", userName: username});
+	dbPoll.api("api/edituser.jsp", {action: "remove", userName: username});
 });
 
 

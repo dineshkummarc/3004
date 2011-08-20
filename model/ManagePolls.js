@@ -1,7 +1,7 @@
 /**
 * Get list of polls
 */
-dbPoll.api("admin-listpolls.jsp", function(data) {
+dbPoll.api("api/admin-listpolls.jsp", function(data) {
 	var i = 0, l = data.polls.length, j,
 		poll, creator, html = "";
 	
@@ -29,7 +29,7 @@ dbPoll.api("admin-listpolls.jsp", function(data) {
 $("#create-poll .create").click(function() {
 	var name = $("#create-poll .name").val();
 	
-	dbPoll.api("createpoll-json.jsp", {pollName: name}, function(data) {
+	dbPoll.api("api/createpoll-json.jsp", {pollName: name}, function(data) {
 		if(data.status == "OK") {
 			window.location.reload();
 		}
@@ -44,7 +44,7 @@ $(".delete").live("click", function() {
             id = $parent.attr("data-id");
 		
 	
-    dbPoll.api("delpoll-json.jsp", {pollID: id}, function(data) {
+    dbPoll.api("api/delpoll-json.jsp", {pollID: id}, function(data) {
          $parent.parent().remove();
     });
 });
@@ -58,7 +58,7 @@ $(".assign").live("click", function() {
             $creators = $(this).parent().parent().find(".creators"),
             id = $(this).parent().parent().attr("data-id");
 	
-	dbPoll.api("assigncreator-json.jsp", {pollID: id, username: username}, function(data) {
+	dbPoll.api("api/assigncreator-json.jsp", {pollID: id, username: username}, function(data) {
 		if(data.status !== "OK") {
 			dbPoll.error(data.status);
 		}
@@ -75,7 +75,7 @@ $(".renameb").live("click", function() {
 	var name = $(this).parent().find("input.rename").val(),
 		id = $(this).parent().parent().attr("data-id");
 		
-	dbPoll.api("editpoll-json.jsp", {pollName: name, pollID: id}, function() {
+	dbPoll.api("api/editpoll-json.jsp", {pollName: name, pollID: id}, function() {
 		window.location.reload();
 	});
 });
@@ -90,7 +90,7 @@ $(".poll a.del").live("click", function() {
 	
     username = username.substr(0, username.length - 1);
 	
-	dbPoll.api("unassigncreator-json.jsp", {pollID: id, username: username}, function(data) {
+	dbPoll.api("api/unassigncreator-json.jsp", {pollID: id, username: username}, function(data) {
 		$creators.html(updateCreators(data.pollCreators));
 	});
 });
