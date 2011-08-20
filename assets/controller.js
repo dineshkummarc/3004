@@ -53,7 +53,9 @@ function loadView(view) {
 //on document ready
 $(function() {
 	//get the page from the hashbang
-	var page = window.location.hash.substr(3);
+	var page = window.location.hash.substr(3),
+		head = $("head");
+		
 	CONTAINER = $("#container");
 	
 	if(!page) {
@@ -84,6 +86,16 @@ $(function() {
 	$("#notify").click(function() {
 		$(this).stop().hide().css("top", -50);
 	});
+	
+	if(navigator.userAgent.match(/Android/i) ||
+		navigator.userAgent.match(/webOS/i) ||
+		navigator.userAgent.match(/iPhone/i) ||
+		navigator.userAgent.match(/iPod/i)
+		) {
+		
+		$('link[rel=stylesheet]').remove();
+		$("<link/>", {rel: "stylesheet", href: "assets/mobile.css", type: "text/css"}).append(head);
+	}
 });
 
 //setup a global namespace

@@ -43,6 +43,7 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 	console.log(question);
 	
 	if(question.font && question.font != "null") o.answer.css("font-family", question.font);
+	
 	if(question.images && question.images != "null") o.image.attr("src", question.images);
 	else $("div.img").hide();
 	
@@ -80,6 +81,7 @@ dbPoll.api("AnswerQuestion.txt", function(data) {
 		o.next.show();
 		o.next.attr("href", ":AnswerQuestion/poll/"+dbPoll.q.poll+"/q/"+(index+1));
 	} else {
+		o.submit.text("Finish");
 		o.next.hide();
 	}
 });
