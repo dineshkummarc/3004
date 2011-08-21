@@ -134,12 +134,18 @@ dbPoll.api = function(url, data, resp) {
 			} catch(err) {
 				console.log(err, d);
 				dbPoll.message("<strong>Server Error:</strong> Invalid JSON data.");
+				return;
 			}
                      
             if(json.error) {
 				dbPoll.message(json.error);
 			} else if(json.status && json.status != "OK") {
 				dbPoll.message(json.status);
+			}
+			
+			if(json.redirect) {
+				dbPoll.go(json.redirect);
+				return;
 			}
 			
 			if(resp) resp(json);
