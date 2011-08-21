@@ -1,0 +1,198 @@
+body, html { margin: 0; padding: 0; font-family: Arial;  }
+
+a, a:visited { color: #C46710; }
+a:hover { color: #FF8F26 }
+
+#top { padding: 5px 30px; background: #212121; border-bottom: 1px dotted #aaa; font-size: 12px; color: #eee }
+
+#top a { float: right; color: #eee }
+
+#top .name { font-family: Georgia; font-style: italic; font-weight: bold }
+
+#nav ul { padding: 0; margin: 25px 0 0 0; list-style: none }
+
+#nav li {  margin: 10px 0; }
+
+#nav a { text-decoration: none; color: #111; display: block; padding: 5px 5px 5px 20px }
+
+#nav a:hover { background: #eee }
+
+#nav { width: 170px; float: left; margin: 25px 0 0 15px; font-size: 14px }
+
+#container { float: left; padding: 20px }
+
+label { display: block; margin: 5px 0; padding: 10px 0; width: 400px; border-bottom: 1px dotted #ccc }
+
+input, select { float: right; padding: 5px;  }
+
+input[type=text], input[type=password], select { margin-top: -5px;  width: 200px; }
+
+select { width: 214px; }
+
+label button { float: right }
+
+#container button { 
+	text-transform: uppercase; 
+	padding: 8px 20px; 
+	border: 1px solid #e48022; 
+	border-radius: 2px; 
+	background: #f99130; 
+	color: #fff; 
+	text-shadow: 1px 1px 1px rgba(0,0,0, 0.5); 
+	font-weight: bold; 
+	font-family: Arial;
+	font-size: 12px;
+	cursor: pointer 
+}
+
+#container h2 { margin:20px 0 0 0; font-weight: normal  }
+
+#header { padding: 10px; border-bottom: 1px solid #C3C3C3; background: #efefef; }
+
+#header span { display: block; border-bottom: 1px solid #fff; margin: 5px -10px -10px -10px; }
+
+#header img { margin-left: 20px; }
+
+#footer { font-size: 13px; border-top: 1px solid #ccc; width: 90%; margin:50px auto 0 auto; text-align: center; padding-top: 10px; }
+
+#nav a.button1, .button1 { 
+	display:inline; 
+	padding: 8px 20px; 
+	border: 1px solid #62BD26; 
+	border-radius: 2px; 
+	background: #79de35; 
+	color: #fff; 
+	text-shadow: 1px 1px 1px rgba(0,0,0, 0.5); 
+	font-weight: bold; 
+	font-size: 12px;
+	text-decoration: none;
+	text-transform: uppercase; 
+}
+
+#nav a.button1 { margin-left: 18px }
+
+.clearer { clear: both }
+
+#map, #map2 { border: 1px solid #ccc; width:400px; height:300px }
+
+.column { float: left; margin-right: 40px }
+
+#feedback { background: #666; width: 400px; padding: 10px; border-radius: 5px; position: fixed; bottom: 0; right: 0; opacity: 0.5 }
+
+#feedback:hover { opacity: 1 }
+
+#feedback h2 { font-size: 14px; margin: 0; color: #eee; font-weight: bold }
+
+#feedback textarea { width: 300px; height: 30px }
+
+#feedback-sub { float: right } 
+
+#container h3 { font-size: 14px }
+
+#container h3 var { font-style: normal; font-family: Georgia }
+
+#next { float: right; }
+
+input#resp { float: none; margin: 0 0 20px 0; width: 100% }
+
+table { padding:0; border-collapse: collapse; border-spacing: 0; width: 100%; margin-top: 10px }
+
+td, th { padding: 5px 10px; font-size: 14px; border-bottom: 1px solid #ccc }
+
+tr:nth-child(odd) { background: #eee }
+
+th { background: #A63840; color: #fff; border-bottom: 1px solid #6E191F; font-size: 12px; text-transform: uppercase; text-shadow: 1px 1px 1px rgba(0,0,0,0.5) }
+
+table th:first-child { border-top-left-radius: 5px; }
+
+table th:last-child { border-top-right-radius: 5px }
+
+.poll {
+	margin-top: 40px
+}
+
+.poll a.button { 
+	position: absolute;
+	left: 615px;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 12px;
+	background: #EEE;
+	padding: 5px 8px;
+	color: #555;
+	text-shadow: 1px 1px 1px white;
+	border-radius: 2px;
+	border: 1px solid #CCC;
+	margin-top: -5px;
+	width: 56px;
+	text-align: center;
+}
+
+.poll span { margin-right: 5px; background: #EEE; padding: 2px 5px; }
+
+.poll span a img { cursor: pointer; border: 0 }
+
+#notify {
+	width: 50%;
+	position: absolute;
+	z-index: 1000;
+	background: #FFF394;
+	border: 1px solid #E0D369;
+	padding: 10px;
+	border-radius: 5px;
+	text-align: center;
+	top: -50px;
+	box-shadow: 0 0 10px #FFF394;
+	display: none
+}
+
+.img { background: #eee; padding: 10px; border: 1px solid #ccc; margin: 10px auto; width: 305px; }
+.img img { border: 1px solid #ccc; }
+
+.col {
+	display: block;
+	float: left;
+	width: 130px;
+	background: #eee;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-right: 20px;
+	box-shadow: 0 0 3px #ccc;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none
+}
+
+.col.inactive {
+	opacity: 0.3
+}
+
+.col:hover {
+	box-shadow: 0 0 5px #79de35;
+	opacity: 1.0
+}
+
+.col span {
+	display: block;
+	text-align: center
+}
+
+a.col {
+	color: #444;
+	font-weight: bold
+}
+
+#chart {
+	position: absolute;
+	width: 500px;
+	height: 400px;
+	border: 1px solid #ccc;
+	right: 0;
+	top: 102px;
+	display: none;
+}
+
+#answer {
+	min-width: 200px;
+}
