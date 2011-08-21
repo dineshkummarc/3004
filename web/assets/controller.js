@@ -163,14 +163,12 @@ dbPoll.message = function(msg) {
 	});
 };
 
-$.fn.up = function(level) {
-	var i = 0, p;
-	
-	for(; i < level; ++i) {
-		p = $(this).parent();
+dbPoll.zero = function(number, width) {
+	width -= number.toString().length;
+	if(width > 0) {
+		return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
 	}
-	
-	return p;
-};
+	return number;
+}
 
 })(jQuery, window, document);

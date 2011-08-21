@@ -1,5 +1,6 @@
 var DATA, I, 
 	QID, QTYPE, QNAME,
+	interval,
 	CHARTTYPE = "bar";
 
 function submit() {
@@ -20,7 +21,7 @@ function submit() {
 		param.a = $("#resp").val();
 	}
 	
-	I++;
+	
 	$("#chart").show().empty();
 	
 	dbPoll.api("api/webuser-submitanswer.jsp", param, function(data) {
@@ -46,12 +47,7 @@ function submit() {
 			console.log(table);
 			chart.draw(table, {width: 500, height: 400, title: q.question});
 			
-			//if the last one
-			if(I === DATA.questions.length) {
-				$("#submit").text("Back").unbind("click").click(function() {
-					dbPoll.go("PollIndex");
-				});
-			}
+			
 		}
 	});
 }
@@ -69,6 +65,8 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 });
 
 function loadQuest(question, index) {
+	if(interval) clearInterval(interval);
+	$("#timer").html("");
 	//load first question
 	var o = dbPoll.obj, html = "", l = DATA.questions.length;
 	
@@ -120,11 +118,34 @@ function loadQuest(question, index) {
 	}
 	
 	console.log(index, l);
-	if(index+1 < l) {
-		o.next.show();
-	} else {
-		o.submit.text("Finish");
-		o.next.hide();
+	if(index+1 >= l) {
+		o.submit;
+		
+		o.next.text("Back").unbind("click").click(function() {
+			submit();
+			
+			dbPoll.go("PollIndex");
+		});
+	}
+	
+	var w = question.widgets;
+	
+	if(w) {
+		if(w.timer) {
+			var t = +w.timer;
+			interval = setInterval(function() {
+				var min = ~~(t / 60),
+					sec = t % 60;
+				
+				if(t <= 0) {
+					submit();
+					loadQuest(DATA.questions[++I], I);
+				}
+				
+				$("#timer").html(dbPoll.zero(min, 2) + ":" + dbPoll.zero(sec, 2));
+				t--;
+			}, 1000);
+		}
 	}
 	
 	$("#feedback").show();
@@ -134,7 +155,7 @@ $("#submit").click(submit);
 $("#next").click(function() {
 	submit();
 	
-	loadQuest(DATA.questions[I], I);
+	loadQuest(DATA.questions[++I], I);
 });
 
 $("#feedback-sub").click(function() {
