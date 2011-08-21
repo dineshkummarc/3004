@@ -200,5 +200,35 @@ public class database {
         this.password = new String();
         this.loggedIn = 0;
     }
+       
+    public int creatorLogin(String username, String password) {
+        String[] input = {username, password};
+        String[] inputTypes = {"string", "string"};
+        String[] output = {"UserID"};
+        String[] outputTypes = {"int"};
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        if(valid.isEmpty()) {
+            // invalid credentials supplied
+            return 0;
+        } else {
+            // valid credentials supplied
+            this.creatorUsername = username;
+            this.creatorPassword = password;
+            this.creatorLoggedIn = 1;
+            return 1;
+        }
+    }
     
+
+    
+    public int getCreatorLoggedIn() {
+        return this.creatorLoggedIn;
+    }
+    
+    
+    public void creatorLogout() {
+        this.creatorUsername = new String();
+        this.creatorPassword = new String();
+        this.creatorLoggedIn = 0;
+    }
 }
