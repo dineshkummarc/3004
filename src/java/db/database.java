@@ -28,7 +28,7 @@ public class database {
                 /* Load the Oracle JDBC Driver and register it. */
                 DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
                 /* Open a new connection */
-                conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4217258", "password");
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
                 //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "s4217258", "password");
             } catch(Exception ex){
                 System.out.println(ex.toString());

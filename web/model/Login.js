@@ -4,7 +4,7 @@ $("#login-submit").click(function() {
 		url;
 	
 	if($("#comp").val() === "A") {
-		url = "admin/webuser-login.jsp";
+		url = "api/webuser-login.jsp";
 	} else {
 		url = "api/admin-dologin.jsp";
 	}
