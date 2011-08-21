@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Statistical Report" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="147"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -24,10 +24,10 @@
 		<parameterDescription><![CDATA[$P{d_value}]]></parameterDescription>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["H:\\LargeDocuments\\2011-08-18_18-08-06\\NetBeansProjects\\JavaApplication1\\src\\templates\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["templates/"]]></defaultValueExpression>
 	</parameter>
-	<queryString language="SQL">
-		<![CDATA[Select questid, question from Questions WHERE pollID=$P{pollID}]]>
+	<queryString>
+		<![CDATA[Select questid, question from Questions WHERE pollID=$P{pollID} AND demographic='F']]>
 	</queryString>
 	<field name="QUESTID" class="java.math.BigDecimal"/>
 	<field name="QUESTION" class="java.lang.String"/>
@@ -123,7 +123,7 @@
 		<band height="70" splitType="Stretch">
 			<image>
 				<reportElement x="274" y="4" width="396" height="64"/>
-				<imageExpression class="java.lang.String"><![CDATA["flatdbpoll-logo.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA["templates/flatdbpoll-logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement style="Title" x="0" y="13" width="263" height="33"/>

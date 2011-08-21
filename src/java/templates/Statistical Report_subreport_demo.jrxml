@@ -11,7 +11,7 @@
 		<parameterDescription><![CDATA[$P{demographic}]]></parameterDescription>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT COUNT(r.userID), a1.answer AS category, a.answer AS subcategory FROM Responses r, Answers a, Answers a1, Responses r1 where r1.questID=$P{demo} AND r.questID=$P{qid} AND r.answerID=a.answerID AND r1.answerID=a1.answerID AND r1.userID=r.userID GROUP BY a.answer, a1.answer]]>
+		<![CDATA[SELECT COUNT(r.userID), a1.answer AS category, a.answer AS subcategory FROM MultiResponses r, Answers a, Answers a1, MultiResponses r1 where r1.questID=$P{demo} AND r.questID=$P{qid} AND r.answerID=a.answerID AND r1.answerID=a1.answerID AND r1.userID=r.userID GROUP BY a.answer, a1.answer]]>
 	</queryString>
 	<field name="COUNT(R.USERID)" class="java.math.BigDecimal"/>
 	<field name="CATEGORY" class="java.lang.String"/>

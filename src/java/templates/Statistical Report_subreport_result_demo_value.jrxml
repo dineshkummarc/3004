@@ -18,9 +18,9 @@
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT a.answer, COUNT(r.userID) AS Amount
-FROM Responses r, Answers a
+FROM MultiResponses r, Answers a
 WHERE r.questID=$P{qid} AND r.answerID=a.answerID AND r.userID IN
-(SELECT r.userID FROM Responses r, Answers a WHERE r.questID=$P{demo} AND r.questID=a.questID AND a.answerID=r.answerID AND a.answer=$P{demo_v})
+(SELECT r.userID FROM MultiResponses r, Answers a WHERE r.questID=$P{demo} AND r.questID=a.questID AND a.answerID=r.answerID AND a.answer=$P{demo_v})
 GROUP BY a.answer]]>
 	</queryString>
 	<field name="ANSWER" class="java.lang.String"/>
