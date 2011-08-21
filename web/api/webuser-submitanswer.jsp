@@ -54,6 +54,11 @@ if (db.getLoggedIn() == 1) {
             inputs2[1] = questionID;
 
             value = null;
+
+            value = db.doPreparedExecute("DELETE FROM Responses WHERE userID = ? and questID = ?", inputs, types);
+            value = db.doPreparedExecute("DELETE FROM MultiResponses WHERE userID = ? and questID = ?", inputs, types);
+            
+            value = null;
             
             value = db.doPreparedExecute("INSERT into Responses(userID, questID) values (?, ?)", inputs, types);
             for (int i = 0; i < answers.length; i++) {
@@ -109,6 +114,12 @@ if (db.getLoggedIn() == 1) {
             inputs = new String[2];
             inputs[0] = userID;
             inputs[1] = questionID;
+            
+            
+            value = null;
+
+            value = db.doPreparedExecute("DELETE FROM Responses WHERE userID = ? and questID = ?", inputs, types);
+            value = db.doPreparedExecute("DELETE FROM ShortResponses WHERE userID = ? and questID = ?", inputs, types);
             
             value = null;
             

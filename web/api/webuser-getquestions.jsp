@@ -19,10 +19,30 @@ if (pollID.equals("") || pollID == null ) {
 
     if (db.getLoggedIn() == 1) {
 
-    String userID = Integer.toString(db.getUserID());
+        String userID = Integer.toString(db.getUserID());
+        
+        //Check to see if user is actually assigned to that poll
+        
+        String checkIn[] = new String[2];
+        checkIn[0] = userID;
+        checkIn[1] = pollID;
+        
+        String checkTyp[] = new String[2];
+        checkTyp[0] = "int";
+        checkTyp[1] = "int";
+        
+        String checkCN[] = new String[1];
+        checkCN[0] = "userID";
+        String checkCT[] = new String[1];
+        checkCT[0] = "int";
+        
+        ArrayList<String[]> assigned = new ArrayList<String[]>();
+        //Change it so it only selects questions which have not been answered yet
+        assigned = db.doPreparedQuery("SELECT userID FROM assigned WHERE userID = ? AND pollID = ?", checkIn, checkTyp, checkCN, checkCT);
+        
+        if (assigned.size() != 0) {
+        
 
-    //if (null != user && !user.equals( "" )) {
-    //if (db.getLoggedIn() == 1) {
             String inputs[];
             inputs = new String[2];
             inputs[0] = pollID;
@@ -161,6 +181,9 @@ if (pollID.equals("") || pollID == null ) {
 
 
             out.print("] }");
+       } else {
+            out.print("{ \"error\": \"You are not assigned to this poll.\", \"redirect\": \"PollIndex\"}");
+       }
     } else {
         out.print("{ \"error\": \"User not logged in.\"}");
     }

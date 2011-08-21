@@ -1,3 +1,3 @@
-dbPoll.api("api/admin-dologout.jsp", function() {
+dbPoll.api("api/webuser-logout.jsp", function() {
 	dbPoll.go("Login");
 });
