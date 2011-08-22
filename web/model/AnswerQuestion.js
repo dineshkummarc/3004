@@ -50,6 +50,8 @@ function submit(show) {
 			
 			console.log(table);
 			chart.draw(table, {width: 500, height: 400, title: q.question});
+		} else {
+			$("#chart").hide();
 		}
 	});
 }
@@ -72,6 +74,7 @@ function loadQuest(question, index) {
 	//load first question
 	var o = dbPoll.obj, html = "", l = DATA.questions.length;
 	
+	if(!question) return;
 	QID = question.id;
 	QTYPE = question.type;
 	QNAME = question.question;
