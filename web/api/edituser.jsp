@@ -36,7 +36,7 @@ try{
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User removed\"");
             out.println("}");
         }
     } else if (action.equals("edit")) {
@@ -60,7 +60,7 @@ try{
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User edited\"");
             out.println("}");
         }
     } else if (action.equals("register")) {
@@ -83,7 +83,7 @@ try{
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User registered\"");
             out.println("}");
         }
     } else if (returnDetails.equals("false")){

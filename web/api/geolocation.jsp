@@ -47,7 +47,7 @@ try{
                     poll.editPoll();
                 }
                 out.println("{");
-                out.println("\"status\": " + "\"OK\"");
+                out.println("\"status\": " + "\"Location changed\"");
                 out.println("}");
             }
         }                   
