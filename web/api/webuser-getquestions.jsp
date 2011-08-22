@@ -62,18 +62,19 @@ if (pollID.equals("") || pollID == null ) {
             typesA[0] = "int";
 
             String columnNames[];
-            columnNames = new String[8];
+            columnNames = new String[9];
             columnNames[0] = "questID";
             columnNames[1] = "responseType";
             columnNames[2] = "question";
             columnNames[3] = "font";
             columnNames[4] = "correctIndicator";
             columnNames[5] = "images";
-            columnNames[6] = "textColor";
+            columnNames[6] = "fontColor";
             columnNames[7] = "fontSize";
+            columnNames[8] = "chartType";
 
             String columnTypes[];
-            columnTypes = new String[8];
+            columnTypes = new String[9];
             columnTypes[0] = "int";
             columnTypes[1] = "string";
             columnTypes[2] = "string";
@@ -82,6 +83,7 @@ if (pollID.equals("") || pollID == null ) {
             columnTypes[5] = "string";
             columnTypes[6] = "string";
             columnTypes[7] = "string";
+            columnTypes[8] = "string";
 
 
             String columnNamesQ[];
@@ -114,7 +116,7 @@ if (pollID.equals("") || pollID == null ) {
             columnTypesW = new String[2];
             columnTypesW[0] = "string";
             columnTypesW[1] = "string";
-
+            
             ArrayList<String[]> questions = new ArrayList<String[]>();
             //Change it so it only selects questions which have not been answered yet
             questions = db.doPreparedQuery("SELECT * FROM Questions WHERE pollID = ? AND questID NOT IN (SELECT questID FROM Responses WHERE userID = ?)", inputs, types, columnNames, columnTypes);
@@ -135,6 +137,7 @@ if (pollID.equals("") || pollID == null ) {
                 out.print("\"images\": \"" + questions.get(i)[5] + "\",");
                 out.print("\"fontColor\": \"" + questions.get(i)[6] + "\", ");
                 out.print("\"fontSize\": \"" + questions.get(i)[7] + "\", ");
+                out.print("\"chartType\": \"" + questions.get(i)[8] + "\", ");
 
                 inputsA[0] = questions.get(i)[0];
                 answers = db.doPreparedQuery("SELECT * FROM Answers WHERE questID = ?", inputsA, typesA, columnNamesQ, columnTypesQ);
@@ -185,7 +188,7 @@ if (pollID.equals("") || pollID == null ) {
             out.print("{ \"error\": \"You are not assigned to this poll.\", \"redirect\": \"PollIndex\"}");
        }
     } else {
-        out.print("{ \"error\": \"User not logged in.\"}");
+        out.print("{ \"error\": \"User not logged in.\", \"redirect\":\"Login\"}");
     }
 }
 %>

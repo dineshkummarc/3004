@@ -106,6 +106,6 @@ String userID = Integer.toString(db.getUserID());
         
         out.print("] }");
 } else {
-    out.print("{ \"error\": \"User not logged in.\"}");
+    out.print("{ \"error\": \"User not logged in.\", \"redirect\":\"Login\"}");
 }
 %>

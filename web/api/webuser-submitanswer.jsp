@@ -21,7 +21,7 @@ String answer = request.getParameter( "a" );
 if (db.getLoggedIn() == 1) {
     String userID = Integer.toString(db.getUserID());
     //out.println("THIS IS THE USER ID" + userID + " <br/>");
-    if (questionID.equals("") || questionID == "") {
+    if (questionID == null) {
         out.print("{ \"error\": \"Invalid question ID.\"}");                
     } else {
         String answers[];               
@@ -33,7 +33,7 @@ if (db.getLoggedIn() == 1) {
 
         String value = null;
         
-        if (answerID != null) {
+        if (!(answerID == null || answerID.equals(""))) {
             answers = answerID.split(",");               
         
             types = new String[2];
@@ -106,7 +106,7 @@ if (db.getLoggedIn() == 1) {
                 
             }
             
-        } else if (!answer.equals("") && answer != null) {
+        } else if (!(answer == null || answer.equals(""))) {
             types = new String[2];
             types[0] = "int";
             types[1] = "int";
@@ -147,7 +147,79 @@ if (db.getLoggedIn() == 1) {
                 
             }
         } else {
-            out.print("{ \"error\": \"Invalid answer ID.\"}");
+            if (answerID.equals("")) {
+                types = new String[2];
+                types[0] = "int";
+                types[1] = "int";
+
+                inputs = new String[2];
+                inputs[0] = userID;
+                inputs[1] = questionID;
+
+                value = null;
+
+                value = db.doPreparedExecute("DELETE FROM Responses WHERE userID = ? and questID = ?", inputs, types);
+                value = db.doPreparedExecute("DELETE FROM MultiResponses WHERE userID = ? and questID = ?", inputs, types);
+                value = db.doPreparedExecute("DELETE FROM ShortResponses WHERE userID = ? and questID = ?", inputs, types);
+
+                value = null;
+
+                value = db.doPreparedExecute("INSERT into Responses(userID, questID) values (?, ?)", inputs, types);
+
+                out.print("{ \"status\": \"OK\",");
+                
+                String responseInput[] = new String[1];
+                responseInput[0] = questionID;
+
+                String responseTypes[] = new String[1];
+                responseTypes[0] = "int";
+
+                String responseCN[] = new String[2];
+                responseCN[0] = "answer";
+                responseCN[1] = "COUNT(m.answerID)";
+
+                String responseCP[] = new String[2];
+                responseCP[0] = "string";
+                responseCP[1] = "int";
+
+                out.print("\"responses\": [");
+                ArrayList<String[]> responses = new ArrayList<String[]>();
+                responses = db.doPreparedQuery("SELECT m.answerID, a.answer, COUNT(m.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
+                
+                for (int i = 0; i < responses.size(); i++){
+                    out.print("[\"" + responses.get(i)[0] + "\"," + responses.get(i)[1] + "]");
+                    if (i == (responses.size() -1)) {
+                     out.print("]");
+                    } else {
+                        out.print(",");
+                    }
+                }
+                out.print("}");
+                
+                
+                
+            } else {
+            
+            types = new String[2];
+            types[0] = "int";
+            types[1] = "int";
+            
+            inputs = new String[2];
+            inputs[0] = userID;
+            inputs[1] = questionID;
+
+            value = null;
+
+            value = db.doPreparedExecute("DELETE FROM Responses WHERE userID = ? and questID = ?", inputs, types);
+            value = db.doPreparedExecute("DELETE FROM MultiResponses WHERE userID = ? and questID = ?", inputs, types);
+            value = db.doPreparedExecute("DELETE FROM ShortResponses WHERE userID = ? and questID = ?", inputs, types);
+            
+            value = null;
+            
+            value = db.doPreparedExecute("INSERT into Responses(userID, questID) values (?, ?)", inputs, types);
+ 
+            out.print("{ \"status\": \"OK\"}");
+           }
         } 
         
         value = null;
@@ -224,6 +296,6 @@ if (db.getLoggedIn() == 1) {
         
     }
 } else {
-    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\"}");
+    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\", \"redirect\":\"Login\"}");
 }
 %>
