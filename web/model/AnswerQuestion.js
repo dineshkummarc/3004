@@ -3,11 +3,12 @@ var DATA, I,
 	interval,
 	CHARTTYPE = "bar";
 
-function submit() {
+function submit(show) {
 	var param = {},
 		ans = [];
 		
 	param.qid = QID;
+	show = show === undefined ? true : false;
 	
 	if(QTYPE == "mp-multiple") {
 		$("input:checked").each(function() { 
@@ -25,7 +26,7 @@ function submit() {
 	
 	dbPoll.api("api/webuser-submitanswer.jsp", param, function(data) {
 		console.log(data);
-		if(data.responses) {
+		if(data.responses && show) {
 			var table = new google.visualization.DataTable(),
 				key, i = 0, chart,
 				q = DATA.questions[I-1];
@@ -152,7 +153,9 @@ function loadQuest(question, index) {
 	$("#feedback").show();
 }
 
-$("#submit").click(submit);
+$("#submit").click(function() {
+	submit(false);
+});
 $("#next").click(function() {
 	submit();
 	
