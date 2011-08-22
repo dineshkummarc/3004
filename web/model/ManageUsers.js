@@ -40,7 +40,7 @@ $("#edit").click(function() {
 	}
 	
 	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
-		if(data.id == -1) {
+		if(data.id == "-1") {
 			username = undefined;
 			return;
 		}
@@ -60,6 +60,9 @@ $("#edit").click(function() {
 			
 		p.find(".email").val(data.email);
 		p.find(".role").val(data.userLevel);
+		
+		google.maps.event.trigger(map, 'resize');
+		google.maps.event.trigger(map2, 'resize');
 	});
 	
 	google.maps.event.trigger(map, 'resize');
