@@ -134,7 +134,7 @@ table th:last-child { border-top-right-radius: 5px }
 
 #notify {
 	width: 50%;
-	position: absolute;
+	position: fixed;
 	z-index: 1000;
 	background: #FFF394;
 	border: 1px solid #E0D369;
