@@ -13,6 +13,7 @@ function loadView(view) {
 	}
 	
 	dbPoll.q = {};
+	dbPoll.page = view;
 	
 	//if there are some URL vars
 	if(~pos) {
@@ -103,13 +104,15 @@ $(function() {
 		$("<link/>", {rel: "stylesheet", href: "assets/mobile.css", type: "text/css"}).append(head);
 	}
 	
-	dbPoll.api("api/isloggedin.jsp", function(status) {
-		if(status.username) {
-			$("#top span.name").text(status.username);
-		} else {
-			dbPoll.go("Login");
-		}
-	});
+	if(dbPoll.page !== "Login") {
+		dbPoll.api("api/isloggedin.jsp", function(status) {
+			if(status.username) {
+				$("#top span.name").text(status.username);
+			} else {
+				dbPoll.go("Login");
+			}
+		});
+	}
 });
 
 //setup a global namespace
