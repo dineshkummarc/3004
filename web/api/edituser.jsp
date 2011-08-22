@@ -97,13 +97,19 @@ try{
         users user = new users();
         user.setUserName(userName);
         user.getUserByUserName();
-        out.println("{");
-        out.println("\"userID\": \"" + user.getUserID() + "\",");
-        out.println("\"userName\": \"" + user.getUserName() + "\",");
-        out.println("\"email\": \"" + user.getEmail() + "\",");
-        out.println("\"location\": \"" + user.getLocation() + "\",");
-        out.println("\"userLevel\": \"" + user.getUserLevel() + "\"");
-        out.println("}");
+		if (user.getUserID() != -1) {
+			out.println("{");
+			out.println("\"userID\": \"" + user.getUserID() + "\",");
+			out.println("\"userName\": \"" + user.getUserName() + "\",");
+			out.println("\"email\": \"" + user.getEmail() + "\",");
+			out.println("\"location\": \"" + user.getLocation() + "\",");
+			out.println("\"userLevel\": \"" + user.getUserLevel() + "\"");
+			out.println("}");
+		} else {
+			out.println("{");
+            out.println("\"status\": " + "\"User not found\"");
+            out.println("}");
+		}
     }
 } catch(Exception e){
     out.write(e.toString());

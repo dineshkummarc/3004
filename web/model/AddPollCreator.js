@@ -14,6 +14,9 @@ $("#submit").click(function() {
 		o.password.val("");
 		o.email.val("");
 		
-		dbPoll.cancelMessage();
+		//stop showing the load message
+		if(data.status == "OK") {
+			dbPoll.cancelMessage();
+		}
 	});
 });

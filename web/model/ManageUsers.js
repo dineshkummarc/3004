@@ -40,15 +40,15 @@ $("#edit").click(function() {
 	}
 	
 	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
-		if(data.id == "-1") {
+		if(data.userID == "-1") {
 			username = undefined;
 			return;
 		}
 		
-		$("#editbox").toggle();
+		$("#editbox").show();
 	
 		var pos = data.location.split(","),
-			latlng = new google.maps.LatLng(pos[0], pos[1]);
+			latlng = new google.maps.LatLng($.trim(pos[0]), $.trim(pos[1]));
 		
 		console.log(map2, pos, latlng);
 		MAP2 = new google.maps.Marker({
@@ -60,9 +60,9 @@ $("#edit").click(function() {
 			
 		p.find(".email").val(data.email);
 		p.find(".role").val(data.userLevel);
-		
-		google.maps.event.trigger(map, 'resize');
-		google.maps.event.trigger(map2, 'resize');
+                
+                google.maps.event.trigger(map, 'resize');
+                google.maps.event.trigger(map2, 'resize');
 	});
 	
 	google.maps.event.trigger(map, 'resize');
