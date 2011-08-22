@@ -107,6 +107,7 @@ try{
 			out.println("}");
 		} else {
 			out.println("{");
+			out.println("\"userID\": \"" + user.getUserID() + "\",");
             out.println("\"status\": " + "\"User not found\"");
             out.println("}");
 		}
