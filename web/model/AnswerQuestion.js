@@ -22,7 +22,7 @@ function submit(show) {
 		param.a = $("#resp").val();
 	}
 	
-	if(show && q.chartType !== "null") $("#chart").show().empty();
+	if(show && q && q.chartType !== "null") $("#chart").show().empty();
 	
 	dbPoll.api("api/webuser-submitanswer.jsp", param, function(data) {
 		console.log(data);
