@@ -17,7 +17,7 @@ function submit(show) {
 		
 		param.aid = ans.join(",");
 	} else if(QTYPE == "mp-single") {
-		param.aid = $("input:radio[name=ans]:checked").val();
+		param.aid = $("input:radio[name=ans]:checked").val() || "";
 	} else if(QTYPE.substr(0, 2) == "sr") {
 		param.a = $("#resp").val();
 	}
