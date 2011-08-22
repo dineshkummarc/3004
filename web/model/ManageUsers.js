@@ -33,11 +33,7 @@ $("#edit").click(function() {
 		p = $("#editbox");
 	
 	//set the global username
-	if(!user) {
-		user = username;
-	} else {
-		user = undefined;
-	}
+	user = username;
 	
 	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
 		if(data.userID == "-1") {
@@ -74,7 +70,7 @@ $("#modify").click(function() {
 		pos = MAP2.getPosition();
 		
 	console.log(pos);
-        param.action = "edit";
+    param.action = "edit";
 	param.userName = user;
 	param.password = $(this).parent().find(".password").val();
 	param.location = pos.Oa + "," + pos.Pa;
