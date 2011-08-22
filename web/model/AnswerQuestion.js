@@ -21,7 +21,6 @@ function submit() {
 		param.a = $("#resp").val();
 	}
 	
-	
 	$("#chart").show().empty();
 	
 	dbPoll.api("api/webuser-submitanswer.jsp", param, function(data) {
@@ -31,23 +30,25 @@ function submit() {
 				key, i = 0, chart,
 				q = DATA.questions[I-1];
 				
+			if(!q) return;	
+			
 			table.addColumn('string', 'Response');
 			table.addColumn('number', 'Amount');
 			
 			table.addRows(data.responses);
 			
-			if(q.chartType === "bar") {
-				chart = new google.visualization.BarChart(document.getElementById('chart'));
+			if(q.chartType === "column") {
+				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			} else if(q.chartType === "pie") {
 				chart = new google.visualization.PieChart(document.getElementById('chart'));
+			} else if(q.chartType === "bar") {
+				chart = new google.visualization.BarChart(document.getElementById('chart'));
 			} else {
-				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+				return;
 			}
 			
 			console.log(table);
 			chart.draw(table, {width: 500, height: 400, title: q.question});
-			
-			
 		}
 	});
 }

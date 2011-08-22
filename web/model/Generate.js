@@ -6,12 +6,12 @@ $("#sh-submit").click(function() {
 	window.location = "report.jsp?type=session"
 });
 
-dbPoll.api("getpolls.jsp", function(data) {
+dbPoll.api("api/reportPolls.jsp", {userID: 2}, function(data) {
 	var i = 0, l = data.length, html = "", p;
 	
 	for(; i < l; ++i) {
 		p = data[i];
-		html += "<option value='"+p.pollID+"'>"+p.pollName+"</option>";
+		html += "<option value='"+p.pollID+"'>"+p.PollName+"</option>";
 	}
 	
 	$("#polls").html(html).trigger("change");
@@ -20,13 +20,13 @@ dbPoll.api("getpolls.jsp", function(data) {
 $("#polls").change(function() {
 	var id = $(this).val();
 	
-	dbPoll.api("api/report.jsp", {pollID: id}, function(data) {
+	dbPoll.api("api/reportQuestion.jsp", {pollID: id}, function(data) {
 		var i = 0, l = data.length, html = "", quest;
 		
 		for(; i < l; ++i) {
 			quest = data[i];
 			
-			html += "<option value='"+p.id+"'>"+p.Question+"</option>";
+			html += "<option value='"+p.questID+"'>"+p.Question+"</option>";
 		}
 		
 		html += "<option value='individual'>Individual</option>";
@@ -39,13 +39,13 @@ $("#demog").change(function() {
 	var id = $("#polls").val();
 	
 	if($(this).val() === "individual") {
-		dbPoll.api("report.jsp", {pollID: id, demotype: "individual"}, function(data) {
+		dbPoll.api("api/reportUser.jsp", {pollID: id}, function(data) {
 			var i = 0, l = data.length, html = "<option value=''>---</option>", user;
 		
 			for(; i < l; ++i) {
 				user = data[i];
 				
-				html += "<option value='"+user.id+"'>"+user.UserName+"</option>";
+				html += "<option value='"+user.userID+"'>"+user.UserName+"</option>";
 			}
 			
 			$("#value").html(html);
@@ -54,6 +54,18 @@ $("#demog").change(function() {
 		$("#chartsel").html("<option value='Bar'>Bar</option>");
 		$("#location").attr('disabled', true);
 	} else {
+		dbPoll.api("api/reportAnswer.jsp", {questID: $(this).val()}, function(data) {
+			var i = 0, l = data.length, html = "<option value=''>---</option>", ans;
+		
+			for(; i < l; ++i) {
+				ans = data[i];
+				
+				html += "<option value='"+ans.answerID+"'>"+ans.Answer+"</option>";
+			}
+			
+			$("#value").html(html);
+		});
+	
 		$("#chartsel").html("<option value='Bar'>Bar</option><option value='Pie'>Pie</option>");
 		$("#location").removeAttr("disabled");
 	}
