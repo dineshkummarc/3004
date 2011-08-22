@@ -11,7 +11,13 @@
 <%@ page import = "java.util.ArrayList" %>
 
 <%
-//String user = request.getParameter( "user" );
+/* Allows a user to submit feedback whilst undertaking a poll, feedback is submitted
+ * based on userID and questID
+ * 
+ * @require qid - UserID
+ *          feedback - message to be submitted
+ * @return JSON which says its correct or incorrect.
+ */
 String questionID = request.getParameter( "qid" );
 String feedback = request.getParameter( "feedback" );
 

@@ -31,10 +31,10 @@ CREATE TABLE Questions(
     pollID NUMBER(6) NOT NULL,      -- pollID of Polls
     created DATE NOT NULL,
     font VARCHAR(255) DEFAULT null,
-    textColor VARCHAR(255) DEFAULT null,
+    fontColor VARCHAR(255) DEFAULT null,
     fontSize VARCHAR(255) DEFAULT null,
     correctIndicator VARCHAR(255) DEFAULT null,
-    chartType NUMBER(6) DEFAULT null,   -- chartID of Charts
+    chartType VARCHAR(10) DEFAULT null,   -- chartID of Charts
     images VARCHAR(255) DEFAULT null,
     creator NUMBER(6) NOT NULL,     -- userID of Users
     location VARCHAR(255),

@@ -12,7 +12,12 @@
 <%@ page import = "java.util.ArrayList" %>
 
 <%
-//String user = request.getParameter( "user" );
+/* Allows user to submit answer from a question and returns statistics from other users
+ * answers.  
+ * 
+ * @require User must be logged in to access this API (session variable must be set)
+ * @return JSON file with information polls assigned to user
+ */
 String questionID = request.getParameter( "qid" );
 String answerID = request.getParameter( "aid" );
 String answer = request.getParameter( "a" );
