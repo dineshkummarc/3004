@@ -14,10 +14,15 @@ try{
     String action = request.getParameter("action"); //"register" or "edit" or "remove"
     String returnDetails = request.getParameter("returnBoolean"); //"true" or "false"
     if (returnDetails == null) {
-        returnDetails = "";
+        returnDetails = "false";
     }
     if (action == null) {
         action = "";
+    }
+    if (returnDetails == "false" && action == null) {
+        out.println("{");
+        out.println("\"error\": " + "\"No params sent\"");
+        out.println("}");
     }
     if (action.equals("remove")) {
         String userName = request.getParameter("userName");
@@ -58,7 +63,7 @@ try{
             out.println("\"status\": " + "\"OK\"");
             out.println("}");
         }
-    } else if (action.equals("create")) {
+    } else if (action.equals("register")) {
         users user = new users();
         user.setUserID(-1);
         String userName = request.getParameter("userName");
@@ -72,7 +77,6 @@ try{
         user.setLocation(location);
         user.setUserLevel(userLevel);
         int check = user.addUser();
-        out.println(check);
         if(check == -2 || check == -1){
             out.println("{");
             out.println("\"error\": " + "\"Unknown error occured during creation\"");

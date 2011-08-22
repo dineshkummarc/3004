@@ -1,6 +1,6 @@
 var MAP, marker;
 
-dbPoll.api("api/users_getassignedpolls.jsp", function(data) {
+dbPoll.api("api/getpolls.jsp", function(data) {
 	var i = 0, l = data.length, html = "", poll;
 	
 	for(; i < l; ++i) {
@@ -14,7 +14,7 @@ dbPoll.api("api/users_getassignedpolls.jsp", function(data) {
 $("#poll").change(function() {
 	var id = $(this).val();
 	
-	dbPoll.api("api/all_set_get_geolocation.jsp", {action: "load", type: "poll", id: id}, function(data) {
+	dbPoll.api("api/geolocation.jsp", {action: "load", type: "poll", id: id}, function(data) {
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 			
@@ -37,10 +37,10 @@ $("#submit").click(function() {
 		
 	param.id = $("#poll").val();
 	param.action = "set";
-	param.type = "poll";
+        param.type = "poll";
 	param.location = pos.Oa + "," + pos.Pa;
 	
-	dbPoll.api("api/all_set_get_geolocation.jsp", param);
+	dbPoll.api("api/geolocation.jsp", param);
 });
 
 function init() {

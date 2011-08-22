@@ -6,10 +6,10 @@ $("#create").click(function() {
 		pos = MAP1.getPosition();
 	
 	param.action = "register";
-	param.username = p.find(".username").val();
+	param.userName = p.find(".username").val();
 	param.password = p.find(".password").val();
 	param.email = p.find(".email").val();
-	param.userType = p.find(".role").val();
+	param.userLevel = p.find(".role").val();
 	param.location = pos.Oa + "," + pos.Pa;
 	
 	console.log(param);
@@ -29,7 +29,6 @@ $("select.role").change(function() {
 
 var user;
 $("#edit").click(function() {
-	$("#editbox").toggle();
 	var username = $(this).parent().find(".username").val(),
 		p = $("#editbox");
 	
@@ -41,6 +40,13 @@ $("#edit").click(function() {
 	}
 	
 	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
+		if(data.id == -1) {
+			username = undefined;
+			return;
+		}
+		
+		$("#editbox").toggle();
+	
 		var pos = data.location.split(","),
 			latlng = new google.maps.LatLng(pos[0], pos[1]);
 		
@@ -65,6 +71,7 @@ $("#modify").click(function() {
 		pos = MAP2.getPosition();
 		
 	console.log(pos);
+        param.action = "edit";
 	param.userName = user;
 	param.password = $(this).parent().find(".password").val();
 	param.location = pos.Oa + "," + pos.Pa;

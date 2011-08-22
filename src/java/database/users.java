@@ -120,7 +120,7 @@ public class users {
                     (!getUserLevel().equals("Key User")) &&
                     (!getUserLevel().equals("Poll Master")) &&
                     (!getUserLevel().equals("Poll Creator")) &&
-                    (!getUserLevel().equals("Poll")) &&
+                    (!getUserLevel().equals("Poll Admin")) &&
                     (!getUserLevel().equals("System Admin"))) {
                 return -1;
             } 
@@ -133,7 +133,9 @@ public class users {
             System.out.println(getUserLevel());
             
             getOracleConnection();
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Users(UserID, userName, password, email, location, userLevel) VALUES (useq.nextval, ?, ?, ?, ?, ?)");
+            
+            //FHere
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO Users(UserID, userName, password, email, location, userLevel, created, expired) VALUES (useq.nextval, ?, ?, ?, ?, ?, TO_DATE('2011-02-18 06:42:21', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE('2013-02-18 06:42:21', 'YYYY-MM-DD HH24:MI:SS'))");
             System.out.println("\n addUser() got called;");
             statement.setString(1, getUserName());
             statement.setString(2, getPassword());
@@ -184,7 +186,7 @@ public class users {
                     (!getUserLevel().equals("Key User")) &&
                     (!getUserLevel().equals("Poll Master")) &&
                     (!getUserLevel().equals("Poll Creator")) &&
-                    (!getUserLevel().equals("Poll")) &&
+                    (!getUserLevel().equals("Poll Admin")) &&
                     (!getUserLevel().equals("System Admin"))) {
                 return -1;
             }
