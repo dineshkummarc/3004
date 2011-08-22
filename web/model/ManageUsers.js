@@ -38,6 +38,7 @@ $("#edit").click(function() {
 	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
 		if(data.userID == "-1") {
 			username = undefined;
+			$("#editbox").hide();
 			return;
 		}
 		
