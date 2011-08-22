@@ -35,8 +35,9 @@ $("#submit").click(function() {
 	var param = {},
 		pos = marker.getPosition();
 		
-	param.pollID = $("#poll").val();
+	param.id = $("#poll").val();
 	param.action = "set";
+	param.type = "poll";
 	param.location = pos.Oa + "," + pos.Pa;
 	
 	dbPoll.api("api/all_set_get_geolocation.jsp", param);
