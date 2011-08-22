@@ -196,3 +196,7 @@ a.col {
 #answer {
 	min-width: 200px;
 }
+
+#timer {
+	text-align: right
+}
