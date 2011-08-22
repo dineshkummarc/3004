@@ -164,11 +164,17 @@ dbPoll.go = loadView;
 
 dbPoll.message = function(msg) {
 	var n = $("#notify");
-	n.css({left: $(window).width() / 2 - n.width() / 2});
+	n.css({left: $(window).width() / 2 - n.width() / 2}).stop(true, true);
 	n.show().html(msg).animate({top: 50}, 500, function() {
 		$(this).delay(msg.length * 100).animate({top: -50}, 500, function() {
 			$(this).html("").hide();
 		});
+	});
+};
+
+dbPoll.cancelMessage = function() {
+	$("#notify").stop(true, true).animate({top: -50}, 500, function() {
+		$(this).html("").hide();
 	});
 };
 
