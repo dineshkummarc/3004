@@ -148,14 +148,20 @@ public class database {
     }
     
     public int login(String username, String password) {
-        String[] input = {username, password};
-        String[] inputTypes = {"string", "string"};
+        String[] input = {username, password, username};
+        String[] inputTypes = {"string", "string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM PollAdmins WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND UserID IN (SELECT UserID FROM PollAdmins WHERE lower(Username) = lower(?))", input, inputTypes, output, outputTypes);
+        String[] validTypes = {"string", "string"};
+        String[] validInput = {username, password};
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", validInput, validTypes, output, outputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
+        } else if(isAdmin.isEmpty()) {
+            // user has no admin access
+            return 3;
         } else {
             // valid credentials supplied
             this.username = username;
@@ -170,7 +176,7 @@ public class database {
         String[] inputTypes = {"string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
@@ -206,10 +212,18 @@ public class database {
         String[] inputTypes = {"string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? ", input, inputTypes, output, outputTypes);
+        String[] isCreatorInput = {username};
+        String[] isCreatorInputTypes = {"string"};
+        String[] isCreatorOutput = {"UserID"};
+        String[] isCreatorOutputTypes = {"int"};
+        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM PollCreatorLink WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?))", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
+        } else if(isCreator.isEmpty()) {
+            // user isn't a creator on any polls
+            return 3;
         } else {
             // valid credentials supplied
             this.creatorUsername = username;
