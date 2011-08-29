@@ -124,8 +124,8 @@ CREATE TABLE KeyResponses(
 CREATE TABLE Polls(
     pollID NUMBER(6) NOT NULL,
     pollName VARCHAR2(255) NOT NULL,
-    location VARCHAR2(255) NOT NULL,
-    description VARCHAR2(255) NOT NULL,
+    location VARCHAR2(255),
+    description VARCHAR2(255),
     startDate TIMESTAMP,
     finishDate TIMESTAMP,
     CONSTRAINT pk_Polls PRIMARY KEY (pollID)
@@ -136,10 +136,10 @@ CREATE TABLE Users(
     userName VARCHAR2(255) NOT NULL,
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
-    location VARCHAR2(255) NOT NULL,
-    userLevel VARCHAR(255) NOT NULL,
-    created DATE NOT NULL,
-    expired DATE NOT NULL,
+    location VARCHAR2(255),
+    userLevel VARCHAR(255),
+    created DATE,
+    expired DATE,
     CONSTRAINT userLevel_const CHECK (userLevel IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin', 'System Admin')),
     CONSTRAINT pk_Users PRIMARY KEY (userID),
     CONSTRAINT uk_Users UNIQUE (userName)
@@ -171,41 +171,23 @@ CREATE TABLE Feedback(
 );
 
 -- DAVIDS TEMPORARY
-CREATE TABLE dcf_Polls (PollID INTEGER PRIMARY KEY, Name VARCHAR2(50), Admin VARCHAR2(20));
-CREATE SEQUENCE dcf_polls_autonumber;
-CREATE TRIGGER dcf_polls_trigger
-BEFORE INSERT ON dcf_Polls
+CREATE TABLE PollCreatorLink(PCPID INTEGER, PollID INTEGER, UserID INTEGER);
+CREATE SEQUENCE pclink_autonumber;
+CREATE TRIGGER pclink_trigger
+BEFORE INSERT ON PollCreatorLink
 for each row
 begin
-  select dcf_polls_autonumber.nextval into :new.PollID from dual;
-end dcf_polls_trigger;
+  select pclink_autonumber.nextval into :new.PCPID from dual;
+end pclink_trigger;
 /
-CREATE TABLE dcf_PollCreatorLink(PCPID INTEGER, PollID INTEGER, UserID INTEGER);
-CREATE SEQUENCE dcf_pclink_autonumber;
-CREATE TRIGGER dcf_pclink_trigger
-BEFORE INSERT ON dcf_PollCreatorLink
+CREATE TABLE PollAdmins(UserID INTEGER, Username VARCHAR2(50));
+CREATE SEQUENCE pa_autonumber;
+CREATE TRIGGER pa_trigger
+BEFORE INSERT ON PollAdmins
 for each row
 begin
-  select dcf_pclink_autonumber.nextval into :new.PCPID from dual;
-end dcf_pclink_trigger;
-/
-CREATE TABLE dcf_PollCreators(UserID INTEGER, Username VARCHAR2(50), Password VARCHAR2(50), Email VARCHAR2(100));
-CREATE SEQUENCE dcf_pc_autonumber;
-CREATE TRIGGER dcf_pc_trigger
-BEFORE INSERT ON dcf_PollCreators
-for each row
-begin
-  select dcf_pc_autonumber.nextval into :new.UserID from dual;
-end dcf_pc_trigger;
-/
-CREATE TABLE dcf_PollAdmins(UserID INTEGER, Username VARCHAR2(50), Password VARCHAR2(50), Email VARCHAR2(100));
-CREATE SEQUENCE dcf_pa_autonumber;
-CREATE TRIGGER dcf_pa_trigger
-BEFORE INSERT ON dcf_PollAdmins
-for each row
-begin
-  select dcf_pa_autonumber.nextval into :new.UserID from dual;
-end dcf_pa_trigger;
+  select pa_autonumber.nextval into :new.UserID from dual;
+end pa_trigger;
 /
 -- END DAVIDS TEMPORARY
 

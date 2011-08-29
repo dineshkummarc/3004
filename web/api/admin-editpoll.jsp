@@ -20,14 +20,14 @@
             String[] types = {"string", "int"};
 
    
-            db.doPreparedExecute("UPDATE dcf_Polls SET Name=? WHERE PollID=?", array,types);
+            db.doPreparedExecute("UPDATE Polls SET PollName=? WHERE PollID=?", array,types);
             
             String[] pollArray = {request.getParameter("pollID")};
             String[] pollTypes = {"int"};
-            String[] pollCols = {"PollID", "Name", "Admin"};
-            String[] pollColTypes = {"int", "string", "string"};
+            String[] pollCols = {"PollID", "PollName"};
+            String[] pollColTypes = {"int", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
-            polls = db.doPreparedQuery("SELECT * FROM dcf_Polls WHERE PollID=?", pollArray, pollTypes, pollCols, pollColTypes);
+            polls = db.doPreparedQuery("SELECT * FROM Polls WHERE PollID=?", pollArray, pollTypes, pollCols, pollColTypes);
  
             for(int i=0; i<polls.size(); i++) {
                 %>
@@ -37,11 +37,11 @@
                         + ", \"pollName\": \"" + polls.get(i)[1] +
                         "\", \"pollCreators\": [" 
                         %>
-                <% String[] pclinkCols = {"UserID", "Username", "Password"};
-                String[] pclinkColTypes = {"int", "string", "string"};
+                <% String[] pclinkCols = {"UserID", "Username"};
+                String[] pclinkColTypes = {"int", "string"};
                 ArrayList<String[]> pclink = new ArrayList<String[]>();
-                pclink = db.doPreparedQuery("SELECT * FROM dcf_PollCreators pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM dcf_PollCreatorLink WHERE PollID=?) ",
+                pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
+                                     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
                 %>
 

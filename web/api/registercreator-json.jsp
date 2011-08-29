@@ -30,7 +30,7 @@
             String[] columnName = {"UserID"};
             String[] columnType = {"int"};
    
-            ArrayList<String[]> checkExists = db.doPreparedQuery("SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ?", array, types, columnName, columnType);
+            ArrayList<String[]> checkExists = db.doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?)", array, types, columnName, columnType);
             
             if(checkExists.size() > 0) { %>
                 <%= "{ \"status\" : \"That username already exists.\" " %>
@@ -40,7 +40,7 @@
                     
                         String[] inputData1 = {request.getParameter("username"), request.getParameter("password"), email};
                         String[] inputTypes1 = {"string", "string", "string"};
-                        db.doPreparedExecute("INSERT INTO dcf_PollCreators(Username, Password, Email) VALUES(?, ?, ?)", inputData1, inputTypes1);%>
+                        db.doPreparedExecute("INSERT INTO Users(userID, Username, Password, Email, userLevel) VALUES(useq.nextval, ?, ?, ?, 'Poll Creator')", inputData1, inputTypes1);%>
                         <%= "{ \"status\": \"Account " + request.getParameter("username") + " registered successfully.\" " %>
                         
                         <% emailmodule.sendEmail(email, "You've been given a dbPOLL account!", 

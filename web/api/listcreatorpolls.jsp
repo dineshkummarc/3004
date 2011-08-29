@@ -19,9 +19,9 @@
             String[] columnNames = {"PollID", "Name"};
             String[] columnTypes = {"int", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
-            polls = db.doPreparedQuery("SELECT * FROM dcf_Polls WHERE PollID IN "
-                    + "(SELECT PollID FROM dcf_PollCreatorLink WHERE UserID IN "
-                    + "(SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ?))", array, types, columnNames, columnTypes);
+            polls = db.doPreparedQuery("SELECT * FROM Polls WHERE PollID IN "
+                    + "(SELECT PollID FROM PollCreatorLink WHERE UserID IN "
+                    + "(SELECT UserID FROM Users WHERE Username = ?))", array, types, columnNames, columnTypes);
 
  
             for(int i=0; i<polls.size(); i++) {

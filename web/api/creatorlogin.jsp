@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Poll Creator login tester</h1>
-        <p> Hint: Try admin, password </p>
+        <p> <s> Hint: Try admin, password </s> Todo: fix the recovs so this has a login</p>
         <form action="docreatorlogin.jsp">
             Username: <input type="text" name="username" id="username" size="30"></input> <br />
             Password: <input type="text" name="password" id="password" size="30"></input> <br />
