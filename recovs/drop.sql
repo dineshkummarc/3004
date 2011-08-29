@@ -46,20 +46,14 @@ DROP TABLE Attendance;
 DROP TABLE Users;
 
 -- Davids
-DROP SEQUENCE dcf_polls_autonumber;
-DROP SEQUENCE dcf_pclink_autonumber;
-DROP SEQUENCE dcf_pc_autonumber;
-DROP SEQUENCE dcf_pa_autonumber;
+DROP SEQUENCE pclink_autonumber;
+DROP SEQUENCE pa_autonumber;
 
-DROP TRIGGER  dcf_polls_trigger;
-DROP TRIGGER  dcf_pclink_trigger;
-DROP TRIGGER  dcf_pc_trigger;
-DROP TRIGGER  dcf_pa_trigger;
+DROP TRIGGER  pclink_trigger;
+DROP TRIGGER  pa_trigger;
 
-DROP TABLE dcf_Polls;
-DROP TABLE dcf_PollCreatorLink;
-DROP TABLE dcf_PollCreators;
-DROP TABLE dcf_PollAdmins;
+DROP TABLE PollCreatorLink;
+DROP TABLE PollAdmins;
 --
 
 commit;

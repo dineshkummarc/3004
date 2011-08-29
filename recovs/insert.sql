@@ -623,19 +623,19 @@ INSERT into QuestionWidgets(questID, widgetID) values (3, 1);
 INSERT into QuestionWidgets(questID, widgetID) values (4, 1);
 
 --Davids
-INSERT INTO dcf_Polls(Name, Admin) VALUES ('CSSE3004 week one poll', 'administrator');
-INSERT INTO dcf_Polls(Name, Admin) VALUES ('Animal poll', 'dcf');
-INSERT INTO dcf_Polls(Name, Admin) VALUES ('Polar bear poll', 'dcf');
-INSERT INTO dcf_PollCreatorLink(PollID, UserID) VALUES (2, 1);
-INSERT INTO dcf_PollCreatorLink(PollID, UserID) VALUES (2, 2);
-INSERT INTO dcf_PollCreatorLink(PollID, UserID) VALUES (3, 2);
-INSERT INTO dcf_PollCreatorLink(PollID, UserID) VALUES (3, 1);
-INSERT INTO dcf_PollCreators(Username, Password, Email) VALUES ('dcf', 'password', 'd.fairbrother@uq.edu.au');
-INSERT INTO dcf_PollCreators(Username, Password, Email) VALUES ('admin', 'password', 'd.fairbrother@uq.edu.au');
-INSERT INTO dcf_PollCreators(Username, Password, Email) VALUES ('tester', 'password', 'd.fairbrother@uq.edu.au');
-INSERT INTO dcf_PollAdmins(Username, Password, Email) VALUES ('adcf', 'password', 'd.fairbrother@uq.edu.au');
-INSERT INTO dcf_PollAdmins(Username, Password, Email) VALUES ('aadmin', 'password', 'd.fairbrother@uq.edu.au');
-INSERT INTO dcf_PollAdmins(Username, Password, Email) VALUES ('atester', 'password', 'd.fairbrother@uq.edu.au');
+INSERT INTO Polls(PollID, PollName) VALUES (pseq.nextval, 'CSSE3004 week one poll');
+INSERT INTO Polls(PollID, PollName) VALUES (pseq.nextval, 'Animal poll');
+INSERT INTO Polls(PollID, PollName) VALUES (pseq.nextval, 'Polar bear poll');
+
+INSERT INTO PollCreatorLink(PollID, UserID) VALUES (13, 4);
+INSERT INTO PollCreatorLink(PollID, UserID) VALUES (14, 4);
+INSERT INTO PollCreatorLink(PollID, UserID) VALUES (15, 4);
+INSERT INTO PollCreatorLink(PollID, UserID) VALUES (3, 4);
+
+INSERT INTO PollAdmins(Username) VALUES ('andy');
+INSERT INTO PollAdmins(Username) VALUES ('stuart');
+INSERT INTO PollAdmins(Username) VALUES ('louiss');
+INSERT INTO PollAdmins(Username) VALUES ('david');
 --
 
 commit;
