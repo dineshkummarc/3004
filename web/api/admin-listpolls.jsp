@@ -14,6 +14,9 @@
         <% } else { %>
         <%= "{\"login\": 1, \"username\": \"" + db.username + "\"," %>
         <% } 
+        if(db.accessCheck("polladmin") == 1) {
+            
+            out.print("\"access\":\"OK\", ");
             String[] array = {};
             String[] types = {};
             String[] columnNames = {"PollID", "PollName"};
@@ -58,4 +61,7 @@
     
     %>
             <%= "] }" %>
+            <% } else {
+            out.print("\"access\":\"bad\" } ");   
+           } %>
 

@@ -9,11 +9,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         <%
+        if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
             if(request.getParameter("pollName").length() == 0) { %>
-                <%= "{ \"status\": \"You cannot enter an empty poll name.\" }" %>
+                <%= "\"status\": \"You cannot enter an empty poll name.\" }" %>
             <% }
             else { %>
-                <%= "{ \"status\": \"OK\", "%>
+                <%= "\"status\": \"OK\", "%>
             <% 
                 
             String[] array = {request.getParameter("pollName"), request.getParameter("pollID")};
@@ -58,3 +60,7 @@
           <%  } }
     
     %>
+<% } else {
+                out.print("{\"access\":\"bad\"} ");
+            }
+%>

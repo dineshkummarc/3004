@@ -3,11 +3,15 @@ $("#login-submit").click(function() {
 		pass = $("#password").val(),
 		url;
 	
-	if($("#comp").val() === "A") {
-		url = "api/webuser-login.jsp";
-	} else {
-		url = "api/admin-dologin.jsp";
-	}
+        url = "api/all-ulogin.jsp";
+        
+	//if($("#comp").val() === "A") {
+		//url = "api/webuser-login.jsp";
+        
+	//} else {
+        //        url = "api/all-ulogin.jsp";
+		//url = "api/admin-dologin.jsp";
+	//}
 	
 	console.log("LOGIN", user, pass);
 	
