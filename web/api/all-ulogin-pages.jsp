@@ -12,5 +12,4 @@
             out.print("\"" + authorisedPages.get(i) + "\", ");
         }
     }
-    out.print("]}");
-%>
+    out.print("]}"); %>
