@@ -125,11 +125,11 @@ public class database {
                 String[] dataRow = new String[columnNames.length];
                 for(int i=0; i < columnNames.length; i++) {
                     if(columnTypes[i].matches("int")) {
-                        System.err.println("ColType set as: int");
+                        //System.err.println("ColType set as: int");
                         dataRow[i] = Integer.toString(rset.getInt(columnNames[i]));
                     }
                     else if(columnTypes[i].matches("string")) {
-                        System.err.println("ColType set as: string");
+                        //System.err.println("ColType set as: string");
                         dataRow[i] = rset.getString(columnNames[i]);
                     }
                     else {
