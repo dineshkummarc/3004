@@ -9,7 +9,7 @@ String[] pollInputTypes = {"string"};
 String[] pollColNames = {"PollID"};
 String[] pollColTypes = {"int"};
 
-System.err.println("USERNAME: " + db.getUsername());
+//System.err.println("USERNAME: " + db.getUsername());
 
 ArrayList<String[]> Polls = db.doPreparedQuery("SELECT PollID FROM PollCreatorLink"
         + " WHERE UserID=(SELECT UserID FROM Users WHERE userName=?)", pollInput, pollInputTypes, pollColNames, pollColTypes);
@@ -18,7 +18,7 @@ out.print("{\"polls\": [");
 
 for(int i=0; i != Polls.size(); i++) {
     String[] inputData = {Polls.get(i)[0]};
-    System.err.println("Polls.get(i)[0] " + Polls.get(i)[0]);
+    //System.err.println("Polls.get(i)[0] " + Polls.get(i)[0]);
     String[] inputTypes = {"int"};
     String[] colNames = {"pollID", "pollName", "location", "description", "startDate", "finishDate"};
     String[] colType = {"int", "string", "string", "string", "string", "string"};
