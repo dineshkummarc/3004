@@ -9,7 +9,7 @@ String[] colNames = {"pollID", "questID", "demographic", "responseType",
                         "question", "created", "font", "correctIndicator",
                         "chartType", "images", "creator", "location" };
 String[] colType = {"int", "int", "string", "string", "string", "string",
-                        "string", "string", "int", "string", "int", 
+                        "string", "string", "string", "string", "int", 
                         "string" };
 
 ArrayList<String[]> MCQ = db.doPreparedQuery("SELECT * FROM Questions WHERE QuestID=?"
