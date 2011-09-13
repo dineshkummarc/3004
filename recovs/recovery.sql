@@ -189,15 +189,6 @@ begin
   select pa_autonumber.nextval into :new.UserID from dual;
 end pa_trigger;
 /
-CREATE TABLE ShortAnswerQuestions(SAQID INTEGER, QuestID INTEGER, QuestionText VARCHAR2(255));
-CREATE SEQUENCE saq_autonumber;
-CREATE TRIGGER saq_trigger
-BEFORE INSERT ON ShortAnswerQeustions
-for each row
-begin
-  select saq_autonumber.nextval into :new.SAQID from dual;
-end saq_trigger;
-/
 -- END DAVID'S
 
 commit;
