@@ -13,28 +13,37 @@
 
 <%
 try{
-    String dataID = request.getParameter("id"); //ID of the above type
-    String location = "";
-    //users user = new users();
-    //user.setUserID(Integer.parseInt(dataID));
-    //user.getUser();
-    //location = user.getLocation();
-    String query = "SELECT location FROM users WHERE userid=?";
-    String[] values = {dataID};
-    String[] types = {"int"};
-    String[] columnNames = {"location"};
-    String[] columnValues = {"string"};
-    ArrayList<String[]> results = db.doPreparedQuery(query, values, types, columnNames, columnValues);
-    location = results.get(0)[0];
-    if(!location.equals("")){
-        out.println("{");
-        out.println("\"location\": \"" + location + "\"");
-        out.println("}");
-    } else {
-        out.println("{");
-        out.println("\"error\": " + "\"No data found\"");
-        out.println("}");
-    }
+	if(db.accessCheck("sysadmin") == 0 {
+		out.println("{"};
+		out.println("\"access\": \"OK\"")
+		out.println("}");
+		String dataID = request.getParameter("id"); //ID of the above type
+		String location = "";
+		//users user = new users();
+		//user.setUserID(Integer.parseInt(dataID));
+		//user.getUser();
+		//location = user.getLocation();
+		String query = "SELECT location FROM users WHERE userid=?";
+		String[] values = {dataID};
+		String[] types = {"int"};
+		String[] columnNames = {"location"};
+		String[] columnValues = {"string"};
+		ArrayList<String[]> results = db.doPreparedQuery(query, values, types, columnNames, columnValues);
+		location = results.get(0)[0];
+		if(!location.equals("")){
+			out.println("{");
+			out.println("\"location\": \"" + location + "\"");
+			out.println("}");
+		} else {
+			out.println("{");
+			out.println("\"error\": " + "\"No data found\"");
+			out.println("}");
+		}
+	} else {
+		out.println("{"};
+		out.println("\"access\": \"bad\"")
+		out.println("}");
+	}
 } catch(Exception e){
     out.write(e.toString());
 }
