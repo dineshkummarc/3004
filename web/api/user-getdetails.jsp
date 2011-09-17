@@ -13,7 +13,7 @@
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 0 {
+	if(db.accessCheck("sysadmin") == 1 {
 		out.println("{"};
 		out.println("\"access\": \"OK\"")
 		out.println("}");
