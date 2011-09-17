@@ -24,11 +24,11 @@ INCREMENT BY 1;
 
 -- Tables
 CREATE TABLE Questions(
-    questID NUMBER(6) NOT NULL,
+    questID INTEGER NOT NULL,
     demographic CHAR(1) DEFAULT 'F',
     responseType VARCHAR(15) NOT NULL,
     question VARCHAR2(255) NOT NULL,
-    pollID NUMBER(6) NOT NULL,      -- pollID of Polls
+    pollID INTEGER NOT NULL,      -- pollID of Polls
     created DATE NOT NULL,
     font VARCHAR(255) DEFAULT null,
     fontColor VARCHAR(255) DEFAULT null,
@@ -36,93 +36,93 @@ CREATE TABLE Questions(
     correctIndicator VARCHAR(255) DEFAULT null,
     chartType VARCHAR(10) DEFAULT null,   -- chartID of Charts
     images VARCHAR(255) DEFAULT null,
-    creator NUMBER(6) NOT NULL,     -- userID of Users
+    creator INTEGER NOT NULL,     -- userID of Users
     location VARCHAR(255),
     CONSTRAINT pk_Questions PRIMARY KEY (questID)
 );
 
 CREATE TABLE Widgets(
-    widgetID NUMBER(6) NOT NULL,
+    widgetID INTEGER NOT NULL,
     widgetName VARCHAR(255) NOT NULL,
     widgetDescription VARCHAR(255) NOT NULL,
     CONSTRAINT pk_Widgets PRIMARY KEY (widgetID)
 );
 
 CREATE TABLE QuestionWidgets(
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
-    widgetID NUMBER(6) NOT NULL,    -- widgetID of Widgets
+    questID INTEGER NOT NULL,     -- questID of Questions
+    widgetID INTEGER NOT NULL,    -- widgetID of Widgets
     CONSTRAINT pk_QuestionWidgets PRIMARY KEY (questID, widgetID)
 );
 
 CREATE TABLE Templates(
-    templateID NUMBER(6) NOT NULL,
+    templateID INTEGER NOT NULL,
     templateName VARCHAR(255) NOT NULL,
-    userID NUMBER(6) NOT NULL,      -- userID of Users
+    userID INTEGER NOT NULL,      -- userID of Users
     CONSTRAINT pk_Templates PRIMARY KEY (templateID, userID)
 );
 
 CREATE TABLE TemplateAnswers(
-    templateAnswersID NUMBER(6) NOT NULL,
-    templateID NUMBER(6) NOT NULL,  -- templateID of Templates
-    answerPosition NUMBER(6) NOT NULL,
+    templateAnswersID INTEGER NOT NULL,
+    templateID INTEGER NOT NULL,  -- templateID of Templates
+    answerPosition INTEGER NOT NULL,
     answerValue VARCHAR(255) NOT NULL,
     CONSTRAINT pk_TemplateAnswers PRIMARY KEY (templateAnswersID, templateID)
 );
 
 CREATE TABLE Answers(
-    answerID NUMBER(6) NOT NULL,
+    answerID INTEGER NOT NULL,
     keypad CHAR(1),
     answer VARCHAR2(255) NOT NULL,
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
+    questID INTEGER NOT NULL,     -- questID of Questions
     correct CHAR(1) NOT NULL,
     CONSTRAINT pk_Answers PRIMARY KEY (answerID)
 );
 
 CREATE TABLE Comparitives(
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
-    compareTo NUMBER(6) NOT NULL,
+    questID INTEGER NOT NULL,     -- questID of Questions
+    compareTo INTEGER NOT NULL,
     CONSTRAINT pk_Comparitives PRIMARY KEY (questID)
 );
 
 CREATE TABLE Rankings(
-    answerID NUMBER(6) NOT NULL,    -- answerID of Answers
-    weight NUMBER(6) NOT NULL,
+    answerID INTEGER NOT NULL,    -- answerID of Answers
+    weight INTEGER NOT NULL,
     CONSTRAINT pk_Rankings PRIMARY KEY (answerID)
 );
 
 CREATE TABLE Responses(
-    userID NUMBER(6) NOT NULL,
+    userID INTEGER NOT NULL,
     created TIMESTAMP DEFAULT SYSDATE,
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
+    questID INTEGER NOT NULL,     -- questID of Questions
     CONSTRAINT pk_Responses PRIMARY KEY (questID, userID)
 );
 
 --SUB CLASS OF RESPONSES
 CREATE TABLE ShortResponses(
-    userID NUMBER(6) NOT NULL,
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
+    userID INTEGER NOT NULL,
+    questID INTEGER NOT NULL,     -- questID of Questions
     response VARCHAR2(255) NOT NULL,
     CONSTRAINT pk_ShortResponses PRIMARY KEY (questID, userID)
 );
 
 --SUB CLASS OF RESPONSES
 CREATE TABLE MultiResponses(
-    userID NUMBER(6) NOT NULL,
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
-    answerID NUMBER(6) NOT NULL,    -- answerID of Answer
+    userID INTEGER NOT NULL,
+    questID INTEGER NOT NULL,     -- questID of Questions
+    answerID INTEGER NOT NULL,    -- answerID of Answer
     CONSTRAINT pk_MultiResponses PRIMARY KEY (questID, userID, answerID)
 );
 
 --SUB CLASS OF RESPONSES
 CREATE TABLE KeyResponses(
-    userID NUMBER(6) NOT NULL,
-    questID NUMBER(6) NOT NULL,     -- questID of Questions
+    userID INTEGER NOT NULL,
+    questID INTEGER NOT NULL,     -- questID of Questions
     keypad CHAR(1) NOT NULL,
     CONSTRAINT pk_KeyResponses PRIMARY KEY (questID, userID)
 );
 
 CREATE TABLE Polls(
-    pollID NUMBER(6) NOT NULL,
+    pollID INTEGER NOT NULL,
     pollName VARCHAR2(255) NOT NULL,
     location VARCHAR2(255),
     description VARCHAR2(255),
@@ -132,7 +132,7 @@ CREATE TABLE Polls(
 );
 
 CREATE TABLE Users(
-    userID NUMBER(6) NOT NULL,
+    userID INTEGER NOT NULL,
     userName VARCHAR2(255) NOT NULL,
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
@@ -146,16 +146,16 @@ CREATE TABLE Users(
 );
 
 CREATE TABLE Attendance(
-    pollID NUMBER(6) NOT NULL,
-    userID NUMBER(6) NOT NULL,
+    pollID INTEGER NOT NULL,
+    userID INTEGER NOT NULL,
     location VARCHAR2(255) NOT NULL,
     lastModified Date NOT NULL,
     CONSTRAINT pk_attendance PRIMARY KEY (pollID, userID)
 );
 
 CREATE TABLE Assigned(
-    userID NUMBER(6) NOT NULL,      -- userID of Users
-    pollID NUMBER(6) NOT NULL,      -- pollID of Polls
+    userID INTEGER NOT NULL,      -- userID of Users
+    pollID INTEGER NOT NULL,      -- pollID of Polls
     role VARCHAR(255) NOT NULL,
     status VARCHAR(5) DEFAULT 'false',
     CONSTRAINT userRole CHECK (role IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin')),
@@ -163,8 +163,8 @@ CREATE TABLE Assigned(
 );
 
 CREATE TABLE Feedback(
-	userID NUMBER(6) NOT NULL,      -- userID of Users
-	questID NUMBER(6) NOT NULL,
+	userID INTEGER NOT NULL,      -- userID of Users
+	questID INTEGER NOT NULL,
 	created TIMESTAMP DEFAULT SYSDATE,
 	text VARCHAR2(255) NOT NULL,
 	CONSTRAINT pk_Feedback PRIMARY KEY (userID, questID)
