@@ -33,7 +33,7 @@
     String[] insertQuestionInput = {demographic, responseType, question,
         pollID, font, correctIndicator, chartType, images, Integer.toString(creator)};
     String[] insertQuestionTypes = {"string", "string", "string",
-        "int", "string", "string", "int", "string", "int"};
+        "int", "string", "string", "string", "string", "int"};
     db.doPreparedExecute(insertQuestion, insertQuestionInput, insertQuestionTypes);
     
     if(compareTo != null && compareTo == "comparitive") {
