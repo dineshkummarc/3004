@@ -248,7 +248,7 @@ public class database {
      * Returns the appropriate user level (6 for SysAdmin, 2 for KeyUser, 1 for
      * Web User).
      */
-    public int baseLogin(String username, String password) {
+    private int baseLogin(String username, String password) {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
         String[] output = {"userLevel"};
@@ -270,7 +270,7 @@ public class database {
        
     }
     
-    public int adminLogin(String username, String password) {
+    private int adminLogin(String username, String password) {
         String[] input = {username, password, username};
         String[] inputTypes = {"string", "string", "string"};
         String[] output = {"UserID"};
@@ -340,7 +340,7 @@ public class database {
         this.loggedIn = 0;
     }
        
-    public int creatorLogin(String username, String password) {
+    private int creatorLogin(String username, String password) {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
         String[] output = {"UserID"};
