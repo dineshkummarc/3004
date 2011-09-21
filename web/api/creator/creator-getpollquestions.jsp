@@ -8,6 +8,8 @@
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 
 <% 
+if(db.accessCheck("creator") == 1) {
+    out.print("{\"access\":\"OK\", ");
     String[] inputData = {request.getParameter("id")};
     String[] inputTypes = {"int"};
     String[] outputCols = {"questID", "demographic", "responseType", "question",
@@ -27,7 +29,7 @@
     
     
     if(results != null){
-        out.print("{\"questions\": ");
+        out.print("\"questions\": ");
             out.print("[");
             for(int i=0; i<results.size();i++) {
                 // another query to get comparative qn if there is one...
@@ -114,6 +116,9 @@
             out.print("Error: " + "Poll ID does not exist, pick a existing one");
             out.print("}");
     }
+} else {
+    out.print("{\"access\":\"bad\"}");
+}
 
 
 %>

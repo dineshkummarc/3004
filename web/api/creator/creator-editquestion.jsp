@@ -8,6 +8,8 @@
 <%@page import="java.util.ArrayList" %>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%
+if(db.accessCheck("creator") == 1) {
+    out.print("{\"access\":\"OK\", ");
     String compareTo = request.getParameter("compareTo"); 
     String responseType = request.getParameter("qformat");
     String questID = request.getParameter("id");
@@ -42,6 +44,10 @@
         db.doPreparedExecute(query, comparativesInput, comparativesInputCols);
     }
     
-    out.print("{\"status\": \"OK\"}");
+    out.print("\"status\": \"OK\"}");
+    
+} else {
+    out.print("{\"access\":\"bad\"}");
+}
 
 %>

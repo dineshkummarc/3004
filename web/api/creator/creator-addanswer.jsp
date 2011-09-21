@@ -8,6 +8,8 @@
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+if(db.accessCheck("creator") == 1) {
+    out.print("{\"access\":\"OK\", ");
     String questID = request.getParameter("questID");
     String weight = request.getParameter("weight"); 
     String answer = request.getParameter("text");
@@ -37,5 +39,8 @@
         db.doPreparedExecute(insertRanking, insertRankingInput, insertRankingTypes);
     }
     
-    out.print("{\"status\":\"OK\"}");
+    out.print("\"status\":\"OK\"}");
+       } else {
+            out.print("{\"access\":\"bad\"}");
+       }
 %>
