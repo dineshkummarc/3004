@@ -28,8 +28,8 @@ if(db.accessCheck("creator") == 1) {
     // do query on Answers, loop through result, get each AnswerID, delete it.
 
     out.print("\"status\": \"OK\"}");
-       } else {
-            out.print("{\"access\":\"bad\"}");
-       }
+} else {
+    out.print("{\"access\":\"bad\"}");
+}
 %>
 

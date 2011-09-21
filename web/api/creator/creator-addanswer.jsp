@@ -40,7 +40,7 @@ if(db.accessCheck("creator") == 1) {
     }
     
     out.print("\"status\":\"OK\"}");
-       } else {
-            out.print("{\"access\":\"bad\"}");
-       }
+} else {
+    out.print("{\"access\":\"bad\"}");
+}
 %>

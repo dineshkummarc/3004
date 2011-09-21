@@ -12,9 +12,9 @@ if(db.accessCheck("creator") == 1) {
     db.doPreparedExecute("DELETE FROM Rankings WHERE answerID=?", inputData, inputTypes);
 
     out.print("\"status\": \"OK\"}");
-       } else {
-            out.print("{\"access\":\"bad\"}");
-       }
+} else {
+    out.print("{\"access\":\"bad\"}");
+}
 %>
 
 
