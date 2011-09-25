@@ -31,7 +31,7 @@ public class database {
                 DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
                 /* Open a new connection */
                 conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
-                //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "s4217258", "password");
+                //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "david", "d");
             } catch(Exception ex){
                 System.out.println(ex.toString());
             }
@@ -183,6 +183,7 @@ public class database {
         this.loggedIn = 1;
         this.level = userLevel;
         this.pages = listPages();
+        System.err.println("loginAll: Final userlevel: " + userLevel);
         return userLevel;
     }
     
@@ -195,7 +196,7 @@ public class database {
      * user should be on a page at all.
      */
     public ArrayList<String> listPages() {
-        ArrayList<String> pages = new ArrayList<String>();
+        pages = new ArrayList<String>();
         if(this.level == 1) {
             pages.add("web");
         } else if(this.level == 2) {
@@ -255,6 +256,7 @@ public class database {
         String[] outputTypes = {"string"};
         ArrayList<String[]> rankChecker = doPreparedQuery("SELECT userLevel FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
         if(rankChecker.isEmpty()) {
+            System.err.println("baseLogin: username doesn't exist");
             return 0; // username does not exist
         } else {
             if(rankChecker.get(0)[0].equals("System Admin")) {
@@ -265,8 +267,8 @@ public class database {
                 return 1;
             }
         }
-        System.err.println("Unknown error on baseLogin; error-0 returned.");
-        return 0; // unknown error
+        System.err.println("baseLogin: No sysadmin/web user/key user access found. Looking for poll admin/creator access...");
+        return 0; // no sysadmin/web user/key user access applies to this user
        
     }
     
