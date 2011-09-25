@@ -202,3 +202,43 @@ a.col {
 }
 
 #msg { background: #FFF394; padding: 5px; display: none }
+
+#editpoll .ranking { display:none }
+#editpoll .comparitive { display:none }
+#editpoll .keypad { font-family:monospace }
+
+#editpoll .response { padding:10px; border-bottom:1px solid #ccc }
+#editpoll blockquote { margin-left:200px }
+#editpoll .question { padding:10px; border-bottom:1px solid #aaa }
+
+#editpoll .response:nth-child(odd) { background:#eee }
+#editpoll .question:nth-child(odd) { background:#f5f5f5 }
+
+#editpoll .comparitive { margin-bottom:15px }
+
+#editpoll button.remq, button.remr { background:transparent; border:0; }
+#editpoll button img { vertical-align:bottom }
+#editpoll button { padding:5px 8px; background:#eee; border:1px solid #ccc; border-radius:2px }
+#editpoll input[type=text], #editpoll select { height:20px; border:1px solid #aaa }
+#editpoll button.saveq { margin-left:10px }
+
+#editpoll h1, #editpoll h2, #editpoll h3 { margin:0; font-family:'Maven Pro', arial, serif;  }
+#editpoll h3 { font-size:14px; margin:3px 0 }
+#editpoll h2 { font-size:18px }
+
+#editpoll #results { margin-top:10px }
+#editpoll button.saveq, #editpoll button.saver { display:none; float:right }
+
+#editpoll .error { 
+	font-size:12px; 
+	margin-left:5px; 
+	padding-right:20px;
+	background:url('images/error.png') no-repeat right; 
+	color: #968000; 
+	font-weight: bold;  
+	display:none
+}
+
+#editpoll .extras { float:left; margin-right:10px }
+#editpoll .extras input { width:100px }
+#editpoll .indent { width:40px; height:20px; float:left }
