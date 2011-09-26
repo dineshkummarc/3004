@@ -13,48 +13,38 @@
 
 <%
 try{
-    String dataID = String.valueOf(db.getUserID());
-    String query = "SELECT pollID, pollName FROM polls WHERE polls.pollID IN (SELECT pollID FROM assigned WHERE userID=?)";
-    String[] values = {dataID};
-    String[] types = {"int"};
-    String[] columnNames = {"pollID", "pollName"};
-    String[] columnValues = {"int", "string"};
-    ArrayList<String[]> results = db.doPreparedQuery(query, values, types, columnNames, columnValues);
-    
-    if (results.size() == 0) {
-        out.println("{");
-        out.println("\"error\": " + "\"none assigned\"");
-        out.println("}");
-    } else {
-        String printString = "[";
-        for (String[] s : results) {
-            if (!printString.equals("[")) {
-                printString = printString + ", ";
-            }
-            printString = printString + ("{\"pollID\" : " + s[0] + ", \"pollName\" : \"" + s[1] + "\"}");
-        }
-        printString = printString + "]";
-        out.print(printString);
-    }
-    //assigneds assigned = new assigneds();
-    //assigned.setUserID(dataID);
-    //ArrayList<polls> allPolls = assigned.getPolls();
-    //
-    //if (allPolls == null) {
-    //    out.println("{");
-    //    out.println("\"error\": " + "\"none assigned\"");
-    //    out.println("}");
-    //} else {
-    //    String printString = "[";
-    //    for (polls p : allPolls) {
-    //        if (!printString.equals("[")) {
-    //            printString = printString + ", ";
-    //        }
-    //        printString = printString + ("{\"pollID\" : " + p.getPollID() + ", \"pollName\" : \"" + p.getPollName() + "\"}");
-    //    }
-    //    printString = printString + "]";
-    //    out.print(printString);
-    //}
+	if(db.accessCheck("sysadmin") == 1 {
+		out.println("{"};
+		out.println("\"access\": \"OK\"")
+		out.println("}");
+		String dataID = String.valueOf(db.getUserID());
+		String query = "SELECT pollID, pollName FROM polls WHERE polls.pollID IN (SELECT pollID FROM assigned WHERE userID=?)";
+		String[] values = {dataID};
+		String[] types = {"int"};
+		String[] columnNames = {"pollID", "pollName"};
+		String[] columnValues = {"int", "string"};
+		ArrayList<String[]> results = db.doPreparedQuery(query, values, types, columnNames, columnValues);
+		
+		if (results.size() == 0) {
+			out.println("{");
+			out.println("\"error\": " + "\"none assigned\"");
+			out.println("}");
+		} else {
+			String printString = "[";
+			for (String[] s : results) {
+				if (!printString.equals("[")) {
+					printString = printString + ", ";
+				}
+				printString = printString + ("{\"pollID\" : " + s[0] + ", \"pollName\" : \"" + s[1] + "\"}");
+			}
+			printString = printString + "]";
+			out.print(printString);
+		}
+	} else {
+		out.println("{"};
+		out.println("\"access\": \"bad\"")
+		out.println("}");
+	}
 } catch(Exception e){
     out.write(e.toString());
 }

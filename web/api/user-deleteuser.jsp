@@ -12,24 +12,33 @@
 
 <%
 try{
-    String userName = request.getParameter("username");
-    //users user = new users();
-    //user.setUserName(userName);
-    //user.getUserByUserName();
-    //int check = user.deleteUser();
-    String query = "DELETE FROM users WHERE username=?";
-    String[] values = {userName};
-    String[] types = {"string"};
-    String result = db.doPreparedExecute(query, values, types);
-    if(result.equals("Failed!")){
-        out.println("{");
-        out.println("\"error\": " + "\"User ID not found\"");
-        out.println("}");
-    } else {
-        out.println("{");
-        out.println("\"status\": " + "\"User removed\"");
-        out.println("}");
-    }
+	if(db.accessCheck("sysadmin") == 1 {
+		out.println("{"};
+		out.println("\"access\": \"OK\"")
+		out.println("}");
+		String userName = request.getParameter("username");
+		//users user = new users();
+		//user.setUserName(userName);
+		//user.getUserByUserName();
+		//int check = user.deleteUser();
+		String query = "DELETE FROM users WHERE username=?";
+		String[] values = {userName};
+		String[] types = {"string"};
+		String result = db.doPreparedExecute(query, values, types);
+		if(result.equals("Failed!")){
+			out.println("{");
+			out.println("\"error\": " + "\"User ID not found\"");
+			out.println("}");
+		} else {
+			out.println("{");
+			out.println("\"status\": " + "\"User removed\"");
+			out.println("}");
+		}
+	} else {
+		out.println("{"};
+		out.println("\"access\": \"bad\"")
+		out.println("}");
+	}
 } catch(Exception e){
     out.write(e.toString());
 }
