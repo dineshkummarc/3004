@@ -631,6 +631,7 @@ INSERT INTO PollCreatorLink(PollID, UserID) VALUES (13, 4);
 INSERT INTO PollCreatorLink(PollID, UserID) VALUES (14, 4);
 INSERT INTO PollCreatorLink(PollID, UserID) VALUES (15, 4);
 INSERT INTO PollCreatorLink(PollID, UserID) VALUES (3, 4);
+INSERT INTO PollCreatorLink(PollID, UserID) VALUES (1, 4);
 
 INSERT INTO PollAdmins(Username) VALUES ('andy');
 INSERT INTO PollAdmins(Username) VALUES ('stuart');

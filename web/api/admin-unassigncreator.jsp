@@ -10,6 +10,8 @@
 
 
         <%
+        if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
             
             String[] array = {request.getParameter("pollID"), request.getParameter("username")};
             String[] types = {"int", "string"};
@@ -26,7 +28,7 @@
                                      + "UserID FROM PollCreatorLink WHERE PollID=?) ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
             %>
-            <%= "{ \"pollCreators\": [" %> 
+            <%= "\"pollCreators\": [" %> 
 
                 <% for(int c=0; c<pclink.size(); c++) {
                     if(c > 0) {
@@ -38,4 +40,7 @@
         <%= "\"" + pclink.get(c)[1] + "\"" %>
         <% } %>
                 <%= "]}" %>
-   
+   <% } else {
+                out.print("{\"access\":\"bad\"} ");
+            }
+%>

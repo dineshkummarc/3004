@@ -10,8 +10,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         <%
+        if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
+                       
             if(request.getParameter("username").length() == 0) { %>
-                <%= "{ \"status\" : \"You cannot assign an empty username.\", " %>
+                <%= "\"status\" : \"You cannot assign an empty username.\", " %>
             <% }
             
             else { 
@@ -24,7 +27,7 @@
             ArrayList<String[]> checkExists = db.doPreparedQuery("SELECT * FROM Users WHERE lower(userName) = lower(?)", array, types, columnName, columnType);
             
             if(checkExists.size() == 0) { %>
-                <%= "{ \"status\" : \"That username doesn't exist.\", " %>
+                <%= "\"status\" : \"That username doesn't exist.\", " %>
             <% }
                 else {
                     // username exists, but is it already assigned to the poll?
@@ -86,3 +89,8 @@
         <%= "\"" + pclink.get(c)[1] + "\"" %>
         <% } %>
                 <%= "]}" %>
+                <%
+        } else {
+            out.print("{\"access\":\"bad\"} ");
+        }
+        %>

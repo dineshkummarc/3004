@@ -8,6 +8,8 @@
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <%
+            if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
             
             String[] array = {request.getParameter("pollID")};
             String[] types = {"int"};
@@ -23,7 +25,7 @@
             polls = db.doPreparedQuery("SELECT * FROM Polls", paramArray, paramTypes, columnNames, columnTypes);
             %>
             
-            <%= "{\"numPolls\": " + polls.size() + ", \"polls\": [" %>
+            <%= "\"numPolls\": " + polls.size() + ", \"polls\": [" %>
  
             <% for(int i=0; i<polls.size(); i++) {
                 %>
@@ -59,3 +61,7 @@
     
     %>
             <%= "] }" %>
+            <% } else {
+                out.print("{\"access\":\"bad\"} ");
+            }
+%>
