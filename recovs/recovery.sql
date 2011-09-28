@@ -28,6 +28,7 @@ CREATE TABLE Questions(
     demographic CHAR(1) DEFAULT 'F',
     responseType VARCHAR(15) NOT NULL,
     question VARCHAR2(255) NOT NULL,
+    title VARCHAR2(15) NOT NULL,
     pollID INTEGER NOT NULL,      -- pollID of Polls
     created DATE NOT NULL,
     font VARCHAR(255) DEFAULT null,

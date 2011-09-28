@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="java.sql.ResultSet"%>
-<%@page import="database.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.io.*"%>
 <%@page import="java.util.ArrayList"%>
@@ -13,9 +12,9 @@
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1 {
-		out.println("{"};
-		out.println("\"access\": \"OK\"")
+	if(db.accessCheck("sysadmin") == 1) {
+		out.println("{");
+		out.println("\"access\": \"OK\"");
 		out.println("}");
 		String dataID = String.valueOf(db.getUserID());
 		String query = "SELECT pollID, pollName FROM polls WHERE polls.pollID IN (SELECT pollID FROM assigned WHERE userID=?)";
@@ -41,8 +40,8 @@ try{
 			out.print(printString);
 		}
 	} else {
-		out.println("{"};
-		out.println("\"access\": \"bad\"")
+		out.println("{");
+		out.println("\"access\": \"bad\"");
 		out.println("}");
 	}
 } catch(Exception e){

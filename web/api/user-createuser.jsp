@@ -5,16 +5,15 @@
 --%>
 
 <%@page import="java.sql.ResultSet"%>
-<%@page import="database.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1 {
-		out.println("{"};
-		out.println("\"access\": \"OK\"")
+	if(db.accessCheck("sysadmin") == 1) {
+		out.println("{");
+		out.println("\"access\": \"OK\"");
 		out.println("}");
 		//users user = new users();
 		//user.setUserID(-1);
@@ -44,8 +43,8 @@ try{
 			out.println("}");
 		} 
 	} else {
-		out.println("{"};
-		out.println("\"access\": \"bad\"")
+		out.println("{");
+		out.println("\"access\": \"bad\"");
 		out.println("}");
 	}
 } catch(Exception e){

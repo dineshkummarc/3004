@@ -13,9 +13,9 @@
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1 {
-		out.println("{"};
-		out.println("\"access\": \"OK\"")
+	if(db.accessCheck("sysadmin") == 1) {
+		out.println("{");
+		out.println("\"access\": \"OK\"");
 		out.println("}");
 		String dataID = request.getParameter("id"); //ID of the above type
 		String location = "";
@@ -40,8 +40,8 @@ try{
 			out.println("}");
 		}
 	} else {
-		out.println("{"};
-		out.println("\"access\": \"bad\"")
+		out.println("{");
+		out.println("\"access\": \"bad\"");
 		out.println("}");
 	}
 } catch(Exception e){
