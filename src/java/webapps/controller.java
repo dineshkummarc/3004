@@ -12,10 +12,8 @@ package webapps;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -26,12 +24,14 @@ import javax.swing.DefaultListModel;
 public class controller extends javax.swing.JApplet {
     private String path = "file:/c:/applet/";
     private int userID;
+    private int curPollID;
+    private int curQuesID;
+    private boolean receiving = false;
     
     private String getJson(String jspURL) {
 	try {
 	// Send data
 	URL url = new URL(jspURL);
-;
 	URLConnection conn = url.openConnection();
 	// Get the response
 	BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -71,69 +71,77 @@ public class controller extends javax.swing.JApplet {
 	Gson gson = new Gson();
 	Question question = gson.fromJson(json, Question.class);
 	//Set 
-	//lblQuestion
-	//lblAnswer1
-	//lblAnswer2
-	//lblAnswer3
-	//lblAnswer4
-	//lblAnswer5
-	//lblAnswer6
-	//lblAnswer7
-	//lblAnswer8
-	//lblAnswer9
-	//lblAnswer0
-	//enable both jlists
-	//Enabled start question
-	//Disable stop question
-	//Disable next question
+	lblQuestion.setText(question.getQuestion());
+	lblAnswer1.setText("1) " + question.getAnswers().get(0).getAnswer());
+	lblAnswer2.setText("2) " + question.getAnswers().get(1).getAnswer());
+	lblAnswer3.setText("3) " + question.getAnswers().get(2).getAnswer());
+	lblAnswer4.setText("4) " + question.getAnswers().get(3).getAnswer());
+	lblAnswer5.setText("5) " + question.getAnswers().get(4).getAnswer());
+	lblAnswer6.setText("6) " + question.getAnswers().get(5).getAnswer());
+	lblAnswer7.setText("7) " + question.getAnswers().get(6).getAnswer());
+	lblAnswer8.setText("8) " + question.getAnswers().get(7).getAnswer());
+	lblAnswer9.setText("9) " + question.getAnswers().get(8).getAnswer());
+	lblAnswer0.setText("0) " + question.getAnswers().get(9).getAnswer());
+	pollList.setEnabled(true);
+	questionList.setEnabled(true);
+	cmdStart.setEnabled(true);
+	cmdStop.setEnabled(false);
+	cmdNext.setEnabled(false);
     }
     
     private void startQuestion(int questID) {
 	String json = getJson(path + "startquestion.jsp?questionid=" + questID);
-	//Disable start question
-	//Enable stop question
-	//Enable next question
-	//Disable both jlists
-	//Disable channel textbox
-	//Disable channel button
+	receiving = true;
+	pollList.setEnabled(false);
+	questionList.setEnabled(false);
+	cmdStart.setEnabled(false);
+	cmdStop.setEnabled(true);
+	cmdNext.setEnabled(true);
+	cmdSet.setEnabled(false);
+	txtChannel.setEnabled(false);
     }
     
     private void stopQuestion(int questID) {
 	String json = getJson(path + "stopquestion.jsp?questionid=" + questID);
-	//enable start question
-	//disable stop question
-	//disable next question
-	//enable both jlists
-	//enable channel textbox
-	//enable channel button
+	receiving = false;
+	pollList.setEnabled(true);
+	questionList.setEnabled(true);
+	cmdStart.setEnabled(true);
+	cmdStop.setEnabled(false);
+	cmdNext.setEnabled(false);
+	cmdSet.setEnabled(true);
+	txtChannel.setEnabled(true);
     }
     
     private void nextQuestion(int questID) {
 	String json = getJson(path + "nextquestion.jsp?questionid=" + questID);
+	receiving = false;
 	Gson gson = new Gson();
 	Question question = gson.fromJson(json, Question.class);
-	//Set 
-	//lblQuestion
-	//lblAnswer1
-	//lblAnswer2
-	//lblAnswer3
-	//lblAnswer4
-	//lblAnswer5
-	//lblAnswer6
-	//lblAnswer7
-	//lblAnswer8
-	//lblAnswer9
-	//lblAnswer0
-	//enable start question
-	//disable stop question
-	//disable next question
-	//enable both jlists
-	//enable channel textbox
-	//enable channel button
+	lblQuestion.setText(question.getQuestion());
+	lblAnswer1.setText("1) " + question.getAnswers().get(0).getAnswer());
+	lblAnswer2.setText("2) " + question.getAnswers().get(1).getAnswer());
+	lblAnswer3.setText("3) " + question.getAnswers().get(2).getAnswer());
+	lblAnswer4.setText("4) " + question.getAnswers().get(3).getAnswer());
+	lblAnswer5.setText("5) " + question.getAnswers().get(4).getAnswer());
+	lblAnswer6.setText("6) " + question.getAnswers().get(5).getAnswer());
+	lblAnswer7.setText("7) " + question.getAnswers().get(6).getAnswer());
+	lblAnswer8.setText("8) " + question.getAnswers().get(7).getAnswer());
+	lblAnswer9.setText("9) " + question.getAnswers().get(8).getAnswer());
+	lblAnswer0.setText("0) " + question.getAnswers().get(9).getAnswer());
+	pollList.setEnabled(true);
+	questionList.setEnabled(true);
+	cmdStart.setEnabled(true);
+	cmdStop.setEnabled(false);
+	cmdNext.setEnabled(false);
+	cmdSet.setEnabled(true);
+	txtChannel.setEnabled(true);
     }
     
     private void sendResponse(int questID, int clickerID, String response) {
-	String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&clickerID=" + clickerID + "&response=" + response);	
+	if (receiving) {
+	    String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&clickerID=" + clickerID + "&response=" + response);
+	}
     }
     
     private void getPolls() {
@@ -145,6 +153,8 @@ public class controller extends javax.swing.JApplet {
 	for (pollPairing p : polls.getPolls()) {
 	    ((DefaultListModel)pollList.getModel()).addElement(p);
 	}
+	pollList.setEnabled(true);
+	questionList.setEnabled(true);
     }
     /** Initializes the applet controller */
     @Override
@@ -184,6 +194,8 @@ public class controller extends javax.swing.JApplet {
 	    ex.printStackTrace();
 	}
 	pollList.setModel(new DefaultListModel());
+	pollList.setEnabled(false);
+	questionList.setEnabled(false);
 	getUserID();
 	getPolls();
     }
@@ -379,71 +391,43 @@ public class controller extends javax.swing.JApplet {
     // End of variables declaration//GEN-END:variables
 }
 
-
-
-
 class Answer {
     private int answerID;
     private char keypad;
     private String answer;
     private char correct;
 
-    /**
-     * @return the answerID
-     */
     public int getAnswerID() {
 	return answerID;
     }
 
-    /**
-     * @param answerID the answerID to set
-     */
     public void setAnswerID(int answerID) {
 	this.answerID = answerID;
     }
 
-    /**
-     * @return the keypad
-     */
     public char getKeypad() {
 	return keypad;
     }
 
-    /**
-     * @param keypad the keypad to set
-     */
     public void setKeypad(char keypad) {
 	this.keypad = keypad;
     }
 
-    /**
-     * @return the answer
-     */
     public String getAnswer() {
 	return answer;
     }
 
-    /**
-     * @param answer the answer to set
-     */
     public void setAnswer(String answer) {
 	this.answer = answer;
     }
 
-    /**
-     * @return the correct
-     */
     public char getCorrect() {
 	return correct;
     }
 
-    /**
-     * @param correct the correct to set
-     */
     public void setCorrect(char correct) {
 	this.correct = correct;
     }
-
 }
 
 
@@ -464,218 +448,127 @@ class Question {
     private String location;
     private List<Answer> answers;
 
-    /**
-     * @return the questID
-     */
     public int getQuestID() {
 	return questID;
     }
 
-    /**
-     * @param questID the questID to set
-     */
     public void setQuestID(int questID) {
 	this.questID = questID;
     }
 
-    /**
-     * @return the demographic
-     */
     public char getDemographic() {
 	return demographic;
     }
 
-    /**
-     * @param demographic the demographic to set
-     */
     public void setDemographic(char demographic) {
 	this.demographic = demographic;
     }
 
-    /**
-     * @return the responseType
-     */
     public String getResponseType() {
 	return responseType;
     }
 
-    /**
-     * @param responseType the responseType to set
-     */
     public void setResponseType(String responseType) {
 	this.responseType = responseType;
     }
 
-    /**
-     * @return the question
-     */
     public String getQuestion() {
 	return question;
     }
 
-    /**
-     * @param question the question to set
-     */
     public void setQuestion(String question) {
 	this.question = question;
     }
 
-    /**
-     * @return the title
-     */
     public String getTitle() {
 	return title;
     }
 
-    /**
-     * @param title the title to set
-     */
     public void setTitle(String title) {
 	this.title = title;
     }
 
-    /**
-     * @return the pollID
-     */
     public int getPollID() {
 	return pollID;
     }
 
-    /**
-     * @param pollID the pollID to set
-     */
     public void setPollID(int pollID) {
 	this.pollID = pollID;
     }
 
-    /**
-     * @return the created
-     */
     public Date getCreated() {
 	return created;
     }
 
-    /**
-     * @param created the created to set
-     */
     public void setCreated(Date created) {
 	this.created = created;
     }
 
-    /**
-     * @return the font
-     */
     public String getFont() {
 	return font;
     }
 
-    /**
-     * @param font the font to set
-     */
     public void setFont(String font) {
 	this.font = font;
     }
 
-    /**
-     * @return the fontColor
-     */
     public String getFontColor() {
 	return fontColor;
     }
 
-    /**
-     * @param fontColor the fontColor to set
-     */
     public void setFontColor(String fontColor) {
 	this.fontColor = fontColor;
     }
 
-    /**
-     * @return the correctIndicator
-     */
     public String getCorrectIndicator() {
 	return correctIndicator;
     }
 
-    /**
-     * @param correctIndicator the correctIndicator to set
-     */
     public void setCorrectIndicator(String correctIndicator) {
 	this.correctIndicator = correctIndicator;
     }
 
-    /**
-     * @return the images
-     */
     public String getImages() {
 	return images;
     }
 
-    /**
-     * @param images the images to set
-     */
     public void setImages(String images) {
 	this.images = images;
     }
 
-    /**
-     * @return the creator
-     */
     public int getCreator() {
 	return creator;
     }
 
-    /**
-     * @param creator the creator to set
-     */
     public void setCreator(int creator) {
 	this.creator = creator;
     }
 
-    /**
-     * @return the location
-     */
     public String getLocation() {
 	return location;
     }
 
-    /**
-     * @param location the location to set
-     */
     public void setLocation(String location) {
 	this.location = location;
     }
 
-    /**
-     * @return the answers
-     */
     public List<Answer> getAnswers() {
 	return answers;
     }
 
-    /**
-     * @param answers the answers to set
-     */
     public void setAnswers(List<Answer> answers) {
 	this.answers = answers;
-    }
-    
+    } 
 }
 
 
 class Polls {
     private List<pollPairing> polls;
 
-    /**
-     * @return the polls
-     */
     public List<pollPairing> getPolls() {
 	return polls;
     }
 
-    /**
-     * @param polls the polls to set
-     */
     public void setPolls(List<pollPairing> polls) {
 	this.polls = polls;
     }
@@ -684,16 +577,10 @@ class Polls {
 class Questions {
     private List<pollPairing> questions;
 
-    /**
-     * @return the polls
-     */
     public List<pollPairing> getQuestions() {
 	return questions;
     }
 
-    /**
-     * @param polls the polls to set
-     */
     public void setQuestions(List<pollPairing> questions) {
 	this.questions = questions;
     }
@@ -702,32 +589,19 @@ class Questions {
 class pollPairing {
     private int ID;
     private String Name;
-    // +getters.
 
-    /**
-     * @return the ID
-     */
     public int getID() {
 	return ID;
     }
 
-    /**
-     * @param ID the ID to set
-     */
     public void setID(int ID) {
 	this.ID = ID;
     }
 
-    /**
-     * @return the Name
-     */
     public String getName() {
 	return Name;
     }
 
-    /**
-     * @param Name the Name to set
-     */
     public void setName(String Name) {
 	this.Name = Name;
     }
