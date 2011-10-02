@@ -17,6 +17,7 @@ import com.turningtech.poll.Response;
 import com.turningtech.poll.ResponseListener;
 import com.turningtech.receiver.Receiver;
 import com.turningtech.receiver.ResponseCardLibrary;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -82,7 +83,7 @@ public class controller extends javax.swing.JApplet {
      */
     private void getQuestions(int pollID) {
 	//String json = getJson(path + "webuser-getquestions.jsp?pollid=" + pollID);
-	String json = getJson(path + "webuser-getquestions.jsp"); //Testing
+	String json = getJson(path + "clicker-getquestions.jsp"); //Testing
 	Gson gson = new Gson();
 	questions = gson.fromJson(json, Questions.class);
 	((DefaultListModel) questionList.getModel()).clear();
@@ -119,15 +120,65 @@ public class controller extends javax.swing.JApplet {
 	try {
 	    lblQuestion.setText(questions.getQuestions().get(curQuesIndex).getQuestion());
 	    lblAnswer1.setText("1) " + current.get(0).getAnswer());
+	    if (current.get(0).getCorrect() == 'T') {
+		lblAnswer1.setForeground(Color.green);
+	    } else {
+		lblAnswer1.setForeground(Color.black);
+	    }
 	    lblAnswer2.setText("2) " + current.get(1).getAnswer());
+	    if (current.get(1).getCorrect() == 'T') {
+		lblAnswer2.setForeground(Color.green);
+	    } else {
+		lblAnswer2.setForeground(Color.black);
+	    }
 	    lblAnswer3.setText("3) " + current.get(2).getAnswer());
+	    if (current.get(2).getCorrect() == 'T') {
+		lblAnswer3.setForeground(Color.green);
+	    } else {
+		lblAnswer3.setForeground(Color.black);
+	    }
 	    lblAnswer4.setText("4) " + current.get(3).getAnswer());
+	    if (current.get(3).getCorrect() == 'T') {
+		lblAnswer4.setForeground(Color.green);
+	    } else {
+		lblAnswer4.setForeground(Color.black);
+	    }
 	    lblAnswer5.setText("5) " + current.get(4).getAnswer());
+	    if (current.get(4).getCorrect() == 'T') {
+		lblAnswer5.setForeground(Color.green);
+	    } else {
+		lblAnswer5.setForeground(Color.black);
+	    }
 	    lblAnswer6.setText("6) " + current.get(5).getAnswer());
+	    if (current.get(5).getCorrect() == 'T') {
+		lblAnswer6.setForeground(Color.green);
+	    } else {
+		lblAnswer6.setForeground(Color.black);
+	    }
 	    lblAnswer7.setText("7) " + current.get(6).getAnswer());
+	    if (current.get(6).getCorrect() == 'T') {
+		lblAnswer7.setForeground(Color.green);
+	    } else {
+		lblAnswer7.setForeground(Color.black);
+	    }
 	    lblAnswer8.setText("8) " + current.get(7).getAnswer());
+	    if (current.get(7).getCorrect() == 'T') {
+		lblAnswer8.setForeground(Color.green);
+	    } else {
+		lblAnswer8.setForeground(Color.black);
+	    }
 	    lblAnswer9.setText("9) " + current.get(8).getAnswer());
+	    if (current.get(8).getCorrect() == 'T') {
+		lblAnswer9.setForeground(Color.green);
+	    } else {
+		lblAnswer9.setForeground(Color.black);
+	    }
 	    lblAnswer0.setText("0) " + current.get(9).getAnswer());
+	    if (current.get(9).getCorrect() == 'T') {
+		lblAnswer0.setForeground(Color.green);
+	    } else {
+		lblAnswer0.setForeground(Color.black);
+	    }
 	} catch (Exception e) {
 	    //Ignore
 	}
@@ -192,7 +243,7 @@ public class controller extends javax.swing.JApplet {
 	String json = getJson(path + "clickergetpolls.jsp");
 	Gson gson = new Gson();
 	polls = gson.fromJson(json, Polls.class);
-	userID = polls.getID();
+	userID = polls.getUserid();
 	if (userID == -1) {
 	    pollList.setEnabled(false);
 	    questionList.setEnabled(false);
@@ -204,7 +255,7 @@ public class controller extends javax.swing.JApplet {
 	    JOptionPane.showMessageDialog(rootPane, "You are not authorised to use this applet.", "Poll Master authorisation failed!", JOptionPane.ERROR_MESSAGE);
 	} else {
 	    ((DefaultListModel) pollList.getModel()).clear();
-	    for (pollPairing p : polls.getPolls()) {
+	    for (pollPairing p : polls.getPresent()) {
 		((DefaultListModel) pollList.getModel()).addElement(p);
 	    }
 	    pollList.setEnabled(true);
@@ -238,7 +289,7 @@ public class controller extends javax.swing.JApplet {
 		    lblAnswer9.setText("");
 		    lblAnswer0.setText("");
 		} else {
-		    curPollID = polls.getPolls().get(lsm.getMinSelectionIndex()).getID();
+		    curPollID = polls.getPresent().get(lsm.getMinSelectionIndex()).getId();
 		    getQuestions(curPollID);
 		}
 	    }
@@ -558,27 +609,14 @@ public class controller extends javax.swing.JApplet {
     // End of variables declaration//GEN-END:variables
 }
 
+
+
 class Answer {
 
-    private int answerID;
-    //private char keypad;
+    private int id;
     private String answer;
-    //private char correct;
+    private char correct;
 
-    public int getAnswerID() {
-	return answerID;
-    }
-
-    public void setAnswerID(int answerID) {
-	this.answerID = answerID;
-    }
-
-    //public char getKeypad() {
-//	return keypad;
-    //}
-    //public void setKeypad(char keypad) {
-//	this.keypad = keypad;
-    //}
     public String getAnswer() {
 	return answer;
     }
@@ -586,18 +624,28 @@ class Answer {
     public void setAnswer(String answer) {
 	this.answer = answer;
     }
-    //public char getCorrect() {
-    //return correct;
-    //}
-    //public void setCorrect(char correct) {
-//	this.correct = correct;
-    //}
+    public char getCorrect() {
+    return correct;
+    }
+    public void setCorrect(char correct) {
+	this.correct = correct;
+    }
+
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
+    }
 }
+
 
 class Question {
 
     private int id;
     private String type;
+    private String title;
     private String question;
     private String font;
     private String correctIndicator;
@@ -681,28 +729,56 @@ class Question {
     public String toString() {
 	return this.getQuestion();
     }
+
+    public String getTitle() {
+	return title;
+    }
+
+    public void setTitle(String title) {
+	this.title = title;
+    }
 }
+
 
 class Polls {
 
-    private List<pollPairing> polls;
-    private int ID;
+    private List<pollPairing> past;
+    private List<pollPairing> present;
+    private List<pollPairing> future;
+    private int userid;
 
-    public List<pollPairing> getPolls() {
-	return polls;
+    public List<pollPairing> getPast() {
+	return past;
     }
 
-    public void setPolls(List<pollPairing> polls) {
-	this.polls = polls;
+    public void setPast(List<pollPairing> past) {
+	this.past = past;
     }
 
-    public int getID() {
-	return ID;
+    public List<pollPairing> getPresent() {
+	return present;
     }
 
-    public void setID(int ID) {
-	this.ID = ID;
+    public void setPresent(List<pollPairing> present) {
+	this.present = present;
     }
+
+    public List<pollPairing> getFuture() {
+	return future;
+    }
+
+    public void setFuture(List<pollPairing> future) {
+	this.future = future;
+    }
+
+    public int getUserid() {
+	return userid;
+    }
+
+    public void setUserid(int userid) {
+	this.userid = userid;
+    }
+
 }
 
 class Questions {
@@ -720,26 +796,63 @@ class Questions {
 
 class pollPairing {
 
-    private int ID;
-    private String Name;
+    private int id;
+    private String name;
+    private String description;
+    private String startDate;
+    private String finishDate;
+    private boolean completed;
 
-    public int getID() {
-	return ID;
+
+    public String toString() {
+	return getName();
     }
 
-    public void setID(int ID) {
-	this.ID = ID;
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
     }
 
     public String getName() {
-	return Name;
+	return name;
     }
 
-    public void setName(String Name) {
-	this.Name = Name;
+    public void setName(String name) {
+	this.name = name;
     }
 
-    public String toString() {
-	return Name;
+    public String getDescription() {
+	return description;
+    }
+
+    public void setDescription(String description) {
+	this.description = description;
+    }
+
+    public String getStartDate() {
+	return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+	this.startDate = startDate;
+    }
+
+    public String getFinishDate() {
+	return finishDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+	this.finishDate = finishDate;
+    }
+
+    public boolean isCompleted() {
+	return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+	this.completed = completed;
     }
 }
