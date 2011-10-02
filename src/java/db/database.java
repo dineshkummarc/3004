@@ -30,8 +30,8 @@ public class database {
                 /* Load the Oracle JDBC Driver and register it. */
                 DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
                 /* Open a new connection */
-                conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
-                //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "david", "d");
+                //conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4217258", "password");
             } catch(Exception ex){
                 System.out.println(ex.toString());
             }
@@ -252,13 +252,15 @@ public class database {
     private int baseLogin(String username, String password) {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
-        String[] output = {"userLevel"};
-        String[] outputTypes = {"string"};
-        ArrayList<String[]> rankChecker = doPreparedQuery("SELECT userLevel FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
+        String[] output = {"userLevel", "userID"};
+        String[] outputTypes = {"string", "string"};
+        ArrayList<String[]> rankChecker = doPreparedQuery("SELECT userLevel, userID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
         if(rankChecker.isEmpty()) {
             System.err.println("baseLogin: username doesn't exist");
             return 0; // username does not exist
         } else {
+            this.userID = Integer.parseInt(rankChecker.get(0)[1]);
+            
             if(rankChecker.get(0)[0].equals("System Admin")) {
                 return 6;
             } else if(rankChecker.get(0)[0].equals("Key User")) {
