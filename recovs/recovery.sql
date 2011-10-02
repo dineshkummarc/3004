@@ -115,10 +115,11 @@ CREATE TABLE MultiResponses(
 
 --SUB CLASS OF RESPONSES
 CREATE TABLE KeyResponses(
-    userID INTEGER NOT NULL,
+    --userID INTEGER,
+	clickerID VARCHAR2(30) NOT NULL,
     questID INTEGER NOT NULL,     -- questID of Questions
-    keypad CHAR(1) NOT NULL,
-    CONSTRAINT pk_KeyResponses PRIMARY KEY (questID, userID)
+    answerID INTEGER NOT NULL,    -- answerID of Answer
+    CONSTRAINT pk_KeyResponses PRIMARY KEY (questID, clickerID)
 );
 
 CREATE TABLE Polls(
@@ -128,6 +129,7 @@ CREATE TABLE Polls(
     description VARCHAR2(255),
     startDate TIMESTAMP,
     finishDate TIMESTAMP,
+	activeQuestion INTEGER DEFAULT 0,
     CONSTRAINT pk_Polls PRIMARY KEY (pollID)
 );
 
@@ -140,6 +142,7 @@ CREATE TABLE Users(
     userLevel VARCHAR(255),
     created DATE,
     expired DATE,
+	clickerID VARCHAR2(30),
     CONSTRAINT userLevel_const CHECK (userLevel IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin', 'System Admin')),
     CONSTRAINT pk_Users PRIMARY KEY (userID),
     CONSTRAINT uk_Users UNIQUE (userName)
