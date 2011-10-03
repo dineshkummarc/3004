@@ -76,6 +76,7 @@ CREATE TABLE Answers(
     answer VARCHAR2(255) NOT NULL,
     questID INTEGER NOT NULL,     -- questID of Questions
     correct CHAR(1) NOT NULL,
+	weight INTEGER DEFAULT NULL,
     CONSTRAINT pk_Answers PRIMARY KEY (answerID)
 );
 
@@ -83,12 +84,6 @@ CREATE TABLE Comparitives(
     questID INTEGER NOT NULL,     -- questID of Questions
     compareTo INTEGER NOT NULL,
     CONSTRAINT pk_Comparitives PRIMARY KEY (questID)
-);
-
-CREATE TABLE Rankings(
-    answerID INTEGER NOT NULL,    -- answerID of Answers
-    weight INTEGER NOT NULL,
-    CONSTRAINT pk_Rankings PRIMARY KEY (answerID)
 );
 
 CREATE TABLE Responses(
