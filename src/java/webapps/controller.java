@@ -225,6 +225,7 @@ public class controller extends javax.swing.JApplet {
 	loadQuestion(questID);
 	String json = getJson(path + "setactivequestion.jsp?pollid=" + curPollID + "&questID=" + questID);
 	receiving = true;
+	setPollType(questions.getQuestions().get(curQuesIndex).getType());
 	pollList.setEnabled(false);
 	questionList.setEnabled(false);
 	cmdStart.setEnabled(false);
@@ -234,7 +235,7 @@ public class controller extends javax.swing.JApplet {
 	txtChannel.setEnabled(false);
     }
 
-    private void sendResponse(int questID, String clickerID, int answerID) {
+    private void sendResponse(int questID, String clickerID, String answerID) {
 	if (receiving) {
 	    String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&answerid=" + answerID + "&clickerID=" + clickerID);
 	}
@@ -430,49 +431,14 @@ public class controller extends javax.swing.JApplet {
 	getPolls();
 	ResponseCardLibrary.initializeLicense("University of Queensland", "24137BBFEEEA9C7F5D65B2432F10F960");
 	myPoll = PollService.createPoll(); //Might not find receiver even though one is connected...
-        Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf("SingleResponse_Numeric"));
         List<Receiver> receivers = myPoll.getReceivers();  
         for (Receiver receiver : receivers) {
             receiver.setChannel(curChannel);
         }
-	myPoll.addResponseListener(new ResponseListener(){
-            public void responseReceived(Response response) {
-                if (response.getReceiverId() == null || response.getResponse() == null || response.getResponse().equals("?")) {
-                    return;
-                }
-                System.out.println("Response:"+response.getResponse());
-                try {
-                    int index = Integer.parseInt(response.getResponse());
-                    if (index == 0) {
-                        index = 9;
-                    } else {
-                        index = index - 1;
-                    }
-                    int answerID = questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId();
-                    sendResponse(curQuesID, response.getReceiverId().toString(), answerID);
-                } catch (Exception e) {
-                    //No poll yet
-                }
-            }
-	});
-	myPoll.start(pollingMode);
     }
     
     public void setPollType(String type) {
-        /* "SingleResponse_Alpha" < DONE
-         * "SingleResponse_Numeric" < DONE
-         * "MultiResponse_Alpha"
-         * "MultiResponse_Numeric"
-         * "MultiResponse_NoDuplicates"
-         * "MultiResponse_NoDuplicates_Alpha"
-         * "MultiResponse_NoDuplicates_Numeric"
-         * "ShortAnswer"
-         * "Numeric"
-         * "Essay"
-         * "InvalidResponse"
-         */
         myPoll.stop();
-        Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf(type));
         if (type.equals("SingleResponse_Numeric") || type.equals("SingleResponse_Alpha")) {
             myPoll.addResponseListener(new ResponseListener(){
                 public void responseReceived(Response response) {
@@ -487,15 +453,47 @@ public class controller extends javax.swing.JApplet {
                         } else {
                             index = index - 1;
                         }
-                        int answerID = questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId();
+                        String answerID = String.valueOf(questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId());
                         sendResponse(curQuesID, response.getReceiverId().toString(), answerID);
                     } catch (Exception e) {
                         //No poll yet
                     }
                 }
             });
+	    Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf(type));
             myPoll.start(pollingMode);
-        }
+        } else if (type.contains("MultiResponse")) {
+	    myPoll.addResponseListener(new ResponseListener(){
+                public void responseReceived(Response response) {
+                    if (response.getReceiverId() == null || response.getResponse() == null || response.getResponse().equals("?")) {
+                        return;
+                    }
+                    System.out.println("Response:"+response.getResponse());
+                    try {
+			String answerID = "";
+			for (int i = 0; i < response.getResponse().length(); i++) {
+			    int index = Integer.parseInt(response.getResponse());
+			    if (index == 0) {
+				index = 9;
+			    } else {
+				index = index - 1;
+			    }
+			    answerID = answerID + String.valueOf(questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId());
+			    if (i != response.getResponse().length() - 1) {
+				answerID = answerID + ",";
+			    }
+			}
+                        sendResponse(curQuesID, response.getReceiverId().toString(), answerID);
+                    } catch (Exception e) {
+                        //No poll yet
+                    }
+                }
+            });
+	    Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf(type));
+            myPoll.start(pollingMode);
+	} else {
+	    System.err.println("Invalid question type: " + type + "\nFor question " + curQuesID);
+	}
 	
     }
 
