@@ -16,7 +16,7 @@ $("#poll").change(function() {
 	
 	dbPoll.api("api/geolocation.jsp", {action: "load", type: "poll", id: id}, function(data) {
 		var pos = data.location.split(","),
-			latlng = new google.maps.LatLng(pos[0], pos[1]);
+			latlng = new google.maps.LatLng($.trim(pos[0]), $.trim(pos[1]));
 			
 		if(marker) {
 			marker.setPosition(latlng);
@@ -35,8 +35,9 @@ $("#submit").click(function() {
 	var param = {},
 		pos = marker.getPosition();
 		
-	param.pollID = $("#poll").val();
+	param.id = $("#poll").val();
 	param.action = "set";
+        param.type = "poll";
 	param.location = pos.Oa + "," + pos.Pa;
 	
 	dbPoll.api("api/geolocation.jsp", param);

@@ -14,12 +14,15 @@
         <% } else { %>
         <%= "{\"login\": 1, \"username\": \"" + db.username + "\"," %>
         <% } 
+        if(db.accessCheck("polladmin") == 1) {
+            
+            out.print("\"access\":\"OK\", ");
             String[] array = {};
             String[] types = {};
-            String[] columnNames = {"PollID", "Name", "Admin"};
-            String[] columnTypes = {"int", "string", "string"};
+            String[] columnNames = {"PollID", "PollName"};
+            String[] columnTypes = {"int", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
-            polls = db.doPreparedQuery("SELECT * FROM dcf_Polls", array, types, columnNames, columnTypes);
+            polls = db.doPreparedQuery("SELECT * FROM Polls", array, types, columnNames, columnTypes);
             %>
             
             <%= " \"numPolls\": " + polls.size() + ", \"polls\": [" %>
@@ -36,11 +39,11 @@
                         + ", \"pollName\": \"" + polls.get(i)[1] +
                         "\", \"pollCreators\": [" 
                         %>
-                <% String[] pclinkCols = {"UserID", "Username", "Password"};
-                String[] pclinkColTypes = {"int", "string", "string"};
+                <% String[] pclinkCols = {"UserID", "Username"};
+                String[] pclinkColTypes = {"int", "string"};
                 ArrayList<String[]> pclink = new ArrayList<String[]>();
-                pclink = db.doPreparedQuery("SELECT * FROM dcf_PollCreators pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM dcf_PollCreatorLink WHERE PollID=" + Integer.parseInt(polls.get(i)[0]) + ") ",
+                pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
+                                     + "UserID FROM PollCreatorLink WHERE PollID=" + Integer.parseInt(polls.get(i)[0]) + ") ",
                                      array, types, pclinkCols, pclinkColTypes);
                 %>
 
@@ -58,4 +61,7 @@
     
     %>
             <%= "] }" %>
+            <% } else {
+            out.print("\"access\":\"bad\" } ");   
+           } %>
 

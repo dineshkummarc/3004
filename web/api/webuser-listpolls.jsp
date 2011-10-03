@@ -12,12 +12,18 @@
 <%@ page import = "java.util.Date,java.text.SimpleDateFormat,java.text.ParseException" %>
 
 <%
-
+/* Returns a list of all the polls a web use rhas been assigned to 
+ * including their pollID, pollname, description, startDate, finishDate
+ * and their status.
+ * 
+ * @require User must be logged in to access this API (session variable must be set)
+ * @return JSON file with information polls assigned to user
+ */
 if (db.getLoggedIn() == 1) {
     
 String userID = Integer.toString(db.getUserID());
-//out.println("THIS IS THE USER ID" + userID + " <br/>");
-//if (db.getLoggedIn() == 1) {
+
+        //Prepare the inputs, types, columnNames and columnTypes which are going to be returned
         String inputs[];
         inputs = new String[1];
         inputs[0] = userID;
@@ -106,6 +112,6 @@ String userID = Integer.toString(db.getUserID());
         
         out.print("] }");
 } else {
-    out.print("{ \"error\": \"User not logged in.\"}");
+    out.print("{ \"error\": \"User not logged in.\", \"redirect\":\"Login\"}");
 }
 %>

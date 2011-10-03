@@ -19,6 +19,8 @@ public class database {
     public String creatorUsername = new String();
     public String creatorPassword = new String();
     private int creatorLoggedIn = 0;
+    public int level = 0;
+    public ArrayList<String> pages = new ArrayList<String>();
      /**
      * Establishes an Oracle connection.
      */
@@ -28,8 +30,8 @@ public class database {
                 /* Load the Oracle JDBC Driver and register it. */
                 DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
                 /* Open a new connection */
-                conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "s4217258", "password");
-                //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "s4217258", "password");
+                //conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4217258", "password");
             } catch(Exception ex){
                 System.out.println(ex.toString());
             }
@@ -123,9 +125,11 @@ public class database {
                 String[] dataRow = new String[columnNames.length];
                 for(int i=0; i < columnNames.length; i++) {
                     if(columnTypes[i].matches("int")) {
+                        //System.err.println("ColType set as: int");
                         dataRow[i] = Integer.toString(rset.getInt(columnNames[i]));
                     }
                     else if(columnTypes[i].matches("string")) {
+                        //System.err.println("ColType set as: string");
                         dataRow[i] = rset.getString(columnNames[i]);
                     }
                     else {
@@ -147,20 +151,146 @@ public class database {
         }
     }
     
-    public int login(String username, String password) {
+    /*
+     * Login function which groups all credential and access-level checks
+     * into one. Returns a userlevel based on the user's highest available 
+     * access.
+     * 
+     * Possible return values (value:meaning):
+     * 0: Not logged in
+     * 1: Web User
+     * 2: Key User
+     * 3: Poll Master
+     * 4: Poll Creator
+     * 5: Poll Admin
+     * 6: System Admin
+     */
+    public int loginAll(String username, String password) {
+        int userLevel = 0;
+        userLevel = baseLogin(username, password);
+        if(creatorLogin(username, password) == 1) {
+            if(userLevel < 4) {
+                userLevel = 4;
+            }
+        }
+        if(adminLogin(username, password) == 1) {
+            if(userLevel < 5) {
+                userLevel = 5;
+            }
+        }
+        this.username = username;
+        this.password = password;
+        this.loggedIn = 1;
+        this.level = userLevel;
+        this.pages = listPages();
+        System.err.println("loginAll: Final userlevel: " + userLevel);
+        return userLevel;
+    }
+    
+    /*
+     * Returns an ArrayList containing all pages that currently logged in user
+     * should be able to see in the navbar. 
+     * 
+     * Intended to be used for the navigation bar (so available pages are displayed,
+     * while unavailable pages are hidden), but can also be used to check if a 
+     * user should be on a page at all.
+     */
+    public ArrayList<String> listPages() {
+        pages = new ArrayList<String>();
+        if(this.level == 1) {
+            pages.add("web");
+        } else if(this.level == 2) {
+            pages.add("key");
+        } else if(this.level == 3) {
+            pages.add("master");
+            pages.add("key");
+            pages.add("web");
+        } else if(this.level == 4) {
+            pages.add("creator");
+            pages.add("master");
+            pages.add("key");
+            pages.add("web");
+        } else if(this.level == 5) {
+            pages.add("polladmin");
+            pages.add("creator");
+            pages.add("master");
+            pages.add("key");
+            pages.add("web");
+        } else if(this.level == 6) {
+            pages.add("sysadmin");
+        } else {
+            pages.add("none");
+        }
+        return pages;
+    }
+    
+    public ArrayList<String> getPages() {
+        return this.pages;
+    }
+    
+    /*
+     * Checks to see whether the currently logged in user should be able to 
+     * access the specified page.
+     * Returns 0 for no access, 1 for access allowed.
+     */
+    public int accessCheck(String page) {
+        if(!getPages().contains(page)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    
+    /*
+     * Does a basic user access level check on a user via the USERS table.
+     * Can retrieve System Admin, Key User and Web User access levels.
+     * Should only ever be called by loginAll.
+     * 
+     * Returns the appropriate user level (6 for SysAdmin, 2 for KeyUser, 1 for
+     * Web User).
+     */
+    private int baseLogin(String username, String password) {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
+        String[] output = {"userLevel", "userID"};
+        String[] outputTypes = {"string", "string"};
+        ArrayList<String[]> rankChecker = doPreparedQuery("SELECT userLevel, userID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
+        if(rankChecker.isEmpty()) {
+            System.err.println("baseLogin: username doesn't exist");
+            return 0; // username does not exist
+        } else {
+            this.userID = Integer.parseInt(rankChecker.get(0)[1]);
+            
+            if(rankChecker.get(0)[0].equals("System Admin")) {
+                return 6;
+            } else if(rankChecker.get(0)[0].equals("Key User")) {
+                return 2;
+            } else if(rankChecker.get(0)[0].equals("Web User")) {
+                return 1;
+            }
+        }
+        System.err.println("baseLogin: No sysadmin/web user/key user access found. Looking for poll admin/creator access...");
+        return 0; // no sysadmin/web user/key user access applies to this user
+       
+    }
+    
+    private int adminLogin(String username, String password) {
+        String[] input = {username, password, username};
+        String[] inputTypes = {"string", "string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM PollAdmins WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND UserID IN (SELECT UserID FROM PollAdmins WHERE lower(Username) = lower(?))", input, inputTypes, output, outputTypes);
+        String[] validTypes = {"string", "string"};
+        String[] validInput = {username, password};
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", validInput, validTypes, output, outputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
+        } else if(isAdmin.isEmpty()) {
+            // user has no admin access
+            return 3;
         } else {
             // valid credentials supplied
-            this.username = username;
-            this.password = password;
-            this.loggedIn = 1;
             return 1;
         }
     }
@@ -170,15 +300,12 @@ public class database {
         String[] inputTypes = {"string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
         } else {
             // valid credentials supplied
-            this.username = username;
-            this.password = password;
-            this.loggedIn = 1;
             this.userID = Integer.parseInt(valid.get(0)[0]);
             return 1;
         }
@@ -188,6 +315,20 @@ public class database {
         return this.loggedIn;
     }
     
+    /*
+     * Returns the currently logged in user's access level.
+     * 0: Not logged in
+     * 1: Web User
+     * 2: Key User
+     * 3: Poll Master
+     * 4: Poll Creator
+     * 5: Poll Admin
+     * 6: System Admin
+     */
+    public int getUserLevel() {
+        return this.level;
+    }
+    
     public int getUserID() {
         return this.userID;
     }
@@ -195,26 +336,33 @@ public class database {
     public String getUsername() {
         return this.username;
     }
+    
     public void logout() {
         this.username = new String();
         this.password = new String();
+        this.level = 0;
         this.loggedIn = 0;
     }
        
-    public int creatorLogin(String username, String password) {
+    private int creatorLogin(String username, String password) {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ? AND Password LIKE ?", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? ", input, inputTypes, output, outputTypes);
+        String[] isCreatorInput = {username};
+        String[] isCreatorInputTypes = {"string"};
+        String[] isCreatorOutput = {"UserID"};
+        String[] isCreatorOutputTypes = {"int"};
+        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM PollCreatorLink WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?))", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
+        } else if(isCreator.isEmpty()) {
+            // user isn't a creator on any polls
+            return 3;
         } else {
             // valid credentials supplied
-            this.creatorUsername = username;
-            this.creatorPassword = password;
-            this.creatorLoggedIn = 1;
             return 1;
         }
     }

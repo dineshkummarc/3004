@@ -7,9 +7,14 @@ $("#submit").click(function() {
 	param.password = o.password.val(),
 	param.email = o.email.val();
 		
+	$("#msg").show().html("<img src='assets/images/ajax-loader.gif'/> <strong>Loading:</strong> Adding a Poll Creator");
+		
 	dbPoll.api("api/registercreator-json.jsp", param, function(data) {
 		o.username.val("");
 		o.password.val("");
 		o.email.val("");
+		
+		//stop showing the load message
+		$("#msg").hide().html("");
 	});
 });

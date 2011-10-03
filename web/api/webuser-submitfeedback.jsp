@@ -11,7 +11,13 @@
 <%@ page import = "java.util.ArrayList" %>
 
 <%
-//String user = request.getParameter( "user" );
+/* Allows a user to submit feedback whilst undertaking a poll, feedback is submitted
+ * based on userID and questID
+ * 
+ * @require qid - UserID
+ *          feedback - message to be submitted
+ * @return JSON which says its correct or incorrect.
+ */
 String questionID = request.getParameter( "qid" );
 String feedback = request.getParameter( "feedback" );
 
@@ -45,7 +51,7 @@ if (db.getLoggedIn() == 1) {
             if (value.equals("Failed!")) {              
                 out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}");  
             } else {
-                out.print("{ \"status\": \"OK\"}");
+                out.print("{ \"status\": \"Thank you for your feedback\"}");
             }
             
         } else {
@@ -53,6 +59,6 @@ if (db.getLoggedIn() == 1) {
         } 
     }
 } else {
-    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\"}");
+    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\", \"redirect\":\"Login\"}");
 }
 %>

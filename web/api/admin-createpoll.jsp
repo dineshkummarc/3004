@@ -9,32 +9,34 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         <%
+        if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
             if(request.getParameter("pollName").length() == 0) { %>
-                <%= "{ \"status\": \"You cannot enter an empty poll name.\" } " %>
+                <%= "\"status\": \"You cannot enter an empty poll name.\" } " %>
             <% }
             else { %>
-                <%= "{ \"status\": \"OK\", "%>
+                <%= "\"status\": \"OK\", "%>
             <% 
                 
             String[] array = {request.getParameter("pollName")};
             String[] types = {"string"};
 
    
-            db.doPreparedExecute("INSERT INTO dcf_Polls(Name) VALUES (?)", array,types);
+            db.doPreparedExecute("INSERT INTO Polls(PollID, Pollname) VALUES (pseq.nextval, ?)", array,types);
             
             ArrayList<String[]> maxPoll = new ArrayList<String[]>();
             String[] a1 = {};
             String[] a2 = {};
             String[] getColumnName = {"MAX(PollID)"};
             String[] getColumnType = {"int"};
-            maxPoll = db.doPreparedQuery("SELECT MAX(PollID) FROM dcf_Polls", a1, a2, getColumnName, getColumnType);
+            maxPoll = db.doPreparedQuery("SELECT MAX(PollID) FROM Polls", a1, a2, getColumnName, getColumnType);
             
             String[] pollArray = {maxPoll.get(0)[0]};
             String[] pollTypes = {"int"};
-            String[] pollCols = {"PollID", "Name", "Admin"};
-            String[] pollColTypes = {"int", "string", "string"};
+            String[] pollCols = {"PollID", "Pollname"};
+            String[] pollColTypes = {"int", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
-            polls = db.doPreparedQuery("SELECT * FROM dcf_Polls WHERE PollID=?", pollArray, pollTypes, pollCols, pollColTypes);
+            polls = db.doPreparedQuery("SELECT * FROM Polls WHERE PollID=?", pollArray, pollTypes, pollCols, pollColTypes);
  
             for(int i=0; i<polls.size(); i++) {
                 %>
@@ -44,11 +46,11 @@
                         + ", \"pollName\": \"" + polls.get(i)[1] +
                         "\", \"pollCreators\": [" 
                         %>
-                <% String[] pclinkCols = {"UserID", "Username", "Password"};
-                String[] pclinkColTypes = {"int", "string", "string"};
+                <% String[] pclinkCols = {"userID", "userName"};
+                String[] pclinkColTypes = {"int", "string"};
                 ArrayList<String[]> pclink = new ArrayList<String[]>();
-                pclink = db.doPreparedQuery("SELECT * FROM dcf_PollCreators pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM dcf_PollCreatorLink WHERE PollID=?) ",
+                pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.userID IN (SELECT "
+                                     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
                 %>
 
@@ -62,6 +64,9 @@
         <%= "\"" + pclink.get(c)[1] + "\"" %>
         <% } %>
                 <%= "]}}" %>
-          <%  } }
+          <%  } } }
+               else {
+            out.print("{\"access\":\"bad\"} ");
+               }
     
     %>

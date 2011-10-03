@@ -10,6 +10,8 @@
         <% if(db.login(request.getParameter("username"), request.getParameter("password")) == 1) {
             %>
             <%= "{\"status\": \"OK\", \"username\": \"" + db.username + "\"}" %>
-        <% } else { %>
+        <% } else if(db.login(request.getParameter("username"), request.getParameter("password")) == 3) {
+            out.println("{\"status\": \"You're not a Poll Administrator; contact the System Administrator for access.\"}");
+        } else { %>
             <%= "{\"status\": \"Incorrect username or password. Please try again.\"}" %>
         <% } %>

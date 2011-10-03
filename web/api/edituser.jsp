@@ -14,10 +14,15 @@ try{
     String action = request.getParameter("action"); //"register" or "edit" or "remove"
     String returnDetails = request.getParameter("returnBoolean"); //"true" or "false"
     if (returnDetails == null) {
-        returnDetails = "";
+        returnDetails = "false";
     }
     if (action == null) {
         action = "";
+    }
+    if (returnDetails == "false" && action == null) {
+        out.println("{");
+        out.println("\"error\": " + "\"No params sent\"");
+        out.println("}");
     }
     if (action.equals("remove")) {
         String userName = request.getParameter("userName");
@@ -31,7 +36,7 @@ try{
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User removed\"");
             out.println("}");
         }
     } else if (action.equals("edit")) {
@@ -55,10 +60,10 @@ try{
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User edited\"");
             out.println("}");
         }
-    } else if (action.equals("create")) {
+    } else if (action.equals("register")) {
         users user = new users();
         user.setUserID(-1);
         String userName = request.getParameter("userName");
@@ -72,14 +77,13 @@ try{
         user.setLocation(location);
         user.setUserLevel(userLevel);
         int check = user.addUser();
-        out.println(check);
         if(check == -2 || check == -1){
             out.println("{");
             out.println("\"error\": " + "\"Unknown error occured during creation\"");
             out.println("}");
         } else if (returnDetails.equals("false")){
             out.println("{");
-            out.println("\"status\": " + "\"OK\"");
+            out.println("\"status\": " + "\"User registered\"");
             out.println("}");
         }
     } else if (returnDetails.equals("false")){
@@ -93,13 +97,20 @@ try{
         users user = new users();
         user.setUserName(userName);
         user.getUserByUserName();
-        out.println("{");
-        out.println("\"userID\": \"" + user.getUserID() + "\",");
-        out.println("\"userName\": \"" + user.getUserName() + "\",");
-        out.println("\"email\": \"" + user.getEmail() + "\",");
-        out.println("\"location\": \"" + user.getLocation() + "\",");
-        out.println("\"userLevel\": \"" + user.getUserLevel() + "\"");
-        out.println("}");
+		if (user.getUserID() != -1) {
+			out.println("{");
+			out.println("\"userID\": \"" + user.getUserID() + "\",");
+			out.println("\"userName\": \"" + user.getUserName() + "\",");
+			out.println("\"email\": \"" + user.getEmail() + "\",");
+			out.println("\"location\": \"" + user.getLocation() + "\",");
+			out.println("\"userLevel\": \"" + user.getUserLevel() + "\"");
+			out.println("}");
+		} else {
+			out.println("{");
+			out.println("\"userID\": \"" + user.getUserID() + "\",");
+            out.println("\"status\": " + "\"User not found\"");
+            out.println("}");
+		}
     }
 } catch(Exception e){
     out.write(e.toString());

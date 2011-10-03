@@ -13,6 +13,7 @@ function loadView(view) {
 	}
 	
 	dbPoll.q = {};
+	dbPoll.page = view;
 	
 	//if there are some URL vars
 	if(~pos) {
@@ -103,13 +104,15 @@ $(function() {
 		$("<link/>", {rel: "stylesheet", href: "assets/mobile.css", type: "text/css"}).append(head);
 	}
 	
-	dbPoll.api("api/isloggedin.jsp", function(status) {
-		if(status.username) {
-			$("#top span.name").text(status.username);
-		} else {
-			dbPoll.go("Login");
-		}
-	});
+	if(dbPoll.page !== "Login") {
+		dbPoll.api("api/isloggedin.jsp", function(status) {
+			if(status.username) {
+				$("#top span.name").text(status.username);
+			} else {
+				dbPoll.go("Login");
+			}
+		});
+	}
 });
 
 //setup a global namespace
@@ -161,11 +164,17 @@ dbPoll.go = loadView;
 
 dbPoll.message = function(msg) {
 	var n = $("#notify");
-	n.css({left: $(window).width() / 2 - n.width() / 2});
+	n.css({left: $(window).width() / 2 - n.width() / 2}).stop(true, true);
 	n.show().html(msg).animate({top: 50}, 500, function() {
 		$(this).delay(msg.length * 100).animate({top: -50}, 500, function() {
 			$(this).html("").hide();
 		});
+	});
+};
+
+dbPoll.cancelMessage = function() {
+	$("#notify").stop(true, true).animate({top: -50}, 500, function() {
+		$(this).html("").hide();
 	});
 };
 

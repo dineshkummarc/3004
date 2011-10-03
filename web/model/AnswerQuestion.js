@@ -3,11 +3,12 @@ var DATA, I,
 	interval,
 	CHARTTYPE = "bar";
 
-function submit() {
+function submit(show) {
 	var param = {},
 		ans = [];
 		
 	param.qid = QID;
+	show = show === undefined ? true : false;
 	
 	if(QTYPE == "mp-multiple") {
 		$("input:checked").each(function() { 
@@ -16,38 +17,41 @@ function submit() {
 		
 		param.aid = ans.join(",");
 	} else if(QTYPE == "mp-single") {
-		param.aid = $("input:radio[name=ans]:checked").val();
+		param.aid = $("input:radio[name=ans]:checked").val() || "";
 	} else if(QTYPE.substr(0, 2) == "sr") {
 		param.a = $("#resp").val();
 	}
 	
-	
-	$("#chart").show().empty();
+	if(show) $("#chart").show().empty();
 	
 	dbPoll.api("api/webuser-submitanswer.jsp", param, function(data) {
 		console.log(data);
-		if(data.responses) {
+		if(data.responses && show) {
 			var table = new google.visualization.DataTable(),
 				key, i = 0, chart,
 				q = DATA.questions[I-1];
 				
+			if(!q) return;	
+			
 			table.addColumn('string', 'Response');
 			table.addColumn('number', 'Amount');
 			
 			table.addRows(data.responses);
 			
-			if(q.chartType === "bar") {
-				chart = new google.visualization.BarChart(document.getElementById('chart'));
+			if(q.chartType === "column") {
+				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			} else if(q.chartType === "pie") {
 				chart = new google.visualization.PieChart(document.getElementById('chart'));
+			} else if(q.chartType === "bar") {
+				chart = new google.visualization.BarChart(document.getElementById('chart'));
 			} else {
-				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+				return;
 			}
 			
 			console.log(table);
 			chart.draw(table, {width: 500, height: 400, title: q.question});
-			
-			
+		} else {
+			$("#chart").hide();
 		}
 	});
 }
@@ -70,6 +74,7 @@ function loadQuest(question, index) {
 	//load first question
 	var o = dbPoll.obj, html = "", l = DATA.questions.length;
 	
+	if(!question) return;
 	QID = question.id;
 	QTYPE = question.type;
 	QNAME = question.question;
@@ -151,7 +156,9 @@ function loadQuest(question, index) {
 	$("#feedback").show();
 }
 
-$("#submit").click(submit);
+$("#submit").click(function() {
+	submit(false);
+});
 $("#next").click(function() {
 	submit();
 	

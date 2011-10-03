@@ -10,23 +10,25 @@
 
 
         <%
+        if(db.accessCheck("polladmin") == 1) {
+            out.print("{\"access\":\"OK\", ");
             
             String[] array = {request.getParameter("pollID"), request.getParameter("username")};
             String[] types = {"int", "string"};
 
-            db.doPreparedExecute("DELETE FROM dcf_PollCreatorLink WHERE PollID=? AND UserID IN "
-                    + "(SELECT UserID FROM dcf_PollCreators WHERE Username LIKE ?)", array,types);
+            db.doPreparedExecute("DELETE FROM PollCreatorLink WHERE PollID=? AND UserID IN "
+                    + "(SELECT UserID FROM Users WHERE Username = ?)", array,types);
             
             String[] pollArray = {request.getParameter("pollID")};
             String[] pollTypes = {"int"};
-            String[] pclinkCols = {"UserID", "Username", "Password"};
-            String[] pclinkColTypes = {"int", "string", "string"};
+            String[] pclinkCols = {"UserID", "Username"};
+            String[] pclinkColTypes = {"int", "string"};
             ArrayList<String[]> pclink = new ArrayList<String[]>();
-            pclink = db.doPreparedQuery("SELECT * FROM dcf_PollCreators pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM dcf_PollCreatorLink WHERE PollID=?) ",
+            pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
+                                     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
             %>
-            <%= "{ \"pollCreators\": [" %> 
+            <%= "\"pollCreators\": [" %> 
 
                 <% for(int c=0; c<pclink.size(); c++) {
                     if(c > 0) {
@@ -38,4 +40,7 @@
         <%= "\"" + pclink.get(c)[1] + "\"" %>
         <% } %>
                 <%= "]}" %>
-   
+   <% } else {
+                out.print("{\"access\":\"bad\"} ");
+            }
+%>

@@ -58,6 +58,8 @@ $(".assign").live("click", function() {
             $creators = $(this).parent().parent().find(".creators"),
             id = $(this).parent().parent().attr("data-id");
 	
+	dbPoll.message("<img src='assets/images/ajax-loader.gif'/> <strong>Loading:</strong> Assigning a Poll Creator");
+	
 	dbPoll.api("api/admin-assigncreator.jsp", {pollID: id, username: username}, function(data) {
 		if(data.status !== "OK") {
 			dbPoll.error(data.status);
@@ -65,6 +67,8 @@ $(".assign").live("click", function() {
 		
 		var html = updateCreators(data.pollCreators);
 		$creators.html(html);
+		
+		dbPoll.cancelMessage();
 	});
 });
 
