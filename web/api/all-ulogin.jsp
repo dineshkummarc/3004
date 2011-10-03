@@ -19,7 +19,9 @@
         if (value == 0) {
             out.print("{ \"error\": \"Incorrect username or password.\"}");
             
-        } else {
+        } else if (value == -1)  {
+	    out.print("{ \"error\": \"Account has expired.\"}");
+	} else {
             out.print("{ \"status\": \"OK\", \"username\":\"" + request.getParameter( "username" ) +"\"}");
 
         }

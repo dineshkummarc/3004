@@ -173,11 +173,14 @@ public class database {
                 userLevel = 4;
             }
         }
-        if(adminLogin(username, password) == 1) {
+	int admin = adminLogin(username, password);
+        if(admin == 1) {
             if(userLevel < 5) {
                 userLevel = 5;
             }
-        }
+        } else if (admin == -1) {
+	    return -1;
+	}
         this.username = username;
         this.password = password;
         this.loggedIn = 1;
@@ -283,13 +286,20 @@ public class database {
         String[] validTypes = {"string", "string"};
         String[] validInput = {username, password};
         ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", validInput, validTypes, output, outputTypes);
-        if(valid.isEmpty()) {
+        String[] dateTypes = {"string", "string"};
+        String[] dateInput = {username, password};
+        ArrayList<String[]> dateCheck = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND expired > SYSDATE", validInput, validTypes, output, outputTypes);
+        
+	if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
         } else if(isAdmin.isEmpty()) {
             // user has no admin access
             return 3;
-        } else {
+        } else if (dateCheck.isEmpty()) {
+	    // user has expired
+	    return -1;
+	} else {
             // valid credentials supplied
             return 1;
         }
