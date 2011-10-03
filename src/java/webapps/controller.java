@@ -24,14 +24,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import oracle.net.aso.i;
 
 /**
  *
@@ -39,7 +37,9 @@ import oracle.net.aso.i;
  */
 public class controller extends javax.swing.JApplet {
 
-    private String path = "file:/c:/applet/";
+    private static int MIN_CHANNEL = 1;
+    private static int MAX_CHANNEL = 74;
+    private String path = "file:/H:/applet/";
     private int userID;
     private int curPollID = -1;
     private int curQuesID = -1;
@@ -47,7 +47,8 @@ public class controller extends javax.swing.JApplet {
     private boolean receiving = false;
     private Polls polls = null;
     private Questions questions = null;
-    private int curChannel = 42;
+    private int curChannel = 41;
+    private Poll myPoll;
 
     /**Posts data to jsp page
      * Returns the return data (json or not)
@@ -233,7 +234,7 @@ public class controller extends javax.swing.JApplet {
 	txtChannel.setEnabled(false);
     }
 
-    private void sendResponse(int questID, int clickerID, int answerID) {
+    private void sendResponse(int questID, String clickerID, int answerID) {
 	if (receiving) {
 	    String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&answerid=" + answerID + "&clickerID=" + clickerID);
 	}
@@ -321,9 +322,19 @@ public class controller extends javax.swing.JApplet {
 
 	public void actionPerformed(ActionEvent e) {
 	    try {
-		curChannel = Integer.parseInt(txtChannel.getText());
+		int newChannel = Integer.parseInt(txtChannel.getText());
+                if (newChannel > MAX_CHANNEL || newChannel < MIN_CHANNEL) {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid channel number: " + txtChannel.getText(), "Channel switching failed!", JOptionPane.ERROR_MESSAGE);
+                    txtChannel.setText(String.valueOf(curChannel));
+                    return;
+                }
+                List<Receiver> receivers = myPoll.getReceivers();  
+                for (Receiver receiver : receivers) {
+                    receiver.setChannel(newChannel);
+                }
+                curChannel = newChannel;
 	    } catch (Exception ex) {
-		JOptionPane.showMessageDialog(rootPane, "Invalid channel number.", "Channel switching failed!", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(rootPane, "Invalid channel number: " + txtChannel.getText(), "Channel switching failed!", JOptionPane.ERROR_MESSAGE);
 		txtChannel.setText(String.valueOf(curChannel));
 	    }
 	}
@@ -418,15 +429,74 @@ public class controller extends javax.swing.JApplet {
 
 	getPolls();
 	ResponseCardLibrary.initializeLicense("University of Queensland", "24137BBFEEEA9C7F5D65B2432F10F960");
-	/*Poll myPoll = PollService.createPoll();
-	List<Receiver> receivers = myPoll.getReceivers();
-	receivers.get(0).setChannel(45);
+	myPoll = PollService.createPoll(); //Might not find receiver even though one is connected...
+        Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf("SingleResponse_Numeric"));
+        List<Receiver> receivers = myPoll.getReceivers();  
+        for (Receiver receiver : receivers) {
+            receiver.setChannel(curChannel);
+        }
 	myPoll.addResponseListener(new ResponseListener(){
-	public void responseReceived(Response response) {
-	System.out.println("Response:"+response);
-	}
+            public void responseReceived(Response response) {
+                if (response.getReceiverId() == null || response.getResponse() == null || response.getResponse().equals("?")) {
+                    return;
+                }
+                System.out.println("Response:"+response.getResponse());
+                try {
+                    int index = Integer.parseInt(response.getResponse());
+                    if (index == 0) {
+                        index = 9;
+                    } else {
+                        index = index - 1;
+                    }
+                    int answerID = questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId();
+                    sendResponse(curQuesID, response.getReceiverId().toString(), answerID);
+                } catch (Exception e) {
+                    //No poll yet
+                }
+            }
 	});
-	myPoll.start();*/
+	myPoll.start(pollingMode);
+    }
+    
+    public void setPollType(String type) {
+        /* "SingleResponse_Alpha" < DONE
+         * "SingleResponse_Numeric" < DONE
+         * "MultiResponse_Alpha"
+         * "MultiResponse_Numeric"
+         * "MultiResponse_NoDuplicates"
+         * "MultiResponse_NoDuplicates_Alpha"
+         * "MultiResponse_NoDuplicates_Numeric"
+         * "ShortAnswer"
+         * "Numeric"
+         * "Essay"
+         * "InvalidResponse"
+         */
+        myPoll.stop();
+        Poll.PollingMode pollingMode = (Poll.PollingMode.valueOf(type));
+        if (type.equals("SingleResponse_Numeric") || type.equals("SingleResponse_Alpha")) {
+            myPoll.addResponseListener(new ResponseListener(){
+                public void responseReceived(Response response) {
+                    if (response.getReceiverId() == null || response.getResponse() == null || response.getResponse().equals("?")) {
+                        return;
+                    }
+                    System.out.println("Response:"+response.getResponse());
+                    try {
+                        int index = Integer.parseInt(response.getResponse());
+                        if (index == 0) {
+                            index = 9;
+                        } else {
+                            index = index - 1;
+                        }
+                        int answerID = questions.getQuestions().get(curQuesIndex).getAnswers().get(index).getId();
+                        sendResponse(curQuesID, response.getReceiverId().toString(), answerID);
+                    } catch (Exception e) {
+                        //No poll yet
+                    }
+                }
+            });
+            myPoll.start(pollingMode);
+        }
+	
     }
 
     /** This method is called from within the init() method to
@@ -469,7 +539,7 @@ public class controller extends javax.swing.JApplet {
 
         jLabel1.setText("Receiver Channel:");
 
-        txtChannel.setText("42");
+        txtChannel.setText("41");
         txtChannel.setName(""); // NOI18N
         txtChannel.setPreferredSize(new java.awt.Dimension(27, 20));
 
@@ -514,19 +584,19 @@ public class controller extends javax.swing.JApplet {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblAnswer3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(lblAnswer0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(lblAnswer3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(lblAnswer0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblQuestion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                            .addComponent(lblQuestion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
