@@ -379,4 +379,65 @@ public class database {
         this.creatorPassword = new String();
         this.creatorLoggedIn = 0;
     }
+
+    public String doPreparedQueryAndy(String query, String[] input, String[] types, String[] columnNames, String[] columnTypes, String[] jsonNames) {
+        getOracleConnection();
+        try { 
+            PreparedStatement statement = conn.prepareStatement(query);
+            for(int i=0; i < input.length; i++) {
+                System.out.println("i is: " + i);
+                /** Expects a String. Need to pass in another array to this 
+                 * function which tells me what type the parameter is, so I can 
+                 * do chained if-else conditionals and give it the proper X in
+                 * PreparedStatement.setX
+                 */
+                if(types[i].matches("int")) {
+                    System.out.println("Setting parameter of type: int");
+                    statement.setInt(i+1, Integer.parseInt(input[i]));
+                }
+                else if(types[i].matches("string")) {
+                    System.out.println("Setting parameter of type: string");
+                    statement.setString(i+1, input[i]);
+                }
+                
+            }
+            ResultSet rset = statement.executeQuery();
+            String data = "[";
+            while(rset.next()) {
+                System.out.println("Getting next result row");
+                if(data.length()>2) data += ", ";
+                data += "{";
+                for(int i=0; i < columnNames.length; i++) {
+                    if(columnTypes[i].matches("int")) {
+                        data += "\"" + jsonNames[i] + "\": " + rset.getInt(columnNames[i]);
+                    }
+                    else if(columnTypes[i].matches("string")) {
+                        data += "\"" + jsonNames[i] + "\": " + 
+                                "\"" + rset.getString(columnNames[i]) + "\"";
+                    }
+                    else if(columnTypes[i].matches("timestamp")) {
+                        Date da = rset.getDate(columnNames[i]);
+                        data += "\"" + jsonNames[i] + "\": " + 
+                                "\"" + da.toString() + "\"";
+                    }
+                    else {
+                        data = "Error occurred retrieving column " + i + " from row " + rset.getRow() + ". Check the types you passed in (must be either string or int).";
+                    }   
+                    if(i<columnNames.length-1)
+                        data += ", ";
+                }
+                
+                data += "}";
+            }
+            data += "]";
+            rset.close();
+            statement.close();
+            return data;
+        }
+        catch(SQLException e) {
+            System.out.println(e.toString());
+            String error = "SQL error occurred. Check debug for more info.";
+            return error;
+        }
+    }
 }
