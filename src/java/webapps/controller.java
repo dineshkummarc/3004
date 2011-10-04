@@ -49,6 +49,7 @@ public class controller extends javax.swing.JApplet {
     private Questions questions = null;
     private int curChannel = 41;
     private Poll myPoll;
+    private int responsesReceived = 0;
 
     /**Posts data to jsp page
      * Returns the return data (json or not)
@@ -191,6 +192,8 @@ public class controller extends javax.swing.JApplet {
 	cmdSet.setEnabled(true);
 	txtChannel.setEnabled(true);
 	curQuesID = questID;
+	responsesReceived = 0;
+	lblResponses.setText("Responses: " + String.valueOf(responsesReceived));
     }
 
     private void stopQuestion() {
@@ -238,6 +241,12 @@ public class controller extends javax.swing.JApplet {
     private void sendResponse(int questID, String clickerID, String answerID) {
 	if (receiving) {
 	    String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&answerid=" + answerID + "&clickerID=" + clickerID);
+	    Gson gson = new Gson();
+	    ClickerResponse cr = gson.fromJson(json, ClickerResponse.class);
+	    if (cr.getError() != null) {
+		responsesReceived = cr.getResponses();
+		lblResponses.setText("Responses: " + String.valueOf(responsesReceived));
+	    }
 	}
     }
 
@@ -527,6 +536,7 @@ public class controller extends javax.swing.JApplet {
         lblAnswer8 = new javax.swing.JLabel();
         lblAnswer9 = new javax.swing.JLabel();
         lblAnswer0 = new javax.swing.JLabel();
+        lblResponses = new javax.swing.JLabel();
 
         pollList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(pollList);
@@ -571,6 +581,8 @@ public class controller extends javax.swing.JApplet {
 
         lblAnswer0.setText("Answer 0");
 
+        lblResponses.setText("Responses: 0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -594,17 +606,19 @@ public class controller extends javax.swing.JApplet {
                     .addComponent(lblAnswer0, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblQuestion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                            .addComponent(lblQuestion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblResponses)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtChannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(cmdStart)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cmdStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                .addComponent(cmdStop, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdNext, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdNext, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                                 .addGap(14, 14, 14)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdSet)))
@@ -621,7 +635,8 @@ public class controller extends javax.swing.JApplet {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtChannel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmdSet)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(lblResponses))
                         .addGap(21, 21, 21)
                         .addComponent(lblQuestion)
                         .addGap(44, 44, 44)
@@ -671,6 +686,7 @@ public class controller extends javax.swing.JApplet {
     private javax.swing.JLabel lblAnswer8;
     private javax.swing.JLabel lblAnswer9;
     private javax.swing.JLabel lblQuestion;
+    private javax.swing.JLabel lblResponses;
     private javax.swing.JList pollList;
     private javax.swing.JList questionList;
     private javax.swing.JTextField txtChannel;
@@ -708,6 +724,27 @@ class Answer {
     }
 }
 
+
+class ClickerResponse {
+    private String error;
+    private int responses;
+
+    public String getError() {
+	return error;
+    }
+
+    public void setError(String error) {
+	this.error = error;
+    }
+
+    public int getResponses() {
+	return responses;
+    }
+
+    public void setResponses(int responses) {
+	this.responses = responses;
+    }
+}
 
 class Question {
 

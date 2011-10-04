@@ -66,20 +66,22 @@ if (db.getLoggedIn() == 1) {
             for (int i = 0; i < answers.length; i++) {
                 value = null;
                 inputs2[2] = answers[i];
-                //out.print(inputs2[0]);
-                //out.print(inputs2[1]);
-                //out.print(inputs2[2]);
                 value = db.doPreparedExecute("INSERT into KeyResponses(clickerID, questID, answerID) values (?, ?, ?)", inputs2, types2);
             }
             if (value.equals("Failed!")) {              
                 out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}");  
             } else {
-                out.print("{ \"status\": \"OK\" }");
+		String[] countInput = {questionID};
+		String[] countTypes = {"string"};
+		String[] columNames = {"responsecount"};
+		String[] columTypes = {"int"};
+		int count = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM KeyResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
+                out.print("{ \"responses\": " + count + " }");
                 
             }
         }
     }
 } else {
-    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\", \"redirect\":\"Login\"}");
+    out.print("{ \"error\": \"You are not currently logged in.\", \"redirect\":\"Login\"}");
 }
 %>

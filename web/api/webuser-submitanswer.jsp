@@ -76,7 +76,7 @@ if (db.getLoggedIn() == 1) {
 
             }
             if (value.equals("Failed!")) {              
-                out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}");  
+                out.print("{ \"error\": \"Submission failed due to incorrect parameters\"}");  
             } else {
                 out.print("{ \"status\": \"OK\",");
                 
@@ -301,6 +301,6 @@ if (db.getLoggedIn() == 1) {
         
     }
 } else {
-    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\", \"redirect\":\"Login\"}");
+    out.print("{ \"error\": \"You are not currently logged in.\", \"redirect\":\"Login\"}");
 }
 %>

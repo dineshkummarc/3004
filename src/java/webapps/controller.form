@@ -35,18 +35,20 @@
                   <Component id="lblAnswer0" alignment="0" pref="388" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblQuestion" alignment="0" pref="331" max="32767" attributes="0"/>
+                          <Component id="lblQuestion" alignment="0" pref="333" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
+                              <Component id="lblResponses" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="149" max="32767" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtChannel" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="cmdStart" min="-2" max="-2" attributes="1"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="cmdStop" max="32767" attributes="0"/>
+                              <EmptySpace pref="10" max="32767" attributes="0"/>
+                              <Component id="cmdStop" pref="101" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cmdNext" max="32767" attributes="0"/>
+                              <Component id="cmdNext" pref="101" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -70,6 +72,7 @@
                           <Component id="txtChannel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="cmdSet" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblResponses" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Component id="lblQuestion" min="-2" max="-2" attributes="0"/>
@@ -229,6 +232,11 @@
     <Component class="javax.swing.JLabel" name="lblAnswer0">
       <Properties>
         <Property name="text" type="java.lang.String" value="Answer 0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblResponses">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Responses: 0"/>
       </Properties>
     </Component>
   </SubComponents>
