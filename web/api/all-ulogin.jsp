@@ -23,8 +23,6 @@
 	    out.print("{ \"error\": \"Account has expired.\"}");
 	} else {
             out.print("{ \"status\": \"OK\", \"username\":\"" + request.getParameter( "username" ) +"\" \"role\": " + value + "}");
-
         }
-        
     }
 %>
