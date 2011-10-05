@@ -19,7 +19,7 @@ a:hover { color: #FF8F26 }
 
 #nav { width: 170px; float: left; margin: 25px 0 0 15px; font-size: 14px }
 
-#container { float: left; padding: 20px }
+#container { padding: 20px 20px 20px 200px }
 
 label { display: block; margin: 5px 0; padding: 10px 0; width: 400px; border-bottom: 1px dotted #ccc }
 
