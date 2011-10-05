@@ -23,22 +23,22 @@
               <Component id="jScrollPane2" min="-2" pref="334" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="lblAnswer3" alignment="0" pref="388" max="32767" attributes="1"/>
-                  <Component id="lblAnswer4" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer5" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer6" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer7" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer8" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer9" alignment="0" pref="388" max="32767" attributes="0"/>
-                  <Component id="lblAnswer2" alignment="0" pref="388" max="32767" attributes="1"/>
-                  <Component id="lblAnswer1" alignment="0" pref="388" max="32767" attributes="1"/>
-                  <Component id="lblAnswer0" alignment="0" pref="388" max="32767" attributes="0"/>
+                  <Component id="lblAnswer3" alignment="0" pref="392" max="32767" attributes="1"/>
+                  <Component id="lblAnswer4" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer5" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer6" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer7" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer8" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer9" alignment="0" pref="392" max="32767" attributes="0"/>
+                  <Component id="lblAnswer2" alignment="0" pref="392" max="32767" attributes="1"/>
+                  <Component id="lblAnswer1" alignment="0" pref="392" max="32767" attributes="1"/>
+                  <Component id="lblAnswer0" alignment="0" pref="392" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblQuestion" alignment="0" pref="333" max="32767" attributes="0"/>
+                          <Component id="lblQuestion" alignment="0" pref="335" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="lblResponses" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="149" max="32767" attributes="0"/>
+                              <EmptySpace pref="151" max="32767" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtChannel" min="-2" max="-2" attributes="0"/>

@@ -39,7 +39,8 @@ public class controller extends javax.swing.JApplet {
 
     private static int MIN_CHANNEL = 1;
     private static int MAX_CHANNEL = 74;
-    private String path = "file:/H:/applet/";
+    //private String path = "file:/H:/applet/";
+    private String path = "http://localhost/api/";
     private int userID;
     private int curPollID = -1;
     private int curQuesID = -1;
@@ -84,8 +85,8 @@ public class controller extends javax.swing.JApplet {
      * @param pollID 
      */
     private void getQuestions(int pollID) {
-	//String json = getJson(path + "webuser-getquestions.jsp?pollid=" + pollID);
-	String json = getJson(path + "clicker-getquestions.jsp"); //Testing
+	String json = getJson(path + "clicker-getquestions.jsp?pollid=" + pollID);
+	//String json = getJson(path + "clicker-getquestions.jsp"); //Testing
 	Gson gson = new Gson();
 	questions = gson.fromJson(json, Questions.class);
 	((DefaultListModel) questionList.getModel()).clear();
@@ -240,7 +241,7 @@ public class controller extends javax.swing.JApplet {
 
     private void sendResponse(int questID, String clickerID, String answerID) {
 	if (receiving) {
-	    String json = getJson(path + "clickeranswer.jsp?questionid=" + questID + "&answerid=" + answerID + "&clickerID=" + clickerID);
+	    String json = getJson(path + "clicker-answer.jsp?questionid=" + questID + "&answerid=" + answerID + "&clickerID=" + clickerID);
 	    Gson gson = new Gson();
 	    ClickerResponse cr = gson.fromJson(json, ClickerResponse.class);
 	    if (cr.getError() != null) {
@@ -251,7 +252,8 @@ public class controller extends javax.swing.JApplet {
     }
 
     private void getPolls() {
-	String json = getJson(path + "clickergetpolls.jsp");
+	String json = getJson(path + "clicker-getpolls.jsp");
+        System.out.println("getPolls: " + json);
 	Gson gson = new Gson();
 	polls = gson.fromJson(json, Polls.class);
 	userID = polls.getUserid();

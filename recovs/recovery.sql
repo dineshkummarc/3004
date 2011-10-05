@@ -125,7 +125,7 @@ CREATE TABLE Polls(
     startDate TIMESTAMP,
     finishDate TIMESTAMP,
 	activeQuestion INTEGER DEFAULT 0,
-	keypad BOOLEAN DEFAULT TRUE,
+	keypad VARCHAR2(5) DEFAULT 'TRUE',
     CONSTRAINT pk_Polls PRIMARY KEY (pollID)
 );
 

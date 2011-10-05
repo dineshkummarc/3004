@@ -30,8 +30,8 @@ public class database {
                 /* Load the Oracle JDBC Driver and register it. */
                 DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
                 /* Open a new connection */
-                //conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
-                conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4217258", "password");
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@oracle.students.itee.uq.edu.au:1521:iteeo", "csse3004gf", "pass123");
+               // conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "S4217258", "password");
             } catch(Exception ex){
                 System.out.println(ex.toString());
             }
@@ -256,7 +256,7 @@ public class database {
         String[] input = {username, password};
         String[] inputTypes = {"string", "string"};
         String[] output = {"userLevel", "userID"};
-        String[] outputTypes = {"string", "string"};
+        String[] outputTypes = {"string", "int"};
         ArrayList<String[]> rankChecker = doPreparedQuery("SELECT userLevel, userID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", input, inputTypes, output, outputTypes);
         if(rankChecker.isEmpty()) {
             System.err.println("baseLogin: username doesn't exist");
@@ -270,6 +270,8 @@ public class database {
                 return 2;
             } else if(rankChecker.get(0)[0].equals("Web User")) {
                 return 1;
+            } else if(rankChecker.get(0)[0].equals("Poll Master")) {
+                return 3;
             }
         }
         System.err.println("baseLogin: No sysadmin/web user/key user access found. Looking for poll admin/creator access...");
