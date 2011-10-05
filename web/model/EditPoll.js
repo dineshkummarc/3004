@@ -3,7 +3,7 @@ var DEBUG_MODE = true,
 
 if(dbPoll.q.id) {
 	POLL = dbPoll.q.id;
-	dbPoll.api("api/polls.jsp?action=grab", {id: POLL}, function(obj) {
+	dbPoll.api("api/creator-getpollquestions.jsp?action=grab", {id: POLL}, function(obj) {
 		parseData(obj);
 	});
 }
@@ -20,11 +20,11 @@ $("input.comparitivebox").live("change", function() {
 * Toggle visibility of ranking options
 */
 $("input.rankingbox").live("change", function() {
-	$(this).parent().parent().find(".ranking").toggle();
+	$(this).parent().parent().find(".ranking").css("display", "inline");
 });
 
 var question = $("div.question").clone(),
-	container = $("#container"),
+	container = $("#editpoll"),
 	questionCount = 1;
 
 /**
@@ -73,7 +73,7 @@ $("button.remq").live("click", function() {
 		$(this).parent().remove();
 		var id = $(this).parent().find("input.qid").val();
 		if(id != "-1") {
-			dbPoll.api("api/questions.jsp?action=delete", {id: id});
+			dbPoll.api("api/creator-delquestion.jsp", {questID: id});
 		}
 		questionCount--;
 	}
@@ -87,7 +87,7 @@ $("button.remr").live("click", function() {
 		var id = $(this).parent().find("input.aid").val();
 		
 		if(id != "-1") {
-			dbPoll.api("responses.jsp?action=delete", {id: id});
+			dbPoll.api("api/creator-delanswer.jsp", {answerID: id});
 		}
 		
 		$(this).parent().remove();
@@ -113,7 +113,7 @@ function showSaveUp() {
 $("select.widget").live("focus", function() {
 	$(this).css({height: 100, position: "absolute"});
 }).live("blur", function() {
-	$(this).css({height: 20, position: ""});
+	$(this).css({height: 27, position: ""});
 });
 
 
