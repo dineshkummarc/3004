@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Session Participation Report" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="83"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="pollID" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[$P{pollID}]]></parameterDescription>
+	</parameter>
+	<parameter name="attend" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[$P{attend}]]></parameterDescription>
+	</parameter>
+	<parameter name="tomcatPath" class="java.lang.String">
+		<parameterDescription><![CDATA[$P{tomcatPath}]]></parameterDescription>
+	</parameter>
+	<parameter name="pie" class="java.awt.Image" isForPrompting="false">
+		<parameterDescription><![CDATA[$P{pie}]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C://Users//user//Documents//NetBeansProjects//Andy//web//templates//"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SElECT COUNT(a.userID) AS total, p.pollID, p.pollName from Assigned a, Polls p WHERE a.pollID=p.pollID AND a.pollID=$P{pollID} GROUP BY p.pollID, p.pollName]]>
+	</queryString>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="POLLID" class="java.math.BigDecimal"/>
+	<field name="POLLNAME" class="java.lang.String"/>
+	<variable name="percentage" class="java.lang.Double">
+		<variableExpression><![CDATA[($P{attend}.doubleValue()/$F{TOTAL}.doubleValue())*100]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="4" width="366" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Session Participation Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="182" y="41" width="174" height="22"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[dbPoll GroupF]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="69" width="555" height="1" forecolor="#666666"/>
+			</line>
+			<image>
+				<reportElement x="366" y="4" width="189" height="64"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{tomcatPath}+"flatdbpoll-logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="453" splitType="Prevent">
+			<rectangle>
+				<reportElement positionType="Float" mode="Opaque" x="6" y="33" width="17" height="13" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="5" y="0" width="100" height="24" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isItalic="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Poll:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="194" y="83" width="100" height="20" forecolor="#FF9933"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TOTAL}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="28" y="30" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{POLLID}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="57" width="311" height="20" forecolor="#FF9933"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{POLLNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="57" width="75" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Poll Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="83" width="190" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Number of Users Assigned:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="108" width="190" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Number of Users Attended:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="133" width="98" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Percentage:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="108" width="100" height="20" forecolor="#FF9933"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{attend}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="133" width="100" height="20" forecolor="#FF9933"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($V{percentage}).toString(($V{percentage}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="209" y="133" width="33" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<image vAlign="Middle">
+				<reportElement x="60" y="168" width="433" height="273"/>
+				<imageExpression class="java.awt.Image"><![CDATA[$P{pie}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField isStretchWithOverflow="true" evaluationTime="Report">
+				<reportElement style="Column header" positionType="Float" x="528" y="0" width="18" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column header" x="505" y="0" width="23" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}.toString() + " of "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="3" splitType="Immediate"/>
+	</summary>
+</jasperReport>
