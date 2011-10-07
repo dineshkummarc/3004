@@ -14,10 +14,12 @@ $("#login-submit").click(function() {
 	//}
 	
 	console.log("LOGIN", user, pass);
+	dbPoll.message("Logging in!");
 	
 	dbPoll.api(url, {username: user, password: pass}, function(data) {
 		if(data.username) {
 			$("#top span.name").text(data.username);
+			dbPoll.role = data.role;
 			dbPoll.go("Home");
 		}
 	});
