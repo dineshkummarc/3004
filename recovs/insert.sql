@@ -18,44 +18,44 @@ SELECT 'Inserting Polls' FROM dual;
 -- pollID = 1
 INSERT into Polls(pollID, pollName, location, description, startDate, finishDate) values (pseq.nextval, 'General survey', '-27.474074, 152.995286', 'General survey to learn more about yourself', to_date('2011/05/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), to_date('2011/09/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'));
 	-- questID = 1
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'mp-single', 'How old are you?', 1, SYSDATE, 1, 'Times New Roman', '-27.53722, 153.078308', 'pie', 'red');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'MultiResponse_Numeric', 'How old are you?', 1, SYSDATE, 1, 'Times New Roman', '-27.53722, 153.078308', 'pie', 'red');
 		-- answerID = 1
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '17-20', 1, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '21-25', 1, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '26+', 1, 'F');
 		
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'mp-single', 'Whats your favourite colour?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'pie', 'blue');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'MultiResponse_Numeric', 'Whats your favourite colour?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'pie', 'blue');
 		-- answerID = 4
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 2, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Blue', 2, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Geen', 2, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'sr-alphanum', 'Whats your favourite animal?', 1, SYSDATE, 1, 'Georgia', '-27.53722, 153.078308', 'bar');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'SingleResponse_Numeric', 'Whats your favourite animal?', 1, SYSDATE, 1, 'Georgia', '-27.53722, 153.078308', 'bar');
 		-- answerID = 7
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Dog', 3, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Cat', 3, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Bird', 3, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'mp-single', 'Are you single?', 1, SYSDATE, 1, 'Verdana', '-27.53722, 153.078308', 'bar');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'MultiResponse_Numeric', 'Are you single?', 1, SYSDATE, 1, 'Verdana', '-27.53722, 153.078308', 'bar');
 		-- answerID = 10
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Yes', 4, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'No', 4, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Maybe', 4, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'mp-single', 'What phone do you have?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'bar');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'MultiResponse_Numeric', 'What phone do you have?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'bar');
 		-- answerID = 13
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Nothing', 5, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'iPhone', 5, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Android', 5, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Other', 5, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'mp-single', 'Boxers or briefs?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'column');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'MultiResponse_Numeric', 'Boxers or briefs?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'column');
 		-- answerID = 17
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Boxers', 6, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Briefs', 6, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'mp-single', 'Whats your hair colour?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'column');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType) values (qseq.nextval, 'MultiResponse_Numeric', 'Whats your hair colour?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'column');
 		-- answerID = 19
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 7, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Blue', 7, 'F');
@@ -64,7 +64,7 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Blonde', 7, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Brown', 7, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'mp-single', 'Whats my name?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'MultiResponse_Numeric', 'Whats my name?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308');
 		-- answerID = 25
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Stuart', 8, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Aidan', 8, 'F');
@@ -72,12 +72,12 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Louis', 8, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Andy', 8, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'mp-single', 'What is your gender?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'MultiResponse_Numeric', 'What is your gender?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308');
 		-- answerID = 30
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Male', 9, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Female', 9, 'F');
 		
-	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'mp-single', 'What is your occupation?', 1, SYSDATE, 1, 'Impact', '-27.53722, 153.078308');
+	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location) values (qseq.nextval, 'MultiResponse_Numeric', 'What is your occupation?', 1, SYSDATE, 1, 'Impact', '-27.53722, 153.078308');
 		-- answerID = 32
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Dentist', 10, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Doctor', 10, 'F');
@@ -86,7 +86,7 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 	
 -- pollID = 2
 INSERT into Polls(pollID, pollName, location, description, startDate, finishDate) values (pseq.nextval, 'Movie Poll 1', '-27.474074, 152.995286', 'Quick poll to work out your favourite movies', to_date('2009/08/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), to_date('2012/08/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'));
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'mp-multiple', 'Which Star Wars movies do you like?', 2, SYSDATE, 1, 'images/q/sw.png', '-27.53722, 153.078308', 'pie');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Which Star Wars movies do you like?', 2, SYSDATE, 1, 'images/q/sw.png', '-27.53722, 153.078308', 'pie');
 		-- answerID = 36
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 1', 11, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 2', 11, 'F');
@@ -94,22 +94,22 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 4', 11, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 5', 11, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 6', 11, 'T');
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'mp-single', 'Favourite LOTR movie?', 2, SYSDATE, 1, 'images/q/lotr.jpg', '-27.53722, 153.078308', 'column');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite LOTR movie?', 2, SYSDATE, 1, 'images/q/lotr.jpg', '-27.53722, 153.078308', 'column');
 		-- answerID = 42
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'The Fellowship of the Ring', 12, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'The Two Towers', 12, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'The Return of the King', 12, 'F');
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'mp-single', 'Favourite Back to the Future movie?', 2, SYSDATE, 1, 'images/q/bttf.jpg', '-27.53722, 153.078308', 'bar');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, images, location, chartType) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite Back to the Future movie?', 2, SYSDATE, 1, 'images/q/bttf.jpg', '-27.53722, 153.078308', 'bar');
 		-- answerID = 45
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'I', 13, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'II', 13, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'III', 13, 'T');
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'mp-single', 'Favourite Godfather movie?', 2, SYSDATE, 1, '-27.53722, 153.078308');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite Godfather movie?', 2, SYSDATE, 1, '-27.53722, 153.078308');
 		-- answerID = 48
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Part 1', 14, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Part 2', 14, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Part 3', 14, 'F');
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'mp-multiple', 'What genres do you enjoy?', 2, SYSDATE, 1, '-27.53722, 153.078308');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'What genres do you enjoy?', 2, SYSDATE, 1, '-27.53722, 153.078308');
 		-- answerID = 51
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Action', 15, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Drama', 15, 'F');
@@ -117,7 +117,7 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Romance', 15, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Horror', 15, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Comedy', 15, 'F');
-	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'mp-multiple', 'Which disney films have you seen?', 2, SYSDATE, 1, '-27.53722, 153.078308');
+	INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, location) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Which disney films have you seen?', 2, SYSDATE, 1, '-27.53722, 153.078308');
 		-- answerID = 57
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Moulin', 16, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Snow white and thre seven dwarves', 16, 'F');
@@ -150,7 +150,7 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 -- Andy Questions
 SELECT 'Inserting Questions' FROM dual;
 --20
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'mp-single', 'How old are you?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'How old are you?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
 
 --Answer--62~64
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '17-20', 20, 'F');
@@ -167,7 +167,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,20,63);
 
 --21
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'mp-single', 'Whats your favourite colour?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Whats your favourite colour?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
 
 --Answer--65~67
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 21, 'F');
@@ -184,7 +184,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,21,67);
 
 --22
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'sr-alphanum', 'How was your day?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, correctIndicator) values (qseq.nextval, 'F', 'SingleResponse_Numeric', 'How was your day?', 10, SYSDATE, 1, 'Comic Sans MS', 'dicks.png');
 
 --Answer--68~70
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Dog', 22, 'F');
@@ -201,7 +201,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,22,69);
 
 --23
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'mp-multiple', 'Favourite Star Wars movie?', 11, SYSDATE, 1, 'vaginas.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite Star Wars movie?', 11, SYSDATE, 1, 'vaginas.png');
 
 --Answer--71~76
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Episode 1', 23, 'F');
@@ -221,7 +221,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,23,71);
 		
 --24
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'mp-single', 'Favourite LOTR movie?', 11, SYSDATE, 1, 'vaginas.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite LOTR movie?', 11, SYSDATE, 1, 'vaginas.png');
 
 --Answer--77~79
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '1', 24, 'F');
@@ -237,7 +237,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,24,79);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,24,79);
 --25
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'mp-single', 'Favourite Back to the Future movie?', 11, SYSDATE, 1, 'vaginas.png');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, correctIndicator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite Back to the Future movie?', 11, SYSDATE, 1, 'vaginas.png');
 
 --Answer--80~82
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'I', 25, 'F');
@@ -302,7 +302,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,28,91);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,28,90);
 --29
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'mp-single', 'Are you single?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Are you single?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--92~94
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Yes', 29, 'F');
@@ -318,7 +318,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,29,94);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,29,94);
 --30
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'mp-single', 'What are you wearing??', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'What are you wearing??', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--95~98
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Nothing', 30, 'F');
@@ -335,7 +335,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,30,95);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,30,95);
 --31
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'mp-single', 'Do you wear undies?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Do you wear undies?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--99~100
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Yes', 31, 'F');
@@ -350,7 +350,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,31,100);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,31,100);
 --32
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'mp-single', 'Whats your hair colour?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Whats your hair colour?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--101~106
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 32, 'F');
@@ -370,7 +370,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,32,101);
 
 --33
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'mp-single', 'Whats my name?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Whats my name?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--107~111
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 33, 'F');
@@ -389,7 +389,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,33,107);
 
 --34
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'mp-single', 'Favourite Godfather movie?', 11, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Favourite Godfather movie?', 11, SYSDATE, 1);
 
 --Answer--112~114
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Part 1', 34, 'F');
@@ -405,7 +405,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,34,112);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,34,112);
 --35
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'mp-multiple', 'What genres do you enjoy?', 11, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'What genres do you enjoy?', 11, SYSDATE, 1);
 
 --Answer--115~120
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Action', 35, 'F');
@@ -425,7 +425,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (4,35,115);
 
 --36
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'mp-multiple', 'Which disney films have you seen?', 11, SYSDATE, 1);
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator) values (qseq.nextval, 'F', 'MultiResponse_Numeric', 'Which disney films have you seen?', 11, SYSDATE, 1);
 
 --Answer--121~125
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Moulin', 36, 'F');
@@ -443,7 +443,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,36,123);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,36,124);
 --37--
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'T', 'mp-single', 'What is your gender?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'T', 'MultiResponse_Numeric', 'What is your gender?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--126~127
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Male', 37, 'F');
@@ -458,7 +458,7 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 		INSERT into MultiResponses(userID, questID, answerID) values (3,37,126);
 		INSERT into MultiResponses(userID, questID, answerID) values (4,37,127);
 --38
-INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'T', 'mp-single', 'What is your occupation?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
+INSERT into Questions(questID, demographic, responseType, question, pollID, created, creator, font, fontColor) values (qseq.nextval, 'T', 'MultiResponse_Numeric', 'What is your occupation?', 10, SYSDATE, 1, 'Comic Sans MS', 'red');
 
 --Answer--128~131
 INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Dentist', 38, 'F');

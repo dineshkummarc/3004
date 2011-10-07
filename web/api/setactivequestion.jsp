@@ -19,11 +19,10 @@
  * @return JSON file with information polls assigned to user
  */
 String pollID = request.getParameter( "pollid" );
-String questionID = request.getParameter( "questionid" );
+String questionID = request.getParameter( "questid" );
 
 //if (null != user && !user.equals( "" )) {
-if (db.getLoggedIn() == 1) {
-    String userID = Integer.toString(db.getUserID());
+    String userID = request.getParameter("userid");
     //out.println("THIS IS THE USER ID" + userID + " <br/>");
     if (questionID == null) {
         out.print("{ \"error\": \"Invalid question ID.\"}");                
@@ -56,7 +55,4 @@ if (db.getLoggedIn() == 1) {
             }
         }
     }
-} else {
-    out.print("{ \"error\": \"You are not currently logged in, Why are you here?\", \"redirect\":\"Login\"}");
-}
 %>

@@ -26,7 +26,7 @@ INCREMENT BY 1;
 CREATE TABLE Questions(
     questID INTEGER NOT NULL,
     demographic CHAR(1) DEFAULT 'F',
-    responseType VARCHAR(15) NOT NULL,
+    responseType VARCHAR(35) NOT NULL,
     question VARCHAR2(255) NOT NULL,
     pollID INTEGER NOT NULL,      -- pollID of Polls
     created DATE NOT NULL,
@@ -114,7 +114,6 @@ CREATE TABLE KeyResponses(
 	clickerID VARCHAR2(30) NOT NULL,
     questID INTEGER NOT NULL,     -- questID of Questions
     answerID INTEGER NOT NULL,    -- answerID of Answer
-    CONSTRAINT pk_KeyResponses PRIMARY KEY (questID, clickerID)
 );
 
 CREATE TABLE Polls(

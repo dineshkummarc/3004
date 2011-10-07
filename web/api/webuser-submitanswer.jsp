@@ -97,7 +97,7 @@ if (db.getLoggedIn() == 1) {
 
                 out.print("\"responses\": [");
                 ArrayList<String[]> responses = new ArrayList<String[]>();
-                responses = db.doPreparedQuery("SELECT m.answerID, a.answer, COUNT(m.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
+                responses = db.doPreparedQuery("SELECT m.answerID, a.answer, COUNT(m.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID LEFT JOIN KeyResponses k ON k.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
                 
                 for (int i = 0; i < responses.size(); i++){
                     out.print("[\"" + responses.get(i)[0] + "\"," + responses.get(i)[1] + "]");
@@ -189,7 +189,7 @@ if (db.getLoggedIn() == 1) {
 
                 out.print("\"responses\": [");
                 ArrayList<String[]> responses = new ArrayList<String[]>();
-                responses = db.doPreparedQuery("SELECT m.answerID, a.answer, COUNT(m.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
+                responses = db.doPreparedQuery("SELECT m.answerID, a.answer, COUNT(m.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID LEFT JOIN KeyResponses k ON k.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
                 
                 for (int i = 0; i < responses.size(); i++){
                     out.print("[\"" + responses.get(i)[0] + "\"," + responses.get(i)[1] + "]");

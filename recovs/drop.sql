@@ -15,7 +15,6 @@ ALTER TABLE TemplateAnswers DROP CONSTRAINT pk_TemplateAnswers;
 ALTER TABLE Comparitives DROP CONSTRAINT pk_Comparitives;
 ALTER TABLE Answers DROP CONSTRAINT pk_Answers;
 ALTER TABLE Responses DROP CONSTRAINT pk_Responses;
-ALTER TABLE KeyResponses DROP CONSTRAINT pk_KeyResponses;
 ALTER TABLE ShortResponses DROP CONSTRAINT pk_ShortResponses;
 ALTER TABLE MultiResponses DROP CONSTRAINT pk_MultiResponses;
 ALTER TABLE Feedback DROP CONSTRAINT pk_Feedback;

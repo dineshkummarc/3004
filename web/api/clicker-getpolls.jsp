@@ -20,9 +20,8 @@
  * @require User must be logged in to access this API (session variable must be set)
  * @return JSON file with information polls assigned to user
  */
-if (db.getLoggedIn() == 1) {
     
-String userID = Integer.toString(db.getUserID());
+String userID = request.getParameter("userid");
 
 //out.println(db.getUserLevel());
 
@@ -55,15 +54,8 @@ String userID = Integer.toString(db.getUserID());
         
         ArrayList<String[]> pastPolls = new ArrayList<String[]>();
         pastPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.finishDate <= LOCALTIMESTAMP ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
-       
-        if (db.getUserLevel() >= 3) {
-            out.print("{ \"userid\":" + db.getUserID() + ",");
-        } else { 
-            out.print("{ \"userid\": -1,");
-        }
         
-        
-        out.print("\"past\": [ ");
+        out.print("{ \"past\": [ ");
         
         for ( int i = 0; i  < pastPolls.size(); i++) {
             out.print("{");
@@ -121,7 +113,4 @@ String userID = Integer.toString(db.getUserID());
         }
         
         out.print("] }");
-} else {
-    out.print("{ \"error\": \"User not logged in.\", \"redirect\":\"Login\"}");
-}
 %>

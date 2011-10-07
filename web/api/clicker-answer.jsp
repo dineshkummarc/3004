@@ -23,8 +23,8 @@ String answerID = request.getParameter( "answerid" );
 String clickerID = request.getParameter( "clickerid" );
 
 //if (null != user && !user.equals( "" )) {
-if (db.getLoggedIn() == 1) {
-    String userID = Integer.toString(db.getUserID());
+
+    String userID = request.getParameter("userid");
     //out.println("THIS IS THE USER ID" + userID + " <br/>");
     if (questionID == null) {
         out.print("{ \"error\": \"Invalid question ID.\"}");                
@@ -42,7 +42,7 @@ if (db.getLoggedIn() == 1) {
             answers = answerID.split(",");               
         
             types = new String[2];
-            types[0] = "int";
+            types[0] = "string";
             types[1] = "int";
             
             inputs = new String[2];
@@ -50,7 +50,7 @@ if (db.getLoggedIn() == 1) {
             inputs[1] = questionID;
             
             types2 = new String[3];
-            types2[0] = "int";
+            types2[0] = "string";
             types2[1] = "int";
             types2[2] = "int";
             
@@ -69,7 +69,7 @@ if (db.getLoggedIn() == 1) {
                 value = db.doPreparedExecute("INSERT into KeyResponses(clickerID, questID, answerID) values (?, ?, ?)", inputs2, types2);
             }
             if (value.equals("Failed!")) {              
-                out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}");  
+                out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}"); 
             } else {
 		String[] countInput = {questionID};
 		String[] countTypes = {"string"};
@@ -81,7 +81,4 @@ if (db.getLoggedIn() == 1) {
             }
         }
     }
-} else {
-    out.print("{ \"error\": \"You are not currently logged in.\", \"redirect\":\"Login\"}");
-}
 %>

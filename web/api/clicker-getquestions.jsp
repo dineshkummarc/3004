@@ -13,13 +13,12 @@
 <%
 String pollID = request.getParameter( "poll" );
 
-if (pollID.equals("") || pollID == null ) {
+if (pollID == null || pollID.equals("") ) {
     out.print("{ \"error\": \"Invalid PollID.\"}");
 } else {
 
-    if (db.getLoggedIn() == 1) {
 
-        String userID = Integer.toString(db.getUserID());
+        String userID = request.getParameter("userid");
         
         //Check to see if user is actually assigned to that poll
         
@@ -176,8 +175,5 @@ if (pollID.equals("") || pollID == null ) {
        } else {
             out.print("{ \"error\": \"You are not assigned to this poll.\", \"redirect\": \"PollIndex\"}");
        }
-    } else {
-        out.print("{ \"error\": \"User not logged in.\", \"redirect\":\"Login\"}");
-    }
 }
 %>
