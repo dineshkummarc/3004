@@ -10,7 +10,7 @@ function submit(show) {
 	param.qid = QID;
 	show = show === undefined ? true : false;
 	
-	if(QTYPE == "mp-multiple") {
+	if(QTYPE == "MultipleResponse_NoDuplicates") {
 		$("input:checked").each(function() { 
 			ans.push($(this).val());
 		});
@@ -56,6 +56,16 @@ function submit(show) {
 	});
 }
 
+function checkActive() {
+	dbPoll.api("api/getactivequestion.jsp", {pollid: dbPoll.q.poll}, function(data) {
+		if(data.activeQuestion != -1) {
+			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
+		}
+	});
+	
+	setTimeout(checkActive, 2000);
+}
+
 dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data) {
 	var o = dbPoll.obj, index = +dbPoll.q.q || 0, l = data.questions.length;
 		
@@ -65,6 +75,9 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 	
 	DATA = data;
 	I = index;
+	
+	checkActive();
+	
 	loadQuest(data.questions[index], index);
 });
 
@@ -95,12 +108,12 @@ function loadQuest(question, index) {
 	
 	o.name.text(question.question);
 	
-	if(question.type === "mp-single" || question.type === "mp-multiple") {
+	if(question.type.substring(0, 16) === "MultipleResponse") {
 		var j, ans;
 		
 		for(j in question.answers) {
 			ans = question.answers[j];
-			if(question.type === "mp-single") {
+			if(question.type.substring(0, 29) === "MultipleResponse_NoDuplicates") {
 				html += "<label><input type='radio' name='ans' value='"+j+"' /> "+ans+"</label>";
 			} else if(question.type === "mp-multiple") {
 				html += "<label><input type='checkbox' name='ans' value='"+j+"' /> "+ans+"</label>";
@@ -112,11 +125,11 @@ function loadQuest(question, index) {
 	
 	o.response.html(html);
 	
-	if(question.type === "sr-num") {
+	if(question.type === "SingleResponse_Numeric") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || e.which === 8;
 		});
-	} else if(question.type === "sr-alphanum") {
+	} else if(question.type === "SingleResponse_Alpha") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || e.which === 8;
 		});
