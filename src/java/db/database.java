@@ -284,7 +284,7 @@ public class database {
         String[] inputTypes = {"string", "string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND UserID IN (SELECT UserID FROM PollAdmins WHERE lower(Username) = lower(?))", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND userLevel = 'Poll Admin'", input, inputTypes, output, outputTypes);
         String[] validTypes = {"string", "string"};
         String[] validInput = {username, password};
         ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", validInput, validTypes, output, outputTypes);

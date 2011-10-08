@@ -16,7 +16,7 @@
             String[] array = {request.getParameter("pollID"), request.getParameter("username")};
             String[] types = {"int", "string"};
 
-            db.doPreparedExecute("DELETE FROM PollCreatorLink WHERE PollID=? AND UserID IN "
+            db.doPreparedExecute("DELETE FROM Assigned WHERE Role='Poll Creator' AND PollID=? AND UserID IN "
                     + "(SELECT UserID FROM Users WHERE Username = ?)", array,types);
             
             String[] pollArray = {request.getParameter("pollID")};
@@ -25,7 +25,7 @@
             String[] pclinkColTypes = {"int", "string"};
             ArrayList<String[]> pclink = new ArrayList<String[]>();
             pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
+                                     + "UserID FROM Assigned WHERE role='Poll Creator' AND PollID=?) ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
             %>
             <%= "\"pollCreators\": [" %> 

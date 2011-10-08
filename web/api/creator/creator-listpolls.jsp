@@ -12,8 +12,8 @@ if(db.accessCheck("creator") == 1) {
 
     //System.err.println("USERNAME: " + db.getUsername());
 
-    ArrayList<String[]> Polls = db.doPreparedQuery("SELECT PollID FROM PollCreatorLink"
-            + " WHERE UserID=(SELECT UserID FROM Users WHERE userName=?)", pollInput, pollInputTypes, pollColNames, pollColTypes);
+    ArrayList<String[]> Polls = db.doPreparedQuery("SELECT PollID FROM Assigned"
+            + " WHERE Role='Poll Creator' AND UserID=(SELECT UserID FROM Users WHERE userName=?)", pollInput, pollInputTypes, pollColNames, pollColTypes);
 
     out.print("\"polls\": [");
 

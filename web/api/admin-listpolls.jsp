@@ -43,7 +43,7 @@
                 String[] pclinkColTypes = {"int", "string"};
                 ArrayList<String[]> pclink = new ArrayList<String[]>();
                 pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM PollCreatorLink WHERE PollID=" + Integer.parseInt(polls.get(i)[0]) + ") ",
+                                     + "UserID FROM Assigned WHERE role='Poll Creator' AND PollID=" + Integer.parseInt(polls.get(i)[0]) + ") ",
                                      array, types, pclinkCols, pclinkColTypes);
                 %>
 

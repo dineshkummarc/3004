@@ -35,11 +35,11 @@
                     String[] inputTypes = {"int", "int"};
                     String[] colNames = {"UserID"};
                     String[] colType = {"int"};
-                    ArrayList<String[]> checkAlready = db.doPreparedQuery("SELECT UserID FROM PollCreatorLink WHERE UserID=? AND PollID=?", inputData, inputTypes, colNames, colType);
+                    ArrayList<String[]> checkAlready = db.doPreparedQuery("SELECT UserID FROM Assigned WHERE UserID=? AND PollID=? AND role='Poll Creator'", inputData, inputTypes, colNames, colType);
                     if(checkAlready.size() > 0) { 
                         System.out.println("checkAlready is greater than zero; data: " + checkAlready.get(0)[0]);
                         %>
-                        <%= "{ \"status\" : \"That username is already assigned to this poll.\", " %>
+                        <%= " \"status\" : \"That username is already assigned to this poll.\", " %>
                         
                     <%  
                     } else {
@@ -47,8 +47,8 @@
                         System.out.println("DEBUG: Creator has been assigned!");
                         String[] inputData1 = {checkExists.get(0)[0], request.getParameter("pollID")};
                         String[] inputTypes1 = {"int", "int"};
-                        db.doPreparedExecute("INSERT INTO PollCreatorLink(UserID, PollID) VALUES(?, ?)", inputData1, inputTypes1);%>
-                        <%= "{ \"status\": \"OK\", " %>
+                        db.doPreparedExecute("INSERT INTO Assigned(UserID, PollID, role) VALUES(?, ?, 'Poll Creator')", inputData1, inputTypes1);%>
+                        <%= " \"status\": \"OK\", " %>
                         <% 
                         // now alert them with an email
                         String[] findPoll = {inputData1[1]};
@@ -74,7 +74,7 @@
             String[] pclinkColTypes = {"int", "string"};
             ArrayList<String[]> pclink = new ArrayList<String[]>();
             pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.UserID IN (SELECT "
-                                     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
+                                     + "UserID FROM Assigned WHERE PollID=? AND role='Poll Creator') ",
                                      pollArray, pollTypes, pclinkCols, pclinkColTypes);
             %>
             <%= "\"pollCreators\": [" %> 
