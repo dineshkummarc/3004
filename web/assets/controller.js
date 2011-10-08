@@ -107,6 +107,8 @@ $(function() {
 	if(dbPoll.page !== "Login") {
 		dbPoll.api("api/isloggedin.jsp", function(status) {
 			if(status.username) {
+				dbPoll.role = status.role;
+				dbPoll.userID = status.userID;
 				$("#top span.name").text(status.username);
 			} else {
 				dbPoll.go("Login");
