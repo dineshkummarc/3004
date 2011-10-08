@@ -201,5 +201,5 @@ $("#feedback-sub").click(function() {
 });
 
 dbPoll.exit = function() {
-	cleatTimeout(timeout);
+	clearTimeout(timeout);
 }
