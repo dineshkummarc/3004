@@ -202,15 +202,13 @@ if (db.getLoggedIn() == 1) {
                 ArrayList<String[]> responses = new ArrayList<String[]>();
                 responses = db.doPreparedQuery("SELECT a.answer, COUNT(m.answerID), COUNT(p.answerID) FROM Answers a LEFT OUTER JOIN MultiResponses m ON m.answerID = a.answerID LEFT OUTER JOIN KeyResponses p ON p.answerID = a.answerID WHERE a.questID = ? GROUP BY m.answerID, a.answer ORDER BY a.answer", responseInput, responseTypes, responseCN, responseCP);
                 
-                out.println("FUCKOFFF also, size=" + responses.size());
-                
                 for (int i = 0; i < responses.size(); i++){
-                    out.println(responses.get(i)[1]);
-                    out.println(responses.get(i)[2]);
+                    //out.println(responses.get(i)[1]);
+                    //out.println(responses.get(i)[2]);
                     
                     
                     int temp = Integer.parseInt(responses.get(i)[1]) + Integer.parseInt(responses.get(i)[2]);
-                    out.print("[\"" + responses.get(i)[0] + "\"," + "FUCK OFFFF BITHCESSS" + "]");
+                    out.print("[\"" + responses.get(i)[0] + "\"," + temp + "]");
                     if (i == (responses.size() -1)) {
                      out.print("]");
                     } else {

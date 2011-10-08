@@ -16,7 +16,7 @@ INSERT into Users(userID, userName, password, email, location, userLevel, create
 -- Polls
 SELECT 'Inserting Polls' FROM dual;
 -- pollID = 1
-INSERT into Polls(pollID, pollName, location, description, startDate, finishDate) values (pseq.nextval, 'General survey', '-27.474074, 152.995286', 'General survey to learn more about yourself', to_date('2011/05/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), to_date('2011/09/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'));
+INSERT into Polls(pollID, pollName, location, description, startDate, finishDate) values (pseq.nextval, 'General survey', '-27.474074, 152.995286', 'General survey to learn more about yourself', to_date('2011/05/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), to_date('2011/11/12 12:00:00', 'yyyy-mm-dd HH24:MI:SS'));
 	-- questID = 1
 	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'MultiResponse_Numeric', 'How old are you?', 1, SYSDATE, 1, 'Times New Roman', '-27.53722, 153.078308', 'pie', 'red');
 		-- answerID = 1
