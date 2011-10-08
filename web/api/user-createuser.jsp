@@ -6,6 +6,7 @@
 
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.text.*"%>
+<%@page import="java.util.Random"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 
@@ -18,7 +19,7 @@ try{
 		//users user = new users();
 		//user.setUserID(-1);
 		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
+		//String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		String location = request.getParameter("location");
 		String userLevel = request.getParameter("userlevel");
@@ -29,6 +30,9 @@ try{
 		//user.setLocation(location);
 		//user.setUserLevel(userLevel);
 		//int check = user.addUser();
+                Random randomPassword = new Random();
+                String password = Integer.toString(randomPassword.nextInt(100000));                
+                
 		String query = "INSERT INTO users (userid, username, password, email, location, userlevel, created, expired) VALUES (useq.nextval, ?, ?, ?, ?, ?, SYSDATE, ?)";
 		String[] values = {userName, password, email, location, userLevel, expired};
 		String[] types = {"string", "string", "string", "string", "string", "string"};
