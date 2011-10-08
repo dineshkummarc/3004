@@ -27,9 +27,13 @@ dbPoll.api("api/admin-listpolls.jsp", function(data) {
 * Create a Poll
 */
 $("#create-poll .create").click(function() {
-	var name = $("#create-poll .name").val();
+	var name = $("#create-poll .name").val(),
+		start = $("#create-poll .start").val(),
+		end = $("#create-poll .end").val(),
+		descr = $("#create-poll .descr").val(),
+		online = $("#create-poll .online").is(":checked");
 	
-	dbPoll.api("api/admin-createpoll.jsp", {pollName: name}, function(data) {
+	dbPoll.api("api/admin-createpoll.jsp", {pollName: name, start: start, finish: end, online: online, description: descr}, function(data) {
 		if(data.status == "OK") {
 			window.location.reload();
 		}
