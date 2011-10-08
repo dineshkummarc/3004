@@ -12,7 +12,7 @@ function submit(show) {
 	param.qid = QID;
 	show = (show === undefined);
 	
-	if(QTYPE.substring(0, 26) == "MultiResponse_NoDuplicates") {
+	if(QTYPE.substring(0, 14) == "SingleResponse") {
 		param.aid = $("input:radio[name=ans]:checked").val() || "";
 	} else if(QTYPE.substring(0, 13) == "MultiResponse") {
 		$("input:checked").each(function() { 
@@ -20,7 +20,7 @@ function submit(show) {
 		});
 		
 		param.aid = ans.join(",");
-	} else if(QTYPE.substr(0, 14) == "SingleResponse") {
+	} else if(QTYPE == "ShortAnswer" || QTYPE == "Numeric") {
 		param.a = $("#resp").val();
 	}
 	
@@ -115,12 +115,12 @@ function loadQuest(question, index) {
 	
 	o.name.text(question.question);
 	
-	if(question.type.substring(0, 13) === "MultiResponse") {
+	if(question.type.substring(0, 13) === "MultiResponse" || question.type.substring(0, 14) === "SingleResponse") {
 		var j, ans;
 		
 		for(j in question.answers) {
 			ans = question.answers[j];
-			if(question.type.substring(0, 26) === "MultiResponse_NoDuplicates") {
+			if(question.type.substring(0, 14) === "SingleResponse") {
 				html += "<label><input type='radio' name='ans' value='"+j+"' /> "+ans+"</label>";
 			} else if(question.type.substring(0, 13) === "MultiResponse") {
 				html += "<label><input type='checkbox' name='ans' value='"+j+"' /> "+ans+"</label>";
@@ -132,11 +132,11 @@ function loadQuest(question, index) {
 	
 	o.response.html(html);
 	
-	if(question.type === "SingleResponse_Numeric") {
+	if(question.type === "Numeric") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || e.which === 8;
 		});
-	} else if(question.type === "SingleResponse_Alpha") {
+	} else if(question.type === "ShortAnswer") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || e.which === 8;
 		});
