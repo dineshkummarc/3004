@@ -1,6 +1,7 @@
 var DATA, I, 
 	QID, QTYPE, QNAME,
 	interval,
+	CURRENT_QUESTION = 0,
 	CHARTTYPE = "bar";
 
 function submit(show) {
@@ -58,12 +59,13 @@ function submit(show) {
 
 function checkActive() {
 	dbPoll.api("api/getactivequestion.jsp", {pollid: dbPoll.q.poll}, function(data) {
-		if(data.activeQuestion != -1) {
+		if(data.activeQuestion != -1 && data.activeQuestion != CURRENT_QUESTION) {
+			CURRENT_QUESTION = data.activeQuestion;
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
+		
+		setTimeout(checkActive, 2000);
 	});
-	
-	setTimeout(checkActive, 2000);
 }
 
 dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data) {

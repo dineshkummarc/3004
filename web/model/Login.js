@@ -1,17 +1,7 @@
 $("#login-submit").click(function() {
 	var user = $("#username").val(),
 		pass = $("#password").val(),
-		url;
-	
-        url = "api/all-ulogin.jsp";
-        
-	//if($("#comp").val() === "A") {
-		//url = "api/webuser-login.jsp";
-        
-	//} else {
-        //        url = "api/all-ulogin.jsp";
-		//url = "api/admin-dologin.jsp";
-	//}
+		url = "api/all-ulogin.jsp";
 	
 	console.log("LOGIN", user, pass);
 	dbPoll.message("Logging in!");
@@ -20,6 +10,7 @@ $("#login-submit").click(function() {
 		if(data.username) {
 			$("#top span.name").text(data.username);
 			dbPoll.role = data.role;
+			dbPoll.userID = data.userID;
 			var html = "";
 			
 			switch(data.role) {
