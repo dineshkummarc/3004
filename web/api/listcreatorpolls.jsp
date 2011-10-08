@@ -20,7 +20,7 @@
             String[] columnTypes = {"int", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
             polls = db.doPreparedQuery("SELECT * FROM Polls WHERE PollID IN "
-                    + "(SELECT PollID FROM PollCreatorLink WHERE UserID IN "
+                    + "(SELECT PollID FROM Assigned WHERE Role='Poll Creator' AND UserID IN "
                     + "(SELECT UserID FROM Users WHERE Username = ?))", array, types, columnNames, columnTypes);
 
  

@@ -44,7 +44,7 @@
 		String[] pclinkColTypes = {"int", "string"};
 		ArrayList<String[]> pclink = new ArrayList<String[]>();
 		pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.userID IN (SELECT "
-				     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
+				     + "UserID FROM Assigned WHERE PollID=? AND role='Poll Creator') ",
 				     pollArray, pollTypes, pclinkCols, pclinkColTypes);
 		for(int c=0; c<pclink.size(); c++) {
 		    if(c > 0) {
