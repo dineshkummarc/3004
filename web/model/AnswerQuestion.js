@@ -11,15 +11,15 @@ function submit(show) {
 	param.qid = QID;
 	show = show === undefined ? true : false;
 	
-	if(QTYPE == "MultipleResponse_NoDuplicates") {
+	if(QTYPE.substring(0, 29) == "MultipleResponse_NoDuplicates") {
+		param.aid = $("input:radio[name=ans]:checked").val() || "";
+	} else if(QTYPE.substring(0, 16) == "MultipleResponse") {
 		$("input:checked").each(function() { 
 			ans.push($(this).val());
 		});
 		
 		param.aid = ans.join(",");
-	} else if(QTYPE == "mp-single") {
-		param.aid = $("input:radio[name=ans]:checked").val() || "";
-	} else if(QTYPE.substr(0, 2) == "sr") {
+	} else if(QTYPE.substr(0, 14) == "SingleResponse") {
 		param.a = $("#resp").val();
 	}
 	
@@ -117,7 +117,7 @@ function loadQuest(question, index) {
 			ans = question.answers[j];
 			if(question.type.substring(0, 29) === "MultipleResponse_NoDuplicates") {
 				html += "<label><input type='radio' name='ans' value='"+j+"' /> "+ans+"</label>";
-			} else if(question.type === "mp-multiple") {
+			} else if(question.type.substring(0, 16) === "MultipleResponse") {
 				html += "<label><input type='checkbox' name='ans' value='"+j+"' /> "+ans+"</label>";
 			}
 		}
