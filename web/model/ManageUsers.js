@@ -126,16 +126,16 @@ function init() {
 	
 	switch(dbPoll.role) {
 		case 6:
-			html += "<option value='6'>System Admin</option>";
+			html += "<option value='System Admin'>System Admin</option>";
 		case 5:
-			html += "<option value='5'>Poll Admin</option>";
+			html += "<option value='Poll Admin'>Poll Admin</option>";
 		case 4:
-			html += "<option value='4'>Poll Creator</option>";
+			html += "<option value='Poll Creator'>Poll Creator</option>";
 		case 3:
-			html += "<option value='3'>Poll Master</option>";
+			html += "<option value='Poll Master'>Poll Master</option>";
 		default:
-			html += "<option value='2'>Web User</option>";
-			html += "<option value='1'>Key User</option>";
+			html += "<option value='Web User'>Web User</option>";
+			html += "<option value='Key User'>Key User</option>";
 	}
 	
 	$("select.role").html(html);
