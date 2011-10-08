@@ -12,7 +12,7 @@ $("#create").click(function() {
 	param.location = pos.Oa + "," + pos.Pa;
 	
 	console.log(param);
-	dbPoll.api("api/user-edituser.jsp", param);
+	dbPoll.api("api/user-createuser.jsp", param);
 });
 
 $("label.exp").hide();
@@ -34,7 +34,7 @@ $("#edit").click(function() {
 	//set the global username
 	user = username;
 	
-	dbPoll.api("api/user-edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
+	dbPoll.api("api/user-getdetails.jsp", {returnBoolean: true, userName: username}, function(data) {
 		if(data.userID == "-1") {
 			username = undefined;
 			$("#editbox").hide();
@@ -85,7 +85,7 @@ $("#modify").click(function() {
 $("#remove").click(function() {
 	var username = $(this).parent().find(".username").val();
 	
-	dbPoll.api("api/user-edituser.jsp", {action: "remove", userName: username});
+	dbPoll.api("api/user-deleteuser.jsp", {action: "remove", userName: username});
 });
 
 
