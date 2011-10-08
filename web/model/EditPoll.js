@@ -3,7 +3,8 @@ var DEBUG_MODE = true,
 
 if(dbPoll.q.id) {
 	POLL = dbPoll.q.id;
-	dbPoll.api("api/creator-getpollquestions.jsp?action=grab", {id: POLL}, function(obj) {
+	dbPoll.api("api/creator-getpollquestions.jsp?action=grab", 
+	        {id: POLL}, function(obj) {
 		parseData(obj);
 	});
 }

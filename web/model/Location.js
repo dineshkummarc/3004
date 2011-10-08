@@ -40,6 +40,7 @@ $("#submit").click(function() {
         param.type = "poll";
 	param.location = pos.Oa + "," + pos.Pa;
 	
+	$.getJSON("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng=40.714224,-73.961452");
 	dbPoll.api("api/geolocation.jsp", param);
 });
 
