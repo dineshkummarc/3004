@@ -108,6 +108,28 @@ $(function() {
 		dbPoll.api("api/isloggedin.jsp", function(status) {
 			if(status.username) {
 				dbPoll.role = status.role;
+				
+				var html = "";
+				switch(dbPoll.role) {
+					case 6:
+						html += "<li><a href=':ManageUsers'>Manage Users</a></li>\
+								<li><a href=':AddPollCreator'>Add Poll Creator</a></li>";
+					case 5:
+						html += "<li><a href=':ManagePolls'>Manage Polls</a></li>\
+								<li><a href=':AddPollCreator'>Add Poll Creator</a></li>";
+					case 4:
+						html += "<li><a href=':EditPoll'>Edit Poll</a></li>"
+					case 3:
+						html += "<li><a href=':Location'>Change Location</a></li>\
+								<li><a href=':Generate'>Generate Report</a></li>\
+								<li><a href=':ConductPoll'>Conduct Poll</a></li>";
+					case 2:
+					case 1:
+						html += "<li><a href=':PollIndex'>Poll Index</a></li>";
+				}
+				
+				$("#nav ul").html(html);
+				
 				dbPoll.userID = status.userID;
 				$("#top span.name").text(status.username);
 			} else {
