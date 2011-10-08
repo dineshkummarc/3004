@@ -22,7 +22,7 @@
         } else if (value == -1)  {
 	    out.print("{ \"error\": \"Account has expired.\"}");
 	} else {
-            out.print("{ \"status\": \"OK\", \"username\":\"" + request.getParameter( "username" ) +"\", \"role\": " + value + "}");
+            out.print("{ \"status\": \"OK\", \"username\":\"" + request.getParameter( "username" ) +"\", \"role\": " + value + ", \"userID\": " + db.getUserID() + "}");
         }
     }
 %>

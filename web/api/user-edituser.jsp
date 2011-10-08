@@ -5,16 +5,16 @@
 --%>
 
 <%@page import="java.sql.ResultSet"%>
-<%@page import="database.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
+<jsp:useBean id="emailmodule" scope="session" class="db.email" /> 
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1 {
-		out.println("{"};
-		out.println("\"access\": \"OK\"")
+	if(db.accessCheck("sysadmin") == 1) {
+		out.println("{");
+		out.println("\"access\": \"OK\"");
 		out.println("}");
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -42,10 +42,11 @@ try{
 			out.println("{");
 			out.println("\"status\": " + "\"User edited\"");
 			out.println("}");
+                        emailmodule.sendEmail(email, "You've been given " + userLevel + " access.", "You now have "+userLevel+" access on the dbPOLL system. You can access the system with the following credentials: username is " + userName + " and password is " + password);
 		} 
 	} else {
-		out.println("{"};
-		out.println("\"access\": \"bad\"")
+		out.println("{");
+		out.println("\"access\": \"bad\"");
 		out.println("}");
 	}
 } catch(Exception e){
