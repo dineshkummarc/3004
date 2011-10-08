@@ -366,7 +366,7 @@ public class database {
         String[] isCreatorInputTypes = {"string"};
         String[] isCreatorOutput = {"UserID"};
         String[] isCreatorOutputTypes = {"int"};
-        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM PollCreatorLink WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?))", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
+        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM Assigned WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?)) AND role='Poll Creator'", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;
