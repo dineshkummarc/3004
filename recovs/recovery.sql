@@ -135,7 +135,7 @@ CREATE TABLE Users(
     email VARCHAR2(255) NOT NULL,
     location VARCHAR2(255),
     userLevel VARCHAR(255) DEFAULT 'Web User',
-    created DATE,
+    created DATE DEFAULT SYSDATE,
     expired DATE,
 	clickerID VARCHAR2(30),
     CONSTRAINT userLevel_const CHECK (userLevel IN ('Web User', 'Key User', 'Poll Master', 'Poll Creator', 'Poll Admin', 'System Admin')),

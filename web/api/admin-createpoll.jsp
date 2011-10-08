@@ -20,7 +20,7 @@
 	    String[] types = {"string", "string", "string", "string"};
 
 
-	    db.doPreparedExecute("INSERT INTO Polls(PollID, Pollname, description, startDate, finishDate) VALUES (pseq.nextval, ?, ?, ?, ?)", array,types);
+	    db.doPreparedExecute("INSERT INTO Polls(PollID, Pollname, description, startDate, finishDate) VALUES (pseq.nextval, ?, ?, to_date(?, 'yyyy-mm-dd HH24:MI:SS'), to_date(?, 'yyyy-mm-dd HH24:MI:SS'))", array,types);
 
 	    ArrayList<String[]> maxPoll = new ArrayList<String[]>();
 	    String[] a1 = {};

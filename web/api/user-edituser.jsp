@@ -13,14 +13,11 @@
 <%
 try{
 	if(db.accessCheck("sysadmin") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("}");
-		String userName = request.getParameter("username");
+		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		String location = request.getParameter("location");
-		String userLevel = request.getParameter("userlevel");
+		String userLevel = request.getParameter("userLevel");
 		String expired = request.getParameter("expired");
 		//users user = new users();
 		//user.setUserName(userName);

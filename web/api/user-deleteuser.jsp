@@ -12,10 +12,7 @@
 <%
 try{
 	if(db.accessCheck("sysadmin") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("}");
-		String userName = request.getParameter("username");
+		String userName = request.getParameter("userName");
 		//users user = new users();
 		//user.setUserName(userName);
 		//user.getUserByUserName();

@@ -19,8 +19,8 @@
             out.print("\"access\":\"OK\", ");
             String[] array = {};
             String[] types = {};
-            String[] columnNames = {"PollID", "PollName"};
-            String[] columnTypes = {"int", "string"};
+            String[] columnNames = {"PollID", "PollName", "description", "startDate", "finishDate", "keypad"};
+            String[] columnTypes = {"int", "string", "string", "string", "string", "string"};
             ArrayList<String[]> polls = new ArrayList<String[]>();
             polls = db.doPreparedQuery("SELECT * FROM Polls", array, types, columnNames, columnTypes);
             %>
@@ -37,6 +37,10 @@
 
                 <%= "{\"pollID\": " + Integer.parseInt(polls.get(i)[0])
                         + ", \"pollName\": \"" + polls.get(i)[1] +
+                        "\", \"description\": \"" + polls.get(i)[2] +
+                        "\", \"start\": \"" + polls.get(i)[3] +
+                        "\", \"end\": \"" + polls.get(i)[4] +
+                        "\", \"online\": \"" + polls.get(i)[5] +
                         "\", \"pollCreators\": [" 
                         %>
                 <% String[] pclinkCols = {"UserID", "Username"};
