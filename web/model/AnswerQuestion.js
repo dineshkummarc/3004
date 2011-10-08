@@ -1,5 +1,6 @@
 var DATA, I, 
 	QID, QTYPE, QNAME,
+	timeout,
 	interval,
 	CURRENT_QUESTION = 0,
 	CHARTTYPE = "bar";
@@ -9,11 +10,11 @@ function submit(show) {
 		ans = [];
 		
 	param.qid = QID;
-	show = show === undefined ? true : false;
+	show = (show === undefined);
 	
-	if(QTYPE.substring(0, 29) == "MultipleResponse_NoDuplicates") {
+	if(QTYPE.substring(0, 26) == "MultiResponse_NoDuplicates") {
 		param.aid = $("input:radio[name=ans]:checked").val() || "";
-	} else if(QTYPE.substring(0, 16) == "MultipleResponse") {
+	} else if(QTYPE.substring(0, 13) == "MultiResponse") {
 		$("input:checked").each(function() { 
 			ans.push($(this).val());
 		});
@@ -39,6 +40,7 @@ function submit(show) {
 			
 			table.addRows(data.responses);
 			
+			$("#chart").show();
 			if(q.chartType === "column") {
 				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			} else if(q.chartType === "pie") {
@@ -64,7 +66,7 @@ function checkActive() {
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
 		
-		setTimeout(checkActive, 2000);
+		timeout = setTimeout(checkActive, 2000);
 	});
 }
 
@@ -78,7 +80,10 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 	DATA = data;
 	I = index;
 	
-	checkActive();
+	//start timer
+	if(data.questions[0].keypad == "TRUE") {
+		checkActive();
+	}
 	
 	loadQuest(data.questions[index], index);
 });
@@ -110,14 +115,14 @@ function loadQuest(question, index) {
 	
 	o.name.text(question.question);
 	
-	if(question.type.substring(0, 16) === "MultipleResponse") {
+	if(question.type.substring(0, 13) === "MultiResponse") {
 		var j, ans;
 		
 		for(j in question.answers) {
 			ans = question.answers[j];
-			if(question.type.substring(0, 29) === "MultipleResponse_NoDuplicates") {
+			if(question.type.substring(0, 26) === "MultiResponse_NoDuplicates") {
 				html += "<label><input type='radio' name='ans' value='"+j+"' /> "+ans+"</label>";
-			} else if(question.type.substring(0, 16) === "MultipleResponse") {
+			} else if(question.type.substring(0, 13) === "MultiResponse") {
 				html += "<label><input type='checkbox' name='ans' value='"+j+"' /> "+ans+"</label>";
 			}
 		}
@@ -171,6 +176,10 @@ function loadQuest(question, index) {
 	$("#feedback").show();
 }
 
+$("#chart").click(function() {
+	$(this).hide();
+});
+
 $("#submit").click(function() {
 	submit(false);
 });
@@ -190,3 +199,7 @@ $("#feedback-sub").click(function() {
 	dbPoll.api("api/webuser-submitfeedback.jsp", param);
 	$("#feedback").hide();
 });
+
+dbPoll.exit = function() {
+	cleatTimeout(timeout);
+}
