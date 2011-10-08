@@ -272,6 +272,10 @@ public class database {
                 return 1;
             } else if(rankChecker.get(0)[0].equals("Poll Master")) {
                 return 3;
+            } else if(rankChecker.get(0)[0].equals("Poll Creator")) {
+                return 4;
+            } else if(rankChecker.get(0)[0].equals("Poll Admin")) {
+                return 5;
             }
         }
         System.err.println("baseLogin: No sysadmin/web user/key user access found. Looking for poll admin/creator access...");
