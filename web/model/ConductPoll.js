@@ -1,11 +1,11 @@
- dbPoll.api("api/", function(data) {
+dbPoll.api("api/clicker-getip.jsp", function(data) {
 	var html = "<embed codebase='http://localhost:80/'\
        archive='ControlApplet.jar,gson-1.7.1.jar,jna.jar,rc_sdk.jar'\
        code='controller.class'\
       width='950' height='600'\
       type='application/x-java-applet'\
       userid='"+dbPoll.userID+"'\
-	  ip='"+data.ip+"'\
+	  path='"+data.ip+"'\
       pluginspage='http://java.sun.com/j2se/1.5.0/download.html'/>";
 	  
 	$("#applet").html(html);
