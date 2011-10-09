@@ -8,7 +8,7 @@ dbPoll.api("api/clicker-getip.jsp", function(data) {
 	  path='"+data.ip+"'\
       pluginspage='http://java.sun.com/j2se/1.5.0/download.html'/>";
 	  
-	$("#applet").html(html);
+	//$("#applet").html(html);
 });
 
 dbPoll.api("api/getpollsbyuser.jsp", function(data) {
@@ -27,6 +27,8 @@ $("#send").click(function() {
 	var to = $("#to").val() || -1,
 		poll = $("#poll").val(),
 		msg = $("#messg").val();
-		
+		$("#messg").val("");
+                $("#to").val("");
 	dbPoll.api("api/sendMessage.jsp", {to: to, pollID: poll, message: msg});
+        dbPoll.message("Message has been Sent");
 });
