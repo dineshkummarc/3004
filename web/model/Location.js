@@ -1,15 +1,6 @@
 var MAP, marker, currentLatLng;
 
-dbPoll.api("api/user-getpolls.jsp", function(data) {
-	var i = 0, l = data.length, html = "", poll;
-	
-	for(; i < l; ++i) {
-		poll = data[i];
-		html += "<option value='"+poll.pollID+"'>"+poll.pollName+"</option>";
-	}
-	
-	$("#poll").html(html);
-});
+
 
 $("#poll").change(function() {
 	var id = $(this).val();
@@ -19,13 +10,10 @@ $("#poll").change(function() {
 			latlng = new google.maps.LatLng($.trim(pos[0]), $.trim(pos[1]));
 			
 		if(marker) {
-			marker.setPosition(latlng);
-		} else {
-			marker = new google.maps.Marker({
-				position: latlng,
-				map: MAP
-			});
-		}
+                    marker.setMap(null);
+                    marker = null;
+                 }
+                 marker = createMarker(latlng);
 		
 		MAP.setCenter(latlng);
 	});
@@ -107,17 +95,37 @@ function init() {
 	google.maps.event.addListener(MAP, "click", function(e) {
 		console.log(e);
 		if(marker) {
-                    currentLatLng = e.latLng;
-                    marker.setPosition(e.latLng);
-		} else {
-                    currentLatLng = latlng;
-                    marker = new google.maps.Marker({
-                        position: latlng,
-                        map: MAP
-			});
-		}
+                    marker.setMap(null);
+                    marker = null;
+                 }
+                 marker = createMarker(e.latLng);
+
 	});
+        
+        dbPoll.api("api/user-getpolls.jsp", function(data) {
+	var i = 0, l = data.length, html = "", poll;
+	
+	for(; i < l; ++i) {
+		poll = data[i];
+		html += "<option value='"+poll.pollID+"'>"+poll.pollName+"</option>";
+	}
+	
+	$("#poll").html(html).trigger("change");
+});
 }
+
+function createMarker(latlng) {
+    
+    currentLatLng = latlng;
+    marker = new google.maps.Marker({
+    position: latlng,
+    map: MAP,
+    zIndex: Math.round(latlng.lat()*-100000)<<5
+    });   
+    
+    return marker;
+}
+
 
 
    

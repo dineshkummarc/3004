@@ -39,9 +39,9 @@ if(db.accessCheck("creator") == 1) {
                 String[] compOutputTypes = {"int", "int"};
                 ArrayList<String[]> comparative = db.doPreparedQuery("SELECT * FROM Comparitives WHERE questID=?",
                         compInputData, compInputTypes, compOutputCols, compOutputTypes);
-
+                String currentQuestID = results.get(i)[0];
                 out.print("{");
-                out.print("\"id\": " + results.get(i)[0] + ",");
+                out.print("\"id\": " + currentQuestID + ",");
                 if(comparative.size() != 0) {
                 out.print("\"compareTo\": \"" + comparative.get(0)[1] + "\",");
                 } else {
@@ -58,7 +58,7 @@ if(db.accessCheck("creator") == 1) {
                 out.print("\"creator\": " + results.get(i)[9] + ",");
                 out.print("\"responses\": [");
                 
-                String[] answersInputData = {request.getParameter("id")};
+                String[] answersInputData = {currentQuestID};
                 String[] answersInputTypes = {"string"};
                 String[] answersOutputCols = {"answerID", "keypad", "answer", "questID", "correct", "weight"};
                 String[] answersOutputTypes = {"string", "string", "string", "string", "string", "string"};
