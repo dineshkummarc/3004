@@ -11,7 +11,7 @@ dbPoll.api("api/getpollsbyuser.jsp", function(data) {
 		DATA[poll.id] = poll.role;
 	}
 	
-	$("#upoll").html(html);
+	$("#upoll").html(html).trigger("change");
 });
 
 $("#upoll").change(function() {
