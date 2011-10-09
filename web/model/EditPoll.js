@@ -133,7 +133,7 @@ $("button.saver").live("click", function() {
 	data.weight = parent.find("input.weight").val() || "NULL";
 	data.questionID = parent.parent().parent().parent().parent().parent().find("input.qid").val();
 	
-	if(data.questionID) {
+	if(data.questionID == -1) {
 		showError(parent, "Save question first");
 		return;
 	}
