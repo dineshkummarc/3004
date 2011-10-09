@@ -137,6 +137,10 @@ $(function() {
 			}
 		});
 	}
+	
+	$("#helpb").click(function() {
+		$("#help").toggle();
+	});
 });
 
 //setup a global namespace
