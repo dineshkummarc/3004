@@ -86,7 +86,7 @@ $(".assign").live("click", function() {
 */
 $(".updateb").live("click", function() {
 	var name = $(this).parent().parent().find("input.name").val(),
-		id = $(this).parent().parent().parent().attr("data-id"),
+		id = $(this).parent().parent().attr("data-id"),
 		start = $(this).parent().parent().find("input.start").val(),
 		end = $(this).parent().parent().find("input.end").val(),
 		online = $(this).parent().parent().find("input.online").is(":checked") ? "T" : "F",
