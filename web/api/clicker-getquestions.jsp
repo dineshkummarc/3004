@@ -5,8 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%@ page import="db.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@ page import = "java.util.ArrayList" %>
 
@@ -136,33 +134,36 @@ if (pollID == null || pollID.equals("") ) {
                 out.print("\"images\": \"" + questions.get(i)[5] + "\",");
                 out.print("\"fontColor\": \"" + questions.get(i)[6] + "\", ");
                 out.print("\"fontSize\": \"" + questions.get(i)[7] + "\", ");
-                out.print("\"chartType\": \"" + questions.get(i)[8] + "\", ");
-
-                inputsA[0] = questions.get(i)[0];
-                answers = db.doPreparedQuery("SELECT * FROM Answers WHERE questID = ?", inputsA, typesA, columnNamesQ, columnTypesQ);
-
-                if (answers.size() > 0) {
-                    out.print("\"answers\": [");
-                    for (int j = 0; j < answers.size(); j++) {
-                        out.print("{ \"id\":" + answers.get(j)[0] + ",");
-                        
-                        out.print("\"answer\": \"" + answers.get(j)[1] + "\",");
-                        
-                        out.print("\"correct\": \"" + answers.get(j)[2] + "\" }");
-                        
-                        
-                        
-                        //out.print("\"" + answers.get(j)[0] +"\": \"" + answers.get(j)[1] + "\" ");
-                        //out.print("<h1> I IS " + i + " SIZE IS " + answers.size() + " </h1>");
-
-                        if (j == (answers.size() -1)) {
-                            out.print("]");
-                        } else {
-                            out.print(",");
-                        }
-                    }
-               }
+                out.print("\"chartType\": \"" + questions.get(i)[8] + "\"");
+                if (questions.get(i)[1] != null && (questions.get(i)[1].contains("SingleResponse") || questions.get(i)[1].contains("MultiResponse"))) {
+                    out.print(",");
                 
+
+                    inputsA[0] = questions.get(i)[0];
+                    answers = db.doPreparedQuery("SELECT * FROM Answers WHERE questID = ?", inputsA, typesA, columnNamesQ, columnTypesQ);
+
+                    if (answers.size() > 0) {
+                        out.print("\"answers\": [");
+                        for (int j = 0; j < answers.size(); j++) {
+                            out.print("{ \"id\":" + answers.get(j)[0] + ",");
+
+                            out.print("\"answer\": \"" + answers.get(j)[1] + "\",");
+
+                            out.print("\"correct\": \"" + answers.get(j)[2] + "\" }");
+
+
+
+                            //out.print("\"" + answers.get(j)[0] +"\": \"" + answers.get(j)[1] + "\" ");
+                            //out.print("<h1> I IS " + i + " SIZE IS " + answers.size() + " </h1>");
+
+                            if (j == (answers.size() -1)) {
+                                out.print("]");
+                            } else {
+                                out.print(",");
+                            }
+                        }
+                    }     
+                }
                 if (i == (questions.size() -1)) {
                     out.print("}");
                 } else {

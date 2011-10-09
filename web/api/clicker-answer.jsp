@@ -6,8 +6,6 @@
 <%-- NOTE: need ot make it return the results from a quesiton that has been submitted --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%@ page import="db.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@ page import = "java.util.ArrayList" %>
 
@@ -21,11 +19,8 @@
 String questionID = request.getParameter( "questionid" );
 String answerID = request.getParameter( "answerid" );
 String clickerID = request.getParameter( "clickerid" );
-
+            System.err.println("clickerID: " + clickerID + "; questionID: " + questionID + " ; answerID: " + answerID);
 //if (null != user && !user.equals( "" )) {
-if (db.getLoggedIn() == 1) {
-    String userID = Integer.toString(db.getUserID());
-    //out.println("THIS IS THE USER ID" + userID + " <br/>");
     if (questionID == null) {
         out.print("{ \"error\": \"Invalid question ID.\"}");                
     } else {
@@ -42,15 +37,17 @@ if (db.getLoggedIn() == 1) {
             answers = answerID.split(",");               
         
             types = new String[2];
-            types[0] = "int";
+            types[0] = "string";
             types[1] = "int";
             
             inputs = new String[2];
             inputs[0] = clickerID;
             inputs[1] = questionID;
             
+
+            
             types2 = new String[3];
-            types2[0] = "int";
+            types2[0] = "string";
             types2[1] = "int";
             types2[2] = "int";
             
@@ -78,13 +75,9 @@ if (db.getLoggedIn() == 1) {
 		int count1 = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM KeyResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
                 int count2 = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM MultiResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
                 int total = count1 + count2;
-                
                 out.print("{ \"responses\": " + total + " }");
                 
             }
         }
     }
-} else {
-    out.print("{ \"error\": \"You are not currently logged in.\", \"redirect\":\"Login\"}");
-}
 %>

@@ -6,8 +6,6 @@
 <%-- NOTE: need ot make it return the results from a quesiton that has been submitted --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%@ page import="db.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@ page import = "java.util.ArrayList" %>
 
