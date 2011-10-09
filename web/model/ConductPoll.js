@@ -28,5 +28,5 @@ $("#send").click(function() {
 		poll = $("#poll").val(),
 		msg = $("#messg").val();
 		
-	dbPoll.api("api/sendmessage", {to: to, pollID: poll, message: msg});
+	dbPoll.api("api/sendMessage.jsp", {to: to, pollID: poll, message: msg});
 });

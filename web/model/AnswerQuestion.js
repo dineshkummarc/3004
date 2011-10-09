@@ -68,7 +68,7 @@ function checkActive() {
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
 		
-		dbPoll.api("api/getmessages.jsp", {pollID: dbPoll.q.poll}, function(msg) {
+		dbPoll.api("api/getMessage.jsp", {pollID: dbPoll.q.poll}, function(msg) {
 			var i = 0, l = msg.length, ms, html = "";
 			
 			for(; i < l; ++i) {
