@@ -1,6 +1,6 @@
 var DATA, I, 
 	QID, QTYPE, QNAME,
-	timeout,
+	timeout, timeout2,
 	interval,
 	CURRENT_QUESTION = 0,
 	CHARTTYPE = "bar";
@@ -68,20 +68,24 @@ function checkActive() {
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
 		
-		dbPoll.api("api/getMessage.jsp", {pollID: dbPoll.q.poll}, function(msg) {
-			var i = 0, l = msg.length, ms, html = "";
-			
-			for(; i < l; ++i) {
-				ms = msg[i];
-				html += ms.message + "<br />";
-			}
-			
-			//fill message box
-			$("#messages").html(html);
-			$("#messages")[0].scrollTop = $("#messages")[0].scrollHeight;
-			
-			timeout = setTimeout(checkActive, 2000);
-		});
+		timeout = setTimeout(checkActive, 2000);
+	});
+}
+
+function checkMessage() {
+	dbPoll.api("api/getMessage.jsp", {pollID: dbPoll.q.poll}, function(msg) {
+		var i = 0, l = msg.length, ms, html = "";
+		
+		for(; i < l; ++i) {
+			ms = msg[i];
+			html += ms.message + "<br />";
+		}
+		
+		//fill message box
+		$("#messages").html(html);
+		$("#messages")[0].scrollTop = $("#messages")[0].scrollHeight;
+		
+		timeout2 = setTimeout(checkMessage, 2000);
 	});
 }
 
@@ -94,6 +98,8 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 	
 	DATA = data;
 	I = index;
+	
+	checkMessage();
 	
 	//start timer
 	if(data.questions[0].keypad == "TRUE") {
@@ -217,5 +223,6 @@ $("#feedback-sub").click(function() {
 });
 
 dbPoll.exit = function() {
+	clearTimeout(timeout);
 	clearTimeout(timeout);
 }
