@@ -118,7 +118,7 @@ $(function() {
 						html += "<li><a href=':ManagePolls'>Manage Polls</a></li>\
 								<li><a href=':AddPollCreator'>Add Poll Creator</a></li>";
 					case 4:
-						html += "<li><a href=':EditPoll'>Edit Poll</a></li>"
+						html += "<li><a href=':AssignedPolls'>Assigned Polls</a></li>"
 					case 3:
 						html += "<li><a href=':Location'>Change Location</a></li>\
 								<li><a href=':Generate'>Generate Report</a></li>\

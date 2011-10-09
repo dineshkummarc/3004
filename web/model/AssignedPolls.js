@@ -15,8 +15,8 @@ dbPoll.api("api/getpollsbyuser.jsp", function(data) {
 		poll = data[i];
 		//skip if not creator or higher
 		if(roles[poll.role] < 4) continue;
-		html += "<tr><td>" + poll.name + "</td><td>" + poll.description + "</td><td><a href=':EditPoll/poll/"+poll.id+"'>Edit</a></td></tr>";
+		html += "<tr><td>" + poll.name + "</td><td>" + poll.description + "</td><td><a href=':EditPoll/id/"+poll.id+"'>Edit</a></td></tr>";
 	}
 	
-	$("#apolls").html(html);
+	$("#apolls").append(html);
 });
