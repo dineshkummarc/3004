@@ -202,6 +202,10 @@ $("#chart").click(function() {
 	$(this).hide();
 });
 
+$("#chart a").click(function() {
+	$("#chart").hide();
+});
+
 $("#submit").click(function() {
 	submit(false);
 });
