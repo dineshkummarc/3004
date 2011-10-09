@@ -59,6 +59,8 @@ function submit(show) {
 	});
 }
 
+//[{"msgID": 21, "message": "456", "from": "2", "time": "2011-10-05 13:04:20.0", "isRead": "F"}]
+
 function checkActive() {
 	dbPoll.api("api/getactivequestion.jsp", {pollid: dbPoll.q.poll}, function(data) {
 		if(data.activeQuestion != -1 && data.activeQuestion != CURRENT_QUESTION) {
@@ -66,7 +68,20 @@ function checkActive() {
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
 		
-		timeout = setTimeout(checkActive, 2000);
+		dbPoll.api("api/getmessages.jsp", {pollID: dbPoll.q.poll}, function(msg) {
+			var i = 0, l = msg.length, ms, html = "";
+			
+			for(; i < l; ++i) {
+				ms = msg[i];
+				html += ms.message + "<br />";
+			}
+			
+			//fill message box
+			$("#messages").html(html);
+			$("#messages")[0].scrollTop = $("#messages")[0].scrollHeight;
+			
+			timeout = setTimeout(checkActive, 2000);
+		});
 	});
 }
 
