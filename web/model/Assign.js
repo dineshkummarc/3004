@@ -42,6 +42,6 @@ $("#subm").click(function() {
 	params.role = $("#upoll").val();
 	
 	dbPoll.api("api/assignPoll-user.jsp", params, function() {
-		dbPoll.go("Home");
+		//dbPoll.go("Home");
 	});
 });
