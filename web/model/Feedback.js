@@ -3,6 +3,11 @@ dbPoll.api("api/getfeedback.jsp", {pollID: dbPoll.q.id}, function(data) {
 		html = "",
 		feedb = {};
 	
+	if(l == 0) {
+		$("#fb").html("No Feedback Results");
+		return;
+	}
+	
 	//group it
 	for(; i < l; ++i) {
 		if(!feedb[data[i].question]) feedb[data[i].question] = [];

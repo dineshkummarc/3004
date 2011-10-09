@@ -15,7 +15,8 @@ dbPoll.api("api/admin-listpolls.jsp", function(data) {
 		html += "<label>Description: <input type='text' class='descr' value='"+(poll.description == "null" ? poll.description : "")+"' /></label>";
 		html += "<label>Start: <input type='text' class='start' value='"+(poll.start != "null" ? poll.start : "")+"' /></label>"; 
 		html += "<label>End: <input type='text' class='end' value='"+(poll.end != "null" ? poll.end : "")+"' /></label>";
-		html += "<label>Online: <a class='button updateb'>Update</a><input type='checkbox' class='online' "+(poll.online == "TRUE" ? "checked" : "")+" /></label>";
+		html += "<label>Online: <input type='checkbox' class='online' "+(poll.online == "TRUE" ? "checked" : "")+" /></label>";
+		html += "<label><a class='button updateb'>Update</a></label>";
 		html += "<label>Delete Poll: <a class='button delete'>Delete</a></label><div class='creators'>";
 		
 		//loop over the poll creators
@@ -84,12 +85,12 @@ $(".assign").live("click", function() {
 * Update a Poll
 */
 $(".updateb").live("click", function() {
-	var name = $(this).parent().find("input.rename").val(),
-		id = $(this).parent().parent().attr("data-id"),
-		start = $(this).parent().find("input.start").val(),
-		end = $(this).parent().find("input.end").val(),
-		online = $(this).parent().find("input.end").val(),
-		descr = $(this).parent().find("input.descr").val();
+	var name = $(this).parent().parent().find("input.name").val(),
+		id = $(this).parent().parent().parent().attr("data-id"),
+		start = $(this).parent().parent().find("input.start").val(),
+		end = $(this).parent().parent().find("input.end").val(),
+		online = $(this).parent().parent().find("input.online").is(":checked") ? "T" : "F",
+		descr = $(this).parent().parent().find("input.descr").val();
 		
 	dbPoll.api("api/admin-editpoll.jsp", {pollID: id, pollName: name, start: start, finish: end, online: online, description: descr}, function() {
 		window.location.reload();
