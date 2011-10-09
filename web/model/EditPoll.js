@@ -3,7 +3,7 @@ var DEBUG_MODE = true,
 
 if(dbPoll.q.id) {
 	POLL = dbPoll.q.id;
-	dbPoll.api("api/creator/creator-getpollquestions.jsp?action=grab", 
+	dbPoll.api("api/creator/creator-getpollquestions.jsp", 
 	        {id: POLL}, function(obj) {
 		parseData(obj);
 	});
@@ -57,7 +57,7 @@ $("button.newr").live("click", function() {
 		type = $(this).parent().parent().parent().children("select.qformat"),
 		r;
 		
-	if(type.val() == "M" && $(this).next().children("div.response").size() >= 10) {
+	if(type.val() != "ShortAnswer" && $(this).next().children("div.response").size() >= 10) {
 		return;
 	}
 	
@@ -129,7 +129,7 @@ $("button.saver").live("click", function() {
 	data.id = parent.find("input.aid").val();
 	data.text = parent.find("input.resptext").val();
 	data.keypad = parent.find("select.keypad").val();
-	data.correct = parent.find("input.correct")[0].checked;
+	data.correct = parent.find("input.correct")[0].checked ? "T" : "F";
 	data.weight = parent.find("input.weight").val() || "NULL";
 	data.questionID = parent.parent().parent().parent().parent().parent().find("input.qid").val();
 	
@@ -160,7 +160,7 @@ $("button.saveq").live("click", function() {
 	data.text = parent.find("input.qname").val();
 	data.qformat = parent.find("select.qformat").val();
 	data.compareTo = parent.find("select.compare").val();
-	data.demographic = parent.find("input.demographicbox")[0].checked;
+	data.demographic = parent.find("input.demographicbox")[0].checked ? "T" : "F";
 	data.widget = (parent.find("select.widget").val() || []).join(",");
 	data.chart = parent.find("select.chart").val();
 	data.font = parent.find("input.font").val();
@@ -195,6 +195,7 @@ function showError(line, msg) {
 function updateCompare() {
 	var optionlist = "";
 	
+	optionlist = "<option value='NULL'>Select a previous Question</option>";
 	$("div.question").each(function() {
 		var self = $(this),				
 			id = self.find("input.qid").val(),
