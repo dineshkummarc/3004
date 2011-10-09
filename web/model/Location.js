@@ -76,7 +76,7 @@ $("#submit").click(function() {
                 dbPoll.api("api/poll-setlocation.jsp", param);
             }
         }else {
-            alert("Geocoder failed due to: " + status);
+            dbPoll.message("<strong>Poll Can't be located on the sea.</strong>");
         }
     });
 });
