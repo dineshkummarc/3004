@@ -1,15 +1,21 @@
-var MAP1, MAP2, map, map2;
+var MAP1, MAP2, map, map2, currentLatLng, currentLatLng1;
 
 $("#create").click(function() {
-	var param = {},
-		p = $(this).parent(),
-		pos = MAP1.getPosition();
-	
+	var param = {}, pos, lat, lng,
+        p = $(this).parent();
+        if(!MAP1){
+            dbPoll.message("Please specify a location on the map.");
+        }
+        else{
+            pos = currentLatLng.toString().split(",");
+            lat = pos[0].substr(1);
+            lng = pos[1].substr(0, pos[1].length-1);
+        }
 	param.action = "register";
 	param.userName = p.find(".username").val();
 	param.email = p.find(".email").val();
 	param.userLevel = p.find(".role").val();
-	param.location = pos.Oa + "," + pos.Pa;
+	param.location = lat + "," + lng;
 	
 	console.log(param);
 	dbPoll.api("api/user-createuser.jsp", param);
@@ -42,38 +48,50 @@ $("#edit").click(function() {
 		}
 		
 		$("#editbox").show();
-	
+                
 		var pos = data.location.split(","),
-			latlng = new google.maps.LatLng($.trim(pos[0]), $.trim(pos[1]));
-		
-		console.log(map2, pos, latlng);
-		MAP2 = new google.maps.Marker({
-			position: latlng,
-			map: map2
-		});
+                latlng = new google.maps.LatLng($.trim(pos[0]), $.trim(pos[1]));
+		var myOptions = {
+		zoom: 8,
+		center: latlng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: false
+                };
+                map2 = new google.maps.Map(document.getElementById("map2"), myOptions);
+		//console.log(map2, pos, latlng);
+		if(MAP2) {
+                    MAP2.setMap(null);
+                    MAP2 = null;
+                 }
+                 MAP2 = createMarker2(latlng);
 		
 		map2.setCenter(latlng);
-			
+		
+                google.maps.event.addListener(map2, "click", function(e) {
+		console.log(e);
+		if(MAP2) {
+                    MAP2.setMap(null);
+                    MAP2 = null;
+                 }
+                 MAP2 = createMarker2(e.latLng);
+	});
 		p.find(".email").val(data.email);
 		p.find(".role").val(data.userLevel);
-                
-                google.maps.event.trigger(map, 'resize');
-                google.maps.event.trigger(map2, 'resize');
 	});
 	
-	google.maps.event.trigger(map, 'resize');
-	google.maps.event.trigger(map2, 'resize');
+
 });
 
 $("#modify").click(function() {
-	var param = {},
-		pos = MAP2.getPosition();
-		
+	var param = {};
+        var pos = currentLatLng1.toString().split(",");
+        var lat = pos[0].substr(1);
+        var lng = pos[1].substr(0, pos[1].length-1);
 	console.log(pos);
-    param.action = "edit";
+        param.action = "edit";
 	param.userName = user;
 	param.password = $(this).parent().find(".password").val();
-	param.location = pos.Oa + "," + pos.Pa;
+	param.location = lat + "," + lng;
 	param.userLevel = $(this).parent().find(".role").val();
 	param.email = $(this).parent().find(".email").val();
 	
@@ -105,21 +123,13 @@ function init() {
 	google.maps.event.addListener(map, "click", function(e) {
 		console.log(e);
 		if(MAP1) {
-			MAP1.setPosition(e.latLng);
-		} else {
-			MAP1 = new google.maps.Marker({
-				position: e.latLng,
-				map: map
-			});
-		}
+                    MAP1.setMap(null);
+                    MAP1 = null;
+                 }
+                 MAP1 = createMarker1(e.latLng);
 	});
 	
-	google.maps.event.addListener(map2, "click", function(e) {
-		console.log(e);
-		if(MAP2) {
-			MAP2.setPosition(e.latLng);
-		}
-	});
+	
 	
 	
 	var html = "";
@@ -139,4 +149,28 @@ function init() {
 	}
 	
 	$("select.role").html(html);
+}
+
+function createMarker1(latlng) {
+    
+    currentLatLng = latlng;
+    marker = new google.maps.Marker({
+    position: latlng,
+    map: map,
+    zIndex: Math.round(latlng.lat()*-100000)<<5
+    });   
+    
+    return marker;
+}
+
+function createMarker2(latlng) {
+    
+    currentLatLng1 = latlng;
+    marker = new google.maps.Marker({
+    position: latlng,
+    map: map2,
+    zIndex: Math.round(latlng.lat()*-100000)<<5
+    });   
+    
+    return marker;
 }
