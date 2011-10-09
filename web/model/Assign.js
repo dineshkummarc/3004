@@ -37,11 +37,11 @@ $("#upoll").change(function() {
 
 $("#subm").click(function() {
 	var params = {};
-	params.username = $("#uname").val();
-	params.pollid = $("#upoll").val();
+	params.userName = $("#uname").val();
+	params.pollID = $("#upoll").val();
 	params.role = $("#upoll").val();
 	
-	dbPoll.api("", params, function() {
+	dbPoll.api("api/assignPoll-user.jsp", params, function() {
 		dbPoll.go("Home");
 	});
 });
