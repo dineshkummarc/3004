@@ -97,10 +97,11 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 	
 	//start timer
 	if(data.questions[0].keypad == "TRUE") {
+		$("#next").hide();
 		checkActive();
+	} else {
+		loadQuest(data.questions[index], index);
 	}
-	
-	loadQuest(data.questions[index], index);
 });
 
 function loadQuest(question, index) {
