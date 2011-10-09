@@ -3,7 +3,7 @@ var DEBUG_MODE = true,
 
 if(dbPoll.q.id) {
 	POLL = dbPoll.q.id;
-	dbPoll.api("api/creator-getpollquestions.jsp?action=grab", 
+	dbPoll.api("api/creator/creator-getpollquestions.jsp?action=grab", 
 	        {id: POLL}, function(obj) {
 		parseData(obj);
 	});
@@ -74,7 +74,7 @@ $("button.remq").live("click", function() {
 		$(this).parent().remove();
 		var id = $(this).parent().find("input.qid").val();
 		if(id != "-1") {
-			dbPoll.api("api/creator-delquestion.jsp", {questID: id});
+			dbPoll.api("api/creator/creator-delquestion.jsp", {questID: id});
 		}
 		questionCount--;
 	}
@@ -88,7 +88,7 @@ $("button.remr").live("click", function() {
 		var id = $(this).parent().find("input.aid").val();
 		
 		if(id != "-1") {
-			dbPoll.api("api/creator-delanswer.jsp", {answerID: id});
+			dbPoll.api("api/creator/creator-delanswer.jsp", {answerID: id});
 		}
 		
 		$(this).parent().remove();
@@ -140,7 +140,7 @@ $("button.saver").live("click", function() {
 	
 	console.log(data);
 	//send the request to the server
-	dbPoll.api("api/response.jsp?action=update", data, function(resp) {
+	dbPoll.api("api/creator/creator-editanswer.jsp", data, function(resp) {
 		self.hide();
 		if(resp.newid) {
 			parent.find("input.aid").val(resp.newid);
@@ -172,7 +172,7 @@ $("button.saveq").live("click", function() {
 	console.log(data);
 	
 	//send the request to the server
-	dbPoll.api("api/questions.jsp?action=update", data, function(resp) {
+	dbPoll.api("api/creator/creator-editquestion.jsp", data, function(resp) {
 		self.hide();
 		if(resp.newid) {
 			parent.find("input.qid").val(resp.newid);
