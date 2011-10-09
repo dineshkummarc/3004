@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ page import="db.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@ page import = "java.util.ArrayList" %>
 

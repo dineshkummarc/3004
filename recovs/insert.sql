@@ -30,7 +30,6 @@ INSERT into Polls(pollID, pollName, location, description, startDate, finishDate
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '21-25', 1, 'F');
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', '26+', 1, 'F');
 		
-		
 	INSERT into Questions(questID, responseType, question, pollID, created, creator, font, location, chartType, fontColor) values (qseq.nextval, 'MultiResponse_Numeric', 'Whats your favourite colour?', 1, SYSDATE, 1, 'Comic Sans MS', '-27.53722, 153.078308', 'pie', 'blue');
 		-- answerID = 4
 		INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nextval, 'F', 'Red', 2, 'F');
@@ -499,15 +498,27 @@ INSERT into Answers(answerID, keypad, answer, questID, correct) values (aseq.nex
 -- Assin users to polls
 SELECT 'Assigning users to Polls' FROM dual;
 
-INSERT into Assigned(userID, pollID, role) values (1, 1, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 2, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 3, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 4, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 5, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 6, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 7, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 8, 'Web User');
-INSERT into Assigned(userID, pollID, role) values (1, 9, 'Web User');
+INSERT into Assigned(userID, pollID, role) values (1, 1, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 2, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 3, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 4, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 5, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 6, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 7, 'Poll Creator');
+INSERT into Assigned(userID, pollID, role) values (1, 8, 'Poll Creator');
+
+
+
+
+--INSERT into Assigned(userID, pollID, role) values (1, 1, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 2, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 3, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 4, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 5, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 6, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 7, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 8, 'Web User');
+--INSERT into Assigned(userID, pollID, role) values (1, 9, 'Web User');
 --INSERT into Assigned(userID, pollID, role) values (1, 10, 'Web User');
 
 INSERT into Assigned(userID, pollID, role) values (2, 1, 'Web User');

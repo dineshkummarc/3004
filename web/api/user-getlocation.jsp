@@ -14,9 +14,7 @@
 <%
 try{
 	if(db.accessCheck("sysadmin") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("}");
+
 		String dataID = request.getParameter("id"); //ID of the above type
 		String location = "";
 		//users user = new users();
@@ -39,10 +37,6 @@ try{
 			out.println("\"error\": " + "\"No data found\"");
 			out.println("}");
 		}
-	} else {
-		out.println("{");
-		out.println("\"access\": \"bad\"");
-		out.println("}");
 	}
 } catch(Exception e){
     out.write(e.toString());

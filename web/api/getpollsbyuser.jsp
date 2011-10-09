@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ page import="db.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%@ page import = "java.util.ArrayList" %>
 <%@ page import = "java.util.Date,java.text.SimpleDateFormat,java.text.ParseException" %>
@@ -43,10 +45,11 @@ String userID = Integer.toString(db.getUserID());
         columnTypes[1] = "string";
         columnTypes[2] = "string";
         columnTypes[3] = "string";
-        
-        ArrayList<String[]> pastPolls = new ArrayList<String[]>();
-        pastPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, a.role from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ?", inputs, types, columnNames, columnTypes);
-       
+        String[] jsonNames = {"id", "name", "description", "role"};
+        //ArrayList<String[]> pastPolls = new ArrayList<String[]>();
+        String data = db.doPreparedQueryAndy("SELECT p.pollID, p.pollName, p.description, a.role from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ?", inputs, types, columnNames, columnTypes, jsonNames);
+        out.print(data);
+        /*
         out.print("[");
         
         for ( int i = 0; i  < pastPolls.size(); i++) {
@@ -61,6 +64,7 @@ String userID = Integer.toString(db.getUserID());
                 out.print("},");
             }
         }
+            */
         
         
 } else {

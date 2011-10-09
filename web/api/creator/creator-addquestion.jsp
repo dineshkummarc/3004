@@ -10,7 +10,6 @@
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 <%
 if(db.accessCheck("creator") == 1) {
-    out.print("{\"access\":\"OK\", ");
     String compareTo = request.getParameter("compareTo"); 
     String pollID = request.getParameter("pollID");
     String responseType = request.getParameter("qformat");

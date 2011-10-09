@@ -34,7 +34,7 @@ try{
 		    String[] types = {"string", "string", "string", "string", "string", "string", "string", "int"};
 		    String status = db.doPreparedExecute(query, values, types);
 		    out.println("{");
-		    out.println("\"status\": " + "\"" + status +"\"");
+		    out.println("\"status\": " + "\"Location Changed.\"");
 		    out.println("}");
 	    }   
     } else {

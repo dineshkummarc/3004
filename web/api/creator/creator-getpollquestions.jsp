@@ -60,8 +60,8 @@ if(db.accessCheck("creator") == 1) {
                 
                 String[] answersInputData = {request.getParameter("id")};
                 String[] answersInputTypes = {"string"};
-                String[] answersOutputCols = {"answerID", "keypad", "answer", "questID", "correct"};
-                String[] answersOutputTypes = {"string", "string", "string", "string", "string"};
+                String[] answersOutputCols = {"answerID", "keypad", "answer", "questID", "correct", "weight"};
+                String[] answersOutputTypes = {"string", "string", "string", "string", "string", "string"};
                 
                 ArrayList<String[]> results_Answer = db.doPreparedQuery("SELECT * FROM Answers  WHERE questID=?",
                         answersInputData, answersInputTypes, answersOutputCols, answersOutputTypes);        
@@ -71,25 +71,13 @@ if(db.accessCheck("creator") == 1) {
                     /* below needs to be modified*/
                     if(results_Answer != null){
                             for (int j=0; j<results_Answer.size(); j++) {
-                                out.print("{");
-                                String[] rankingInputData = {results_Answer.get(j)[0]};
-                                String[] rankingInputTypes = {"string"};
-                                String[] rankingOutputCols = {"answerID", "weight"};
-                                String[] rankingOutputTypes = {"string", "string"};
-                
-                                ArrayList<String[]> ranking = db.doPreparedQuery("SELECT * FROM Rankings WHERE answerID=?",
-                                    rankingInputData, rankingInputTypes, rankingOutputCols, rankingOutputTypes);      
-                            
+                                out.print("{"); 
                                     out.print("\"id\": " + results_Answer.get(j)[0] + ",");
                                     out.print("\"keypad\": \"" + results_Answer.get(j)[1] + "\",");
                                     out.print("\"text\": \"" + results_Answer.get(j)[2] + "\",");
                                     out.print("\"questionID\": " + results_Answer.get(j)[3] + ",");
                                     out.print("\"correct\": \"" + results_Answer.get(j)[4]  + "\",");
-                                    if(ranking.size() != 0) {
-                                        out.print("\"weight\": " + ranking.get(0)[1]);
-                                    } else {
-                                        out.print("\"weight\": 0");
-                                    }
+                                    out.print("\"weight\": " + results_Answer.get(j)[5]);
                                     out.print("}");
                                     if((j+1) != results_Answer.size()){
                                         out.print(",");

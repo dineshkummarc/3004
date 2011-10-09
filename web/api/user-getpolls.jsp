@@ -13,11 +13,9 @@
 <%
 try{
 	if(db.accessCheck("master") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("}");
+		
 		String dataID = String.valueOf(db.getUserID());
-		String query = "SELECT pollID, pollName FROM polls WHERE polls.pollID IN (SELECT pollID FROM assigned WHERE userID=?)";
+		String query = "SELECT pollID, pollName FROM polls WHERE pollID IN (SELECT pollID FROM assigned WHERE userID=?)";
 		String[] values = {dataID};
 		String[] types = {"int"};
 		String[] columnNames = {"pollID", "pollName"};

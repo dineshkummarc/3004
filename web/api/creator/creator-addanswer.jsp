@@ -9,7 +9,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 if(db.accessCheck("creator") == 1) {
-    out.print("{\"access\":\"OK\", ");
     String questID = request.getParameter("questID");
     String weight = request.getParameter("weight"); 
     String answer = request.getParameter("text");

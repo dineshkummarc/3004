@@ -1,12 +1,6 @@
-<%-- INDIVIDUAL DARREN
-    Document   : geolocation
-    Created on : 12/08/2011, 7:13:37 PM
-    Author     : Darren
---%>
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="database.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
@@ -14,9 +8,7 @@
 <%
 try{
 	if(db.accessCheck("master") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("},");
+
 		String dataID = request.getParameter("id"); //ID of the above type
 		String location = "";
 		//polls poll = new polls();
@@ -39,10 +31,6 @@ try{
 			out.println("\"error\": " + "\"No data found\"");
 			out.println("}");
 		}
-	} else {
-		out.println("{");
-		out.println("\"access\": \"bad\"");
-		out.println("}");
 	}
 } catch(Exception e){
     out.write(e.toString());
