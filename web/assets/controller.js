@@ -115,14 +115,14 @@ $(function() {
 						html += "<li><a href=':ManageUsers'>Manage Users</a></li>\
 								<li><a href=':AddPollCreator'>Add Poll Creator</a></li>";
 					case 5:
-						html += "<li><a href=':ManagePolls'>Manage Polls</a></li>\
-								<li><a href=':AddPollCreator'>Add Poll Creator</a></li>";
+						html += "<li><a href=':ManagePolls'>Manage Polls</a></li>";
 					case 4:
 						html += "<li><a href=':AssignedPolls'>Assigned Polls</a></li>"
 					case 3:
 						html += "<li><a href=':Location'>Change Location</a></li>\
 								<li><a href=':Generate'>Generate Report</a></li>\
-								<li><a href=':ConductPoll'>Conduct Poll</a></li>";
+								<li><a href=':ConductPoll'>Conduct Poll</a></li>\
+								<li><a href=':Assign'>Assign User</a></li>";
 					case 2:
 					case 1:
 						html += "<li><a href=':PollIndex'>Poll Index</a></li>";
