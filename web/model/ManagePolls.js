@@ -11,7 +11,12 @@ dbPoll.api("api/admin-listpolls.jsp", function(data) {
 		
 		html += "<div class='poll list'><h2>"+poll.pollName+"</h2>";
 		html += "<div class='inner' data-id='"+poll.pollID+"'>";
-		html += "<label>Rename: <a class='button renameb'>Rename</a><input type='text' class='rename' /></label>";
+		html += "<label>Name: <input type='text' class='name' /></label>";
+		html += "<label>Description: <input type='text' class='descr' /></label>";
+		html += "<label>Start: <input type='text' class='start' /></label>"; 
+		html += "<label>End: <input type='text' class='end' /></label>";
+		html += "<label>Online: <input type='checkbox' class='online' /></label>";
+		html += "<a class='button updateb'>Update</a>";
 		html += "<label>Delete Poll: <a class='button delete'>Delete</a></label><div class='creators'>";
 		
 		//loop over the poll creators
@@ -77,13 +82,17 @@ $(".assign").live("click", function() {
 });
 
 /**
-* Rename a Poll
+* Update a Poll
 */
-$(".renameb").live("click", function() {
+$(".updateb").live("click", function() {
 	var name = $(this).parent().find("input.rename").val(),
-		id = $(this).parent().parent().attr("data-id");
+		id = $(this).parent().parent().attr("data-id"),
+		start = $(this).parent().find("input.start").val(),
+		end = $(this).parent().find("input.end").val(),
+		online = $(this).parent().find("input.end").val(),
+		descr = $(this).parent().find("input.descr").val();
 		
-	dbPoll.api("api/admin-editpoll.jsp", {pollName: name, pollID: id}, function() {
+	dbPoll.api("api/admin-editpoll.jsp", {pollID: id, pollName: name, start: start, finish: end, online: online, description: descr}, function() {
 		window.location.reload();
 	});
 });
@@ -121,7 +130,7 @@ function updateCreators(creators) {
 
 dbPoll.exit = function() {
 	$(".poll a.del").die();
-	$(".renameb").die();
+	$(".updateb").die();
 	$(".assign").die();
 	$(".delete").die();
 };
