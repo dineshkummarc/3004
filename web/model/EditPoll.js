@@ -215,6 +215,7 @@ function updateCompare() {
 * [{id: 1, text: "Question", type: "M", compareTo: 2, demographic: true, ranking:true, responses: [{id: 2, text: "Repsonse A", keypad: "NULL", correct: true, weight: 50}]}]
 */
 parseData = function parseData(data) {
+	data = data.questions;
 	var q = 0, l = data.length, r, k, quest, resp, qelem;
 	
 	//loop over questions
