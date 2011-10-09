@@ -272,6 +272,10 @@ public class database {
                 return 1;
             } else if(rankChecker.get(0)[0].equals("Poll Master")) {
                 return 3;
+            } else if(rankChecker.get(0)[0].equals("Poll Creator")) {
+                return 4;
+            } else if(rankChecker.get(0)[0].equals("Poll Admin")) {
+                return 5;
             }
         }
         System.err.println("baseLogin: No sysadmin/web user/key user access found. Looking for poll admin/creator access...");
@@ -284,7 +288,7 @@ public class database {
         String[] inputTypes = {"string", "string", "string"};
         String[] output = {"UserID"};
         String[] outputTypes = {"int"};
-        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND UserID IN (SELECT UserID FROM PollAdmins WHERE lower(Username) = lower(?))", input, inputTypes, output, outputTypes);
+        ArrayList<String[]> isAdmin = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ? AND userLevel = 'Poll Admin'", input, inputTypes, output, outputTypes);
         String[] validTypes = {"string", "string"};
         String[] validInput = {username, password};
         ArrayList<String[]> valid = doPreparedQuery("SELECT UserID FROM Users WHERE lower(Username) = lower(?) AND Password = ?", validInput, validTypes, output, outputTypes);
@@ -366,7 +370,7 @@ public class database {
         String[] isCreatorInputTypes = {"string"};
         String[] isCreatorOutput = {"UserID"};
         String[] isCreatorOutputTypes = {"int"};
-        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM PollCreatorLink WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?))", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
+        ArrayList<String[]> isCreator = doPreparedQuery("SELECT UserID FROM Assigned WHERE UserID = (SELECT UserID FROM Users WHERE lower(Username) = lower(?)) AND role='Poll Creator'", isCreatorInput, isCreatorInputTypes, isCreatorOutput, isCreatorOutputTypes);
         if(valid.isEmpty()) {
             // invalid credentials supplied
             return 0;

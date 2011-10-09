@@ -20,7 +20,7 @@
 	    String[] types = {"string", "string", "string", "string"};
 
 
-	    db.doPreparedExecute("INSERT INTO Polls(PollID, Pollname, description, startDate, finishDate) VALUES (pseq.nextval, ?, ?, ?, ?)", array,types);
+	    db.doPreparedExecute("INSERT INTO Polls(PollID, Pollname, description, startDate, finishDate) VALUES (pseq.nextval, ?, ?, to_date(?, 'yyyy-mm-dd HH24:MI:SS'), to_date(?, 'yyyy-mm-dd HH24:MI:SS'))", array,types);
 
 	    ArrayList<String[]> maxPoll = new ArrayList<String[]>();
 	    String[] a1 = {};
@@ -44,7 +44,7 @@
 		String[] pclinkColTypes = {"int", "string"};
 		ArrayList<String[]> pclink = new ArrayList<String[]>();
 		pclink = db.doPreparedQuery("SELECT * FROM Users pcs WHERE pcs.userID IN (SELECT "
-				     + "UserID FROM PollCreatorLink WHERE PollID=?) ",
+				     + "UserID FROM Assigned WHERE PollID=? AND role='Poll Creator') ",
 				     pollArray, pollTypes, pclinkCols, pclinkColTypes);
 		for(int c=0; c<pclink.size(); c++) {
 		    if(c > 0) {

@@ -1,6 +1,8 @@
 var DATA, I, 
 	QID, QTYPE, QNAME,
+	timeout,
 	interval,
+	CURRENT_QUESTION = 0,
 	CHARTTYPE = "bar";
 
 function submit(show) {
@@ -8,17 +10,17 @@ function submit(show) {
 		ans = [];
 		
 	param.qid = QID;
-	show = show === undefined ? true : false;
+	show = (show === undefined);
 	
-	if(QTYPE == "MultipleResponse_NoDuplicates") {
+	if(QTYPE.substring(0, 14) == "SingleResponse") {
+		param.aid = $("input:radio[name=ans]:checked").val() || "";
+	} else if(QTYPE.substring(0, 13) == "MultiResponse") {
 		$("input:checked").each(function() { 
 			ans.push($(this).val());
 		});
 		
 		param.aid = ans.join(",");
-	} else if(QTYPE == "mp-single") {
-		param.aid = $("input:radio[name=ans]:checked").val() || "";
-	} else if(QTYPE.substr(0, 2) == "sr") {
+	} else if(QTYPE == "ShortAnswer" || QTYPE == "Numeric") {
 		param.a = $("#resp").val();
 	}
 	
@@ -38,6 +40,7 @@ function submit(show) {
 			
 			table.addRows(data.responses);
 			
+			$("#chart").show();
 			if(q.chartType === "column") {
 				chart = new google.visualization.ColumnChart(document.getElementById('chart'));
 			} else if(q.chartType === "pie") {
@@ -58,12 +61,13 @@ function submit(show) {
 
 function checkActive() {
 	dbPoll.api("api/getactivequestion.jsp", {pollid: dbPoll.q.poll}, function(data) {
-		if(data.activeQuestion != -1) {
+		if(data.activeQuestion != -1 && data.activeQuestion != CURRENT_QUESTION) {
+			CURRENT_QUESTION = data.activeQuestion;
 			loadQuest(DATA.questions[data.activeQuestion], data.activeQuestion);
 		}
+		
+		timeout = setTimeout(checkActive, 2000);
 	});
-	
-	setTimeout(checkActive, 2000);
 }
 
 dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data) {
@@ -76,7 +80,10 @@ dbPoll.api("api/webuser-getquestions.jsp", {poll: dbPoll.q.poll}, function(data)
 	DATA = data;
 	I = index;
 	
-	checkActive();
+	//start timer
+	if(data.questions[0].keypad == "TRUE") {
+		checkActive();
+	}
 	
 	loadQuest(data.questions[index], index);
 });
@@ -108,14 +115,14 @@ function loadQuest(question, index) {
 	
 	o.name.text(question.question);
 	
-	if(question.type.substring(0, 16) === "MultipleResponse") {
+	if(question.type.substring(0, 13) === "MultiResponse" || question.type.substring(0, 14) === "SingleResponse") {
 		var j, ans;
 		
 		for(j in question.answers) {
 			ans = question.answers[j];
-			if(question.type.substring(0, 29) === "MultipleResponse_NoDuplicates") {
+			if(question.type.substring(0, 14) === "SingleResponse") {
 				html += "<label><input type='radio' name='ans' value='"+j+"' /> "+ans+"</label>";
-			} else if(question.type === "mp-multiple") {
+			} else if(question.type.substring(0, 13) === "MultiResponse") {
 				html += "<label><input type='checkbox' name='ans' value='"+j+"' /> "+ans+"</label>";
 			}
 		}
@@ -125,11 +132,11 @@ function loadQuest(question, index) {
 	
 	o.response.html(html);
 	
-	if(question.type === "SingleResponse_Numeric") {
+	if(question.type === "Numeric") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || e.which === 8;
 		});
-	} else if(question.type === "SingleResponse_Alpha") {
+	} else if(question.type === "ShortAnswer") {
 		$("#resp").keydown(function(e) {
 			return (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || e.which === 8;
 		});
@@ -169,6 +176,10 @@ function loadQuest(question, index) {
 	$("#feedback").show();
 }
 
+$("#chart").click(function() {
+	$(this).hide();
+});
+
 $("#submit").click(function() {
 	submit(false);
 });
@@ -188,3 +199,7 @@ $("#feedback-sub").click(function() {
 	dbPoll.api("api/webuser-submitfeedback.jsp", param);
 	$("#feedback").hide();
 });
+
+dbPoll.exit = function() {
+	clearTimeout(timeout);
+}

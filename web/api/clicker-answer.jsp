@@ -23,8 +23,8 @@ String answerID = request.getParameter( "answerid" );
 String clickerID = request.getParameter( "clickerid" );
 
 //if (null != user && !user.equals( "" )) {
-
-    String userID = request.getParameter("userid");
+if (db.getLoggedIn() == 1) {
+    String userID = Integer.toString(db.getUserID());
     //out.println("THIS IS THE USER ID" + userID + " <br/>");
     if (questionID == null) {
         out.print("{ \"error\": \"Invalid question ID.\"}");                
@@ -42,7 +42,7 @@ String clickerID = request.getParameter( "clickerid" );
             answers = answerID.split(",");               
         
             types = new String[2];
-            types[0] = "string";
+            types[0] = "int";
             types[1] = "int";
             
             inputs = new String[2];
@@ -50,7 +50,7 @@ String clickerID = request.getParameter( "clickerid" );
             inputs[1] = questionID;
             
             types2 = new String[3];
-            types2[0] = "string";
+            types2[0] = "int";
             types2[1] = "int";
             types2[2] = "int";
             
@@ -69,16 +69,22 @@ String clickerID = request.getParameter( "clickerid" );
                 value = db.doPreparedExecute("INSERT into KeyResponses(clickerID, questID, answerID) values (?, ?, ?)", inputs2, types2);
             }
             if (value.equals("Failed!")) {              
-                out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}"); 
+                out.print("{ \"error\": \"Submission failed due to incorrect parameteres\"}");  
             } else {
 		String[] countInput = {questionID};
 		String[] countTypes = {"string"};
 		String[] columNames = {"responsecount"};
 		String[] columTypes = {"int"};
-		int count = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM KeyResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
-                out.print("{ \"responses\": " + count + " }");
+		int count1 = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM KeyResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
+                int count2 = Integer.parseInt(db.doPreparedQuery("SELECT COUNT(*) AS responsecount FROM MultiResponses WHERE questID=?", countInput, countTypes, columNames, columTypes).get(0)[0]);
+                int total = count1 + count2;
+                
+                out.print("{ \"responses\": " + total + " }");
                 
             }
         }
     }
+} else {
+    out.print("{ \"error\": \"You are not currently logged in.\", \"redirect\":\"Login\"}");
+}
 %>

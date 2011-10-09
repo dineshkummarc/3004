@@ -6,22 +6,21 @@
 
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.text.*"%>
+<%@page import="java.util.Random"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
+<jsp:useBean id="emailmodule" scope="session" class="db.email" /> 
 
 <%
 try{
 	if(db.accessCheck("sysadmin") == 1) {
-		out.println("{");
-		out.println("\"access\": \"OK\"");
-		out.println("}");
 		//users user = new users();
 		//user.setUserID(-1);
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
+		String userName = request.getParameter("userName");
+		//String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		String location = request.getParameter("location");
-		String userLevel = request.getParameter("userlevel");
+		String userLevel = request.getParameter("userLevel");
 		String expired = request.getParameter("expired");
 		//user.setUserName(userName);
 		//user.setPassword(password);
@@ -29,9 +28,13 @@ try{
 		//user.setLocation(location);
 		//user.setUserLevel(userLevel);
 		//int check = user.addUser();
-		String query = "INSERT INTO users (userid, username, password, email, location, userlevel, created, expired) VALUES (useq.nextval, ?, ?, ?, ?, ?, SYSDATE, ?)";
-		String[] values = {userName, password, email, location, userLevel, expired};
-		String[] types = {"string", "string", "string", "string", "string", "string"};
+                String password = Integer.toString((int)(Math.random()*100000));                
+                
+                
+                
+		String query = "INSERT INTO users (userid, username, password, email, location, userlevel, created) VALUES (useq.nextval, ?, ?, ?, ?, ?, SYSDATE)";
+		String[] values = {userName, password, email, location, userLevel};
+		String[] types = {"string", "string", "string", "string", "string"};
 		String result = db.doPreparedExecute(query, values, types);
 		if(result.equals("Failed!")){
 			out.println("{");
@@ -41,6 +44,7 @@ try{
 			out.println("{");
 			out.println("\"status\": " + "\"User registered\"");
 			out.println("}");
+                        emailmodule.sendEmail(email, "You've been given " + userLevel + " access.", "You now have "+userLevel+" access on the dbPOLL system. You can access the system with the following credentials: username is " + userName + " and password is " + password);
 		} 
 	} else {
 		out.println("{");

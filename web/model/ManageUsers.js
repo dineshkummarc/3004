@@ -7,13 +7,12 @@ $("#create").click(function() {
 	
 	param.action = "register";
 	param.userName = p.find(".username").val();
-	param.password = p.find(".password").val();
 	param.email = p.find(".email").val();
 	param.userLevel = p.find(".role").val();
 	param.location = pos.Oa + "," + pos.Pa;
 	
 	console.log(param);
-	dbPoll.api("api/edituser.jsp", param);
+	dbPoll.api("api/user-createuser.jsp", param);
 });
 
 $("label.exp").hide();
@@ -35,7 +34,7 @@ $("#edit").click(function() {
 	//set the global username
 	user = username;
 	
-	dbPoll.api("api/edituser.jsp", {returnBoolean: true, userName: username}, function(data) {
+	dbPoll.api("api/user-getdetails.jsp", {returnBoolean: true, userName: username}, function(data) {
 		if(data.userID == "-1") {
 			username = undefined;
 			$("#editbox").hide();
@@ -78,7 +77,7 @@ $("#modify").click(function() {
 	param.userLevel = $(this).parent().find(".role").val();
 	param.email = $(this).parent().find(".email").val();
 	
-	dbPoll.api("api/edituser.jsp", param, function() {
+	dbPoll.api("api/user-edituser.jsp", param, function() {
 	
 	});
 });
@@ -86,7 +85,7 @@ $("#modify").click(function() {
 $("#remove").click(function() {
 	var username = $(this).parent().find(".username").val();
 	
-	dbPoll.api("api/edituser.jsp", {action: "remove", userName: username});
+	dbPoll.api("api/user-deleteuser.jsp", {action: "remove", userName: username});
 });
 
 
@@ -122,4 +121,22 @@ function init() {
 		}
 	});
 	
+	
+	var html = "";
+	
+	switch(dbPoll.role) {
+		case 6:
+			html += "<option value='System Admin'>System Admin</option>";
+		case 5:
+			html += "<option value='Poll Admin'>Poll Admin</option>";
+		case 4:
+			html += "<option value='Poll Creator'>Poll Creator</option>";
+		case 3:
+			html += "<option value='Poll Master'>Poll Master</option>";
+		default:
+			html += "<option value='Web User'>Web User</option>";
+			html += "<option value='Key User'>Key User</option>";
+	}
+	
+	$("select.role").html(html);
 }

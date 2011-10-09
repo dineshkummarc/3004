@@ -6,18 +6,14 @@
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="database.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.io.*"%>
 <jsp:useBean id="db" scope="session" class="db.database" /> 
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1 {
-		out.println("{"};
-		out.println("\"access\": \"OK\"")
-		out.println("}");
-		String userName = request.getParameter("username");
+	if(db.accessCheck("sysadmin") == 1) {
+		String userName = request.getParameter("userName");
 		//users user = new users();
 		//user.setUserName(userName);
 		//user.getUserByUserName();
@@ -43,8 +39,8 @@ try{
 			out.println("}");
 		}
 	} else {
-		out.println("{"};
-		out.println("\"access\": \"bad\"")
+		out.println("{");
+		out.println("\"access\": \"bad\"");
 		out.println("}");
 	}
 } catch(Exception e){

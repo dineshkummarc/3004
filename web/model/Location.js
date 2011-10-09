@@ -91,7 +91,6 @@ $("#submit").click(function() {
             alert("Geocoder failed due to: " + status);
         }
     });
-
 });
 
 function init() {

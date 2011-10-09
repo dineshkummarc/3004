@@ -33,25 +33,27 @@ String userID = Integer.toString(db.getUserID());
         types[0] = "int";
 
         String columnNames[];
-        columnNames = new String[6];
+        columnNames = new String[7];
         columnNames[0] = "pollID";
         columnNames[1] = "pollName";
         columnNames[2] = "description";
         columnNames[3] = "startDate";
         columnNames[4] = "finishDate";
         columnNames[5] = "status";
+        columnNames[6] = "keypad";
 
         String columnTypes[];
-        columnTypes = new String[6];
+        columnTypes = new String[7];
         columnTypes[0] = "int";
         columnTypes[1] = "string";
         columnTypes[2] = "string";
         columnTypes[3] = "string";
         columnTypes[4] = "string";
         columnTypes[5] = "string";
+        columnTypes[6] = "string";
         
         ArrayList<String[]> pastPolls = new ArrayList<String[]>();
-        pastPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.finishDate <= LOCALTIMESTAMP ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
+        pastPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status, p.keypad from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.finishDate <= LOCALTIMESTAMP AND a.role='Web User' ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
        
         out.print("{ \"past\": [ ");
         
@@ -62,7 +64,8 @@ String userID = Integer.toString(db.getUserID());
             out.print("\"description\": \"" + pastPolls.get(i)[2] + "\", ");
             out.print("\"startDate\": \"" + pastPolls.get(i)[3] + "\", ");
             out.print("\"finishDate\": \"" + pastPolls.get(i)[4] + "\", ");
-            out.print("\"completed\": \"" + pastPolls.get(i)[5] + "\"");
+            out.print("\"completed\": \"" + pastPolls.get(i)[5] + "\", ");
+            out.print("\"keypad\": \"" + pastPolls.get(i)[6] + "\"");
             if (i == (pastPolls.size() -1)) {
                 out.print("}");
             } else {
@@ -73,7 +76,7 @@ String userID = Integer.toString(db.getUserID());
         out.print("], \"future\": [");
         
         ArrayList<String[]> futurePolls = new ArrayList<String[]>();
-        futurePolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.startDate >= LOCALTIMESTAMP ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
+        futurePolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status, p.keypad from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.startDate >= LOCALTIMESTAMP AND a.role='Web User' ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
         
         for ( int i = 0; i  < futurePolls.size(); i++) {
             out.print("{");
@@ -82,7 +85,8 @@ String userID = Integer.toString(db.getUserID());
             out.print("\"description\": \"" + futurePolls.get(i)[2] + "\", ");
             out.print("\"startDate\": \"" + futurePolls.get(i)[3] + "\", ");
             out.print("\"finishDate\": \"" + futurePolls.get(i)[4] + "\", ");
-            out.print("\"completed\": \"" + futurePolls.get(i)[5] + "\"");
+            out.print("\"completed\": \"" + futurePolls.get(i)[5] + "\", ");
+            out.print("\"keypad\": \"" + pastPolls.get(i)[6] + "\"");
             if (i == (futurePolls.size() -1)) {
                 out.print("}");
             } else {
@@ -93,7 +97,7 @@ String userID = Integer.toString(db.getUserID());
         out.print("], \"present\": [");
         
         ArrayList<String[]> currentPolls = new ArrayList<String[]>();
-        currentPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.startDate <= LOCALTIMESTAMP AND p.finishDate >= LOCALTIMESTAMP ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
+        currentPolls = db.doPreparedQuery("SELECT p.pollID, p.pollName, p.description, to_char((p.startDate), 'yyyy-mm-dd HH24:MI:SS') AS startDate, to_char((p.finishDate), 'yyyy-mm-dd HH24:MI:SS') AS finishDate, a.status, p.keypad from Assigned a INNER JOIN Polls p ON a.pollID = p.pollID WHERE a.userID = ? AND p.startDate <= LOCALTIMESTAMP AND p.finishDate >= LOCALTIMESTAMP  AND a.role='Web User' ORDER BY p.startDate", inputs, types, columnNames, columnTypes);
         
         for ( int i = 0; i  < currentPolls.size(); i++) {
             out.print("{");
@@ -102,7 +106,8 @@ String userID = Integer.toString(db.getUserID());
             out.print("\"description\": \"" + currentPolls.get(i)[2] + "\", ");
             out.print("\"startDate\": \"" + currentPolls.get(i)[3] + "\", ");
             out.print("\"finishDate\": \"" + currentPolls.get(i)[4] + "\", ");
-            out.print("\"completed\": \"" + currentPolls.get(i)[5] + "\"");
+            out.print("\"completed\": \"" + currentPolls.get(i)[5] + "\", ");
+            out.print("\"keypad\": \"" + pastPolls.get(i)[6] + "\"");
             if (i == (currentPolls.size() -1)) {
                 out.print("}");
             } else {
