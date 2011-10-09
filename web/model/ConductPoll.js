@@ -26,7 +26,7 @@ dbPoll.api("api/getpollsbyuser.jsp", function(data) {
 $("#send").click(function() {
 	var to = $("#to").val() || -1,
 		poll = $("#poll").val(),
-		msg = $("#msg").val();
+		msg = $("#messg").val();
 		
 	dbPoll.api("api/sendmessage", {to: to, pollID: poll, message: msg});
 });
