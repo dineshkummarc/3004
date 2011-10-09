@@ -13,10 +13,10 @@
 
 <%
 try{
-	if(db.accessCheck("sysadmin") == 1) {
+	if(db.accessCheck("master") == 1) {
 		out.println("{");
 		out.println("\"access\": \"OK\"");
-		out.println("}");
+		out.println("},");
 		String dataID = request.getParameter("id"); //ID of the above type
 		String location = "";
 		//polls poll = new polls();

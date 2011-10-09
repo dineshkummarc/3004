@@ -1,21 +1,1 @@
-<div class="column">
-
-<h2>Generate Statistical Report</h2>
-<label>Poll: <select id="polls"></select></label>
-<label>Demographic: <select id="demog"><option value="individual">Individual</option></select></label>
-<label>Value: <select id="value"></select></label>
-<label>Location: <input type="text" id="location"></label>
-<label>Chart: <select id="chartsel"><option value="Bar">Bar</option><option value="Pie">Pie</option></select></label>
-<button id="sr-submit">Generate</button>
-
-</div>
-
-<div class="column">
-<h2>Generate System Utilization</h2>
-<button id="su-submit">Generate</button>
-</div>
-
-<div class="column">
-<h2>Generate Session History</h2>
-<button id="sh-submit">Generate</button>
-</div>
+<div class="column"><h2>Generate Statistical Report</h2><label>Type: <select id="r-type">        <option value='statistical'>Statistical Result</option>        <option value='session'>Session Participation</option>    </select></label><label>Poll: <select id="polls"></select></label><div id="statis-div"><label>Filter By: <select id="filter"><option value="individual">Individual</option></select></label>    <div id="location-div">        <label>Comparison <select id="location-compare">                <option value='T'>True</option>                <option value='F'>False</option>            </select>        </label>        <label>Country: <select id="country-value"></select></label>        <label>State: <select id="state-value"></select></label>        <label>City: <select id="city-value"></select></label>        <label>Suburb: <select id="suburb-value"></select></label>        <label>Street: <select id="street-value"></select></label>    </div>    <div id="value-div">        <label>Value: <select id="value"></select></label>    </div><label>Chart: <select id="chartsel"><option value="Bar">Bar</option><option value="Pie">Pie</option></select></label></div><button id="sr-submit">Generate</button></div><div class="column"><h2>Generate System Utilization</h2><button id="su-submit">Generate</button></div><div class="column"><h2>Generate Session History</h2><button id="sh-submit">Generate</button></div>

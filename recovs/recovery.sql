@@ -21,6 +21,19 @@ INCREMENT BY 1;
 CREATE SEQUENCE wseq
 START WITH 1
 INCREMENT BY 1;
+-- new
+CREATE SEQUENCE plseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE mseq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE uiseq
+START WITH 1
+INCREMENT BY 1;
+--end
 
 -- Tables
 CREATE TABLE Questions(
@@ -105,6 +118,7 @@ CREATE TABLE MultiResponses(
     userID INTEGER NOT NULL,
     questID INTEGER NOT NULL,     -- questID of Questions
     answerID INTEGER NOT NULL,    -- answerID of Answer
+    plID INTEGER,
     CONSTRAINT pk_MultiResponses PRIMARY KEY (questID, userID, answerID)
 );
 
@@ -113,7 +127,7 @@ CREATE TABLE KeyResponses(
     --userID INTEGER,
 	clickerID VARCHAR2(30) NOT NULL,
     questID INTEGER NOT NULL,     -- questID of Questions
-    answerID INTEGER NOT NULL,    -- answerID of Answer
+    answerID INTEGER NOT NULL    -- answerID of Answer
 );
 
 CREATE TABLE Polls(
@@ -123,10 +137,51 @@ CREATE TABLE Polls(
     description VARCHAR2(255),
     startDate TIMESTAMP,
     finishDate TIMESTAMP,
+    country VARCHAR2(255) DEFAULT '1',
+    state VARCHAR2(255) DEFAULT '1',
+    city VARCHAR2(255) DEFAULT '1',
+    suburb VARCHAR2(255) DEFAULT '1',
+    street VARCHAR2(255) DEFAULT '1',
+    unitNumber VARCHAR2(255) DEFAULT '1',
 	activeQuestion INTEGER DEFAULT 0,
 	keypad VARCHAR2(5) DEFAULT 'TRUE',
     CONSTRAINT pk_Polls PRIMARY KEY (pollID)
 );
+
+--New Table
+CREATE TABLE pollLocation(
+plID INTEGER NOT NULL,
+pollID INTEGER NOT NULL,
+country VARCHAR(255) NOT NULL,
+state VARCHAR(255) NOT NULL,
+city VARCHAR(255) NOT NULL,
+suburb VARCHAR(255) NOT NULL, 
+street VARCHAR(255) NOT NULL,
+unit VARCHAR(10),
+CONSTRAINT pk_pollLocation PRIMARY KEY (plID)
+);
+
+CREATE TABLE Messages(
+msgID INTEGER NOT NULL,
+pollID INTEGER NOT NULL,
+fromUser INTEGER NOT NULL,
+toUser INTEGER NOT NULL,
+created TIMESTAMP NOT NULL,
+message VARCHAR(255) NOT NULL,
+isRead VARCHAR(1) NOT NULL,
+CONSTRAINT pk_Messages PRIMARY KEY (msgID),
+CONSTRAINT isRead_const CHECK (isRead IN ('T', 'F'))
+);
+
+CREATE TABLE UserInfo(
+uiID INTEGER  NOT NULL,
+userID INTEGER NOT NULL,
+pollID INTEGER NOT NULL,
+information VARCHAR(255) NOT NULL,
+CONSTRAINT pk_UserInfo PRIMARY KEY (uiID)
+);
+
+-- end new
 
 CREATE TABLE Users(
     userID INTEGER NOT NULL,

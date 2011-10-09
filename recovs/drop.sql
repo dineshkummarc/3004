@@ -6,6 +6,10 @@ DROP SEQUENCE aseq;
 DROP SEQUENCE pseq;
 DROP SEQUENCE useq;
 DROP SEQUENCE wseq;
+-- new
+DROP SEQUENCE plseq;
+DROP SEQUENCE mseq;
+DROP SEQUENCE uiseq;
 
 ALTER TABLE Questions DROP CONSTRAINT pk_Questions;
 ALTER TABLE Widgets DROP CONSTRAINT pk_Widgets;
@@ -24,6 +28,12 @@ ALTER TABLE Assigned DROP CONSTRAINT pk_Assigned;
 ALTER TABLE Attendance DROP CONSTRAINT pk_Attendance;
 ALTER TABLE Users DROP CONSTRAINT pk_Users;
 ALTER TABLE Users DROP CONSTRAINT uk_Users;
+--new
+ALTER TABLE pollLocation DROP CONSTRAINT pk_pollLocation;
+ALTER TABLE Messages DROP CONSTRAINT pk_Messages;
+ALTER TABLE Messages DROP CONSTRAINT isRead_const;
+ALTER TABLE UserInfo DROP CONSTRAINT pk_UserInfo;
+
 
 DROP TABLE Questions;
 DROP TABLE Widgets;
@@ -41,6 +51,10 @@ DROP TABLE Polls;
 DROP TABLE Assigned;
 DROP TABLE Attendance;
 DROP TABLE Users;
+-- new
+DROP TABLE pollLocation;
+DROP TABLE Messages;
+DROP TABLE UserInfo;
 
 -- Davids
 DROP SEQUENCE pclink_autonumber;
